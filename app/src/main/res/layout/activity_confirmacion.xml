@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+        <LinearLayout
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/buttonBack">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_rew"
+                android:tint="@color/white" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIRMACIÓN"
+            android:textSize="16dp"
+            android:textStyle="italic|bold"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:id="@+id/toolbar_title" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="25dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/darkGray"
+            android:text="Jugaste en el "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/colorAccent"
+            android:text="Marcador"
+            android:id="@+id/textTipoJugada" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21dp"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:text="GANA VISITANTE"
+            android:id="@+id/textResultado" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:weightSum="10">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="10dp"
+                    android:textColor="@color/darkGray"
+                    android:id="@+id/textResultadoLocal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Real Madrid"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/textNombreLocal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Local"
+                    android:textSize="9dp"
+                    android:layout_marginTop="-1dp"
+                    android:textColor="@color/darkGray"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/imageEquipo1"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/image_circle_blue"
+                android:src="@drawable/venezuela"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="10dp"
+                    android:textColor="@color/darkGray"
+                    android:id="@+id/textResultadoVisitante" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Real Madrid"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/textNombreVisitante" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visitante"
+                    android:textSize="9dp"
+                    android:layout_marginTop="-1dp"
+                    android:textColor="@color/darkGray" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="3dp"
+        android:background="@color/mediumGray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/marginButtonConfirmar"
+        android:layout_marginRight="@dimen/marginButtonConfirmar"
+        android:background="@drawable/background_green_rounded"
+        android:orientation="vertical"
+        android:id="@+id/buttonConfirmar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="13dp"
+            android:textColor="@color/black"
+            android:text="CONFIRMAR JUGADA"/>
+    </LinearLayout>
+</LinearLayout>

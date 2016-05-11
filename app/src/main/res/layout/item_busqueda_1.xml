@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/linearItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <VideoView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/mediumGray"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:weightSum="10">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.45"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/imageProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/image_circle_noborder"
+                    android:src="@drawable/venezuela"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.45"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/imageEquipo1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/image_circle_noborder"
+                    android:src="@drawable/venezuela"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9dp"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:text="Juan José Sánchez"
+                    android:id="@+id/textName" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9dp"
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/textEquipoAlma" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/linearInfo">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_info_white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/linearAdd">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_add_blue"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
