@@ -211,7 +211,7 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         holder.buttonDownVisitante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Integer.parseInt(holder.editLocal.getText().toString()) > 0) {
+                if (Integer.parseInt(holder.editVisitante.getText().toString()) > 0) {
                     int val = Integer.parseInt(holder.editVisitante.getText().toString()) - 1;
                     holder.editVisitante.setText("" + val);
                     editVisitante[position] = val;

@@ -1,5 +1,6 @@
 package com.advante.golazzos;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,6 +51,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import bolts.AppLinks;
+import io.npay.activity.NPay;
 
 /**
  * Created by Ruben Flores on 4/19/2016.
@@ -64,12 +67,17 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     TextView textFanaticada,textPartidos,textEquipos,textRanking,textAmigos,textName,textPuntos,textNivel;
     TextView textFanaticada1,textPartidos1,textEquipos1,textRanking1,textAmigos1;
     LeftMenuAdapter leftMenuAdapter;
-    LinearLayout bottomMenu1, bottomMenu2,linearPuntos;
+    LinearLayout bottomMenu1, bottomMenu2,linearPuntos, linearTitular;
     TextView textTitle;
     String pic_name;
     General gnr;
     ActionBarDrawerToggle toggle;
     Menu _menu;
+
+    public String sku;
+    public int items_qty = 0;
+
+    NPay npay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +98,14 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
 
         fragmentManager = getSupportFragmentManager();
         linearPuntos = (LinearLayout) findViewById(R.id.linearPuntos);
+        linearTitular = (LinearLayout) findViewById(R.id.linearTitular);
+        linearTitular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PrincipalActivity.this, NPayExample.class);
+                startActivity(intent);
+            }
+        });
         gnr = new General(this);
 
         setTitle("");
@@ -98,6 +114,12 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         leftMenuAdapter = new LeftMenuAdapter(this, getMenu());
         LeftMenu = (ListView)findViewById(R.id.list_leftmenu_items);
         LeftMenu.setAdapter(leftMenuAdapter);
+        LeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("Golazzos", ""+i);
+            }
+        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -137,9 +159,8 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         loadProfile();
 
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
-        if (targetUrl != null) {
-            Log.i("Activity", "App Link Target URL: " + targetUrl.toString());
-        }
+        npay = new NPay(this);
+
     }
 
 

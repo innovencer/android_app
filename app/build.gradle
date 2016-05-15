@@ -49,5 +49,5 @@ dependencies {
     }
     compile 'com.mlsdev.rximagepicker:library:1.1.2'
     compile 'io.reactivex:rxjava:1.0.14'
-
+    compile files('libs/NpayLibrary_V2.220160421.jar')
 }

@@ -1,16 +1,16 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,23 +35,10 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.login.LoginManager;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.StatusesService;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import org.json.JSONException;
@@ -61,8 +48,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,7 +55,7 @@ import java.util.Map;
  * Created by Ruben Flores on 4/24/2016.
  */
 public class FanaticadaDetalle_Fragment extends GeneralFragment {
-    LinearLayout buttonBack,buttonFacebook,buttonTwitter,buttonLike,buttonEstadisticas,linearJugar,linearImageAttached;
+    LinearLayout buttonBack,buttonFacebook,buttonTwitter,buttonComentar,buttonLike,buttonEstadisticas,linearJugar,linearImageAttached,linear1;
     TextView textTime_ago,textLabel,textLike;
     ImageView imageEquipo1, imageViewAttached;
     ShareDialog shareDialog;
@@ -96,9 +81,11 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         buttonFacebook = (LinearLayout) view.findViewById(R.id.buttonFacebook);
         buttonLike = (LinearLayout) view.findViewById(R.id.buttonLike);
         buttonEstadisticas = (LinearLayout) view.findViewById(R.id.buttonEstadisticas);
+        buttonComentar = (LinearLayout) view.findViewById(R.id.buttonComentar);
         buttonTwitter = (LinearLayout) view.findViewById(R.id.buttonTwitter);
         linearJugar = (LinearLayout) view.findViewById(R.id.linearJugar);
         linearImageAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
+        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
         textLabel = (TextView) view.findViewById(R.id.textLabel);
         textTime_ago = (TextView) view.findViewById(R.id.textTime_ago);
         textLike = (TextView) view.findViewById(R.id.textLike);
