@@ -4,11 +4,14 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -17,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Adapters.ListEquipos;
+import com.advante.golazzos.Adapters.ListLigas;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
@@ -36,6 +41,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -53,8 +59,8 @@ public class Favoritos1_Fragment extends GeneralFragment {
     TextView buttonLigas,buttonEquipos, buttonGuardar, textName;
     LinearLayout buttonFavoritos2;
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
-    List<Liga> ligas;
-    List<Equipo> equipos;
+    ArrayList<Liga> ligas;
+    ArrayList<Equipo> equipos;
     SoulTeam soulteamTemp;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -208,17 +214,19 @@ public class Favoritos1_Fragment extends GeneralFragment {
         }
     }
 
-    private void showDialogLigas(final List<Liga> arrayList){
+    private void showDialogLigas(final ArrayList<Liga> arrayList){
         // Create custom dialog object
-        final Dialog dialog = new Dialog(getContext());
-        // Include dialog.xml file
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        // Set dialog title
-        dialog.setTitle("");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+        ListLigas arrayAdapter = new ListLigas(getContext(), arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL TORNEO");
+        textSubTitulo.setVisibility(View.GONE);
         listView.setAdapter(arrayAdapter);
         dialog.show();
 
@@ -300,16 +308,18 @@ public class Favoritos1_Fragment extends GeneralFragment {
         }
     }
 
-    private void showDialogEquipos(final List<Equipo> arrayList){
-        // Create custom dialog object
-        final Dialog dialog = new Dialog(getContext());
-        // Include dialog.xml file
+    private void showDialogEquipos(final ArrayList<Equipo> arrayList){
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        // Set dialog title
-        dialog.setTitle("");
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL EQUIPO");
+        textSubTitulo.setText(buttonLigas.getText());
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+
+        ListEquipos arrayAdapter = new ListEquipos(getContext(), arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();

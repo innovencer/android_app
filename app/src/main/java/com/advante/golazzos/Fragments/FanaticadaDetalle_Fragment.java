@@ -57,6 +57,7 @@ import java.util.Map;
 public class FanaticadaDetalle_Fragment extends GeneralFragment {
     LinearLayout buttonBack,buttonFacebook,buttonTwitter,buttonComentar,buttonLike,buttonEstadisticas,linearJugar,linearImageAttached,linear1;
     TextView textTime_ago,textLabel,textLike;
+    EditText editComentario;
     ImageView imageEquipo1, imageViewAttached;
     ShareDialog shareDialog;
     CallbackManager callbackManager;
@@ -91,6 +92,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         textLike = (TextView) view.findViewById(R.id.textLike);
         imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
         imageViewAttached = (ImageView) view.findViewById(R.id.imageAttached);
+        editComentario = (EditText) view.findViewById(R.id.editCometario);
 
         Bundle bundle = this.getArguments();
         label = bundle.getString("label", "");
@@ -204,6 +206,15 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                 }else{
                     like();
                 }
+            }
+        });
+        buttonComentar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                linear1.setVisibility(View.VISIBLE);
+                editComentario.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editComentario, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
