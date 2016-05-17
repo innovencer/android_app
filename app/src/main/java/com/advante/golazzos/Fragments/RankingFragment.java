@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Posts;
 import com.advante.golazzos.Adapters.List_Ranking;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Equipo;
@@ -84,7 +85,7 @@ public class RankingFragment extends GeneralFragment {
         dialog.show();
         jsArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                gnr.endpoint_ranking+type,
+                General.endpoint_ranking +type,
                 "",
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -137,7 +138,7 @@ public class RankingFragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

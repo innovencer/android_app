@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Users;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.SoulTeam;
@@ -75,7 +76,7 @@ public class Amigos_Fragment extends GeneralFragment {
                 }
             }
         });
-        getData(gnr.endpoint_friends);
+        getData(General.endpoint_friends);
         return view;
     }
 
@@ -85,11 +86,11 @@ public class Amigos_Fragment extends GeneralFragment {
             if(view.getTag().equals("1")){
                 linear3.setVisibility(View.VISIBLE);
                 linear4.setVisibility(View.INVISIBLE);
-                getData(gnr.endpoint_friends);
+                getData(General.endpoint_friends);
             }else{
                 linear3.setVisibility(View.INVISIBLE);
                 linear4.setVisibility(View.VISIBLE);
-                getData(gnr.endpoint_followers);
+                getData(General.endpoint_followers);
             }
         }
     };
@@ -165,7 +166,7 @@ public class Amigos_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

@@ -208,13 +208,13 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:scaleType="centerInside"
-                    android:tint="@color/mediumGray"
+                    android:tint="#BFBFBF"
                     android:src="@drawable/ranking_nivel_gr"
                     android:id="@+id/imagePartidos1" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/darkGray"
+                    android:textColor="#BFBFBF"
                     android:layout_marginTop="1dp"
                     android:textSize="8dp"
                     android:text="NIVEL"
@@ -233,12 +233,12 @@
                     android:layout_height="24dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ranking_trofeos_gr"
-                    android:tint="@color/mediumGray"
+                    android:tint="#BFBFBF"
                     android:id="@+id/imageEquipos1" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/darkGray"
+                    android:textColor="#BFBFBF"
                     android:layout_marginTop="1dp"
                     android:textSize="8dp"
                     android:text="TROFEOS"
@@ -256,12 +256,13 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:scaleType="centerInside"
+                    android:tint="#BFBFBF"
                     android:src="@drawable/ranking_aciertos_gr"
                     android:id="@+id/imageRanking1" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/darkGray"
+                    android:textColor="#BFBFBF"
                     android:layout_marginTop="1dp"
                     android:textSize="8dp"
                     android:text="ACIERTOS"
@@ -279,12 +280,13 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:scaleType="centerInside"
+                    android:tint="#BFBFBF"
                     android:src="@drawable/ranking_ganadores_gr"
                     android:id="@+id/imageAmigos1" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/darkGray"
+                    android:textColor="#BFBFBF"
                     android:layout_marginTop="1dp"
                     android:textSize="8dp"
                     android:text="GANADORES"

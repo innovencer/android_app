@@ -70,7 +70,7 @@ public class List_Posts extends ArrayAdapter<Post> {
         holder.textLabel.setText(item.getLabel());
         holder.textTime_ago.setText(item.getTime_ago());
 
-        final String pic_name;
+        final String pic_name = ""+ item.getOwner().getId();
 
         File file = new File(General.local_dir_images + "profile/no_profile.png");
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -80,108 +80,53 @@ public class List_Posts extends ArrayAdapter<Post> {
         holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
                 bm, 16));
 
-        if(item.getOwner().getProfile_pic_url().contains("facebook.com")){
-            pic_name = ""+item.getOwner().getId();
-            Target target = new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Bitmap bm = bitmap;
-                    GraphicsUtil graphicUtil = new GraphicsUtil();
-                    holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                            bm, 16));
-                    FileOutputStream stream = null;
-                    File file;
-                    try {
-                        file = new File(General.local_dir_images + "profile/");
-                        if(!file.exists()){
-                            file.mkdir();
-                        }
-                        stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                        stream.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Bitmap bm = bitmap;
+                GraphicsUtil graphicUtil = new GraphicsUtil();
+                holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
+                        bm, 16));
+                FileOutputStream stream = null;
+                File file;
+                try {
+                    file = new File(General.local_dir_images + "profile/");
+                    if(!file.exists()){
+                        file.mkdir();
                     }
+                    stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                    stream.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {}
 
-                }
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
+        };
 
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {}
-            };
-
-            file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-            if (file.exists()) {
+        file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
+        if (file.exists()) {
+            try{
                 options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                graphicUtil = new GraphicsUtil();
                 holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-            } else {
-                Picasso.with(context)
-                        .load(item.getOwner().getProfile_pic_url())
-                        .into(target);
+                        bm, 100));
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }else{
-            pic_name = item.getOwner().getProfile_pic_url().substring(
-                    item.getOwner().getProfile_pic_url().lastIndexOf("/"),
-                    item.getOwner().getProfile_pic_url().lastIndexOf("."));
-            Target target = new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Bitmap bm = bitmap;
-                    GraphicsUtil graphicUtil = new GraphicsUtil();
-                    holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                            bm, 16));
-                    FileOutputStream stream = null;
-                    File file;
-                    try {
-                        file = new File(General.local_dir_images + "profile/");
-                        if(!file.exists()){
-                            file.mkdir();
-                        }
-                        stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                        stream.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {}
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {}
-            };
-
-            if (!item.getOwner().getProfile_pic_url().startsWith("http")){
-                item.getOwner().setProfile_pic_url("http:"+item.getOwner().getProfile_pic_url());
-            }
-
-            file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-            if (file.exists()) {
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                graphicUtil = new GraphicsUtil();
-                holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-            } else {
-                Picasso.with(context)
-                        .load(item.getOwner().getProfile_pic_url())
-                        .into(target);
-            }
+        } else {
+            Picasso.with(context)
+                    .load(item.getOwner().getProfile_pic_url())
+                    .into(target);
         }
-
 
         return convertView;
     }

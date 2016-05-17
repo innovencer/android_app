@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/greenApple20">
-        <VideoView
+        <View
             android:layout_width="match_parent"
             android:layout_height="0.5px"
             android:background="@color/mediumGray"/>
@@ -54,7 +54,6 @@
                     android:id="@+id/imageEquipo1"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/image_circle_noborder"
                     android:src="@drawable/venezuela"
                     />
             </LinearLayout>

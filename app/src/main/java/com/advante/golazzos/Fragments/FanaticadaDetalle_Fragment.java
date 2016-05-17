@@ -13,14 +13,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Adapters.List_Comentarios;
+import com.advante.golazzos.Adapters.List_Users;
 import com.advante.golazzos.EstadisticasActivity;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Model.Comentario;
+import com.advante.golazzos.Model.SoulTeam;
+import com.advante.golazzos.Model.User;
+import com.advante.golazzos.Model.UserBusqueda;
+import com.advante.golazzos.Model.UserLevel;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -41,6 +49,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +57,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +67,7 @@ import java.util.Map;
  */
 public class FanaticadaDetalle_Fragment extends GeneralFragment {
     LinearLayout buttonBack,buttonFacebook,buttonTwitter,buttonComentar,buttonLike,buttonEstadisticas,linearJugar,linearImageAttached,linear1;
-    TextView textTime_ago,textLabel,textLike;
+    TextView textTime_ago,textLabel,textLike, buttonPublicar;
     EditText editComentario;
     ImageView imageEquipo1, imageViewAttached;
     ShareDialog shareDialog;
@@ -64,6 +75,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     String label,html_center_url,trackable_type, imageAttached;
     String pic_name;
     int id,idImage, idLike = -1;
+    ListView listView;
     JsonObjectRequest jsArrayRequest;
 
     @Override
@@ -84,6 +96,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         buttonEstadisticas = (LinearLayout) view.findViewById(R.id.buttonEstadisticas);
         buttonComentar = (LinearLayout) view.findViewById(R.id.buttonComentar);
         buttonTwitter = (LinearLayout) view.findViewById(R.id.buttonTwitter);
+        buttonPublicar = (TextView) view.findViewById(R.id.buttonPublicar);
         linearJugar = (LinearLayout) view.findViewById(R.id.linearJugar);
         linearImageAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
         linear1 = (LinearLayout) view.findViewById(R.id.linear1);
@@ -93,6 +106,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
         imageViewAttached = (ImageView) view.findViewById(R.id.imageAttached);
         editComentario = (EditText) view.findViewById(R.id.editCometario);
+        listView = (ListView) view.findViewById(R.id.listview);
 
         Bundle bundle = this.getArguments();
         label = bundle.getString("label", "");
@@ -218,6 +232,20 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             }
         });
 
+        buttonPublicar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View view1 = getActivity().getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+                }
+                Comentar();
+            }
+        });
+
+        getData();
+
         return view;
     }
 
@@ -286,7 +314,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     private void like(){
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_posts+"/"+id+"/likes",
+                General.endpoint_posts +"/"+id+"/likes",
                 "",
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -316,7 +344,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }
@@ -328,10 +356,10 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
     }
     private void unlike(){
-        showLog(gnr.endpoint_posts+"/"+id+"/likes/"+idLike);
+        showLog(General.endpoint_posts +"/"+id+"/likes/"+idLike);
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.DELETE,
-                gnr.endpoint_posts+"/"+id+"/likes/"+idLike,
+                General.endpoint_posts +"/"+id+"/likes/"+idLike,
                 "",
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -357,7 +385,142 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+    }
+
+    private void getData(){
+        dialog.show();
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                General.endpoint_posts +"/"+id+"/comments",
+                "",
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        try {
+                            JSONArray datos = response.getJSONArray("response");
+                            ArrayList<Comentario> comentarios = new ArrayList<>();
+                            Comentario comentario;
+                            User user;
+                            for(int i=0; i<datos.length(); i++){
+                                comentario = new Comentario();
+                                comentario.setId(datos.getJSONObject(i).getInt("id"));
+                                comentario.setText(datos.getJSONObject(i).getString("text"));
+                                comentario.setTime_ago("waiting ...");
+
+                                user = new User();
+                                user.setProfile_pic_url(datos.getJSONObject(i).getJSONObject("user").getString("profile_pic_url"));
+                                user.setName(datos.getJSONObject(i).getJSONObject("user").getString("name"));
+                                comentario.setUser(user);
+
+                                comentarios.add(comentario);
+                            }
+                            List_Comentarios adapter = new List_Comentarios(getContext(),comentarios);
+                            listView.setAdapter(adapter);
+                            dialog.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showLog(""+error.getMessage());
+                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+    }
+
+    private void Comentar(){
+        dialog.show();
+        JSONObject post = new JSONObject();
+        JSONObject values = new JSONObject();
+
+        try {
+            values.put("text", editComentario.getText().toString());
+            post.put("comment",values);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        linear1.setVisibility(View.INVISIBLE);
+        editComentario.setText("");
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                General.endpoint_posts +"/"+id+"/comments",
+                post,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        try {
+                            JSONObject data = response.getJSONObject("response");
+                            getData();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejo de errores
+
+                        String body = "";
+                        //get status code here
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if(statusCode != null && statusCode.equals("422")){
+                            if(error.networkResponse.data!=null) {
+                                try {
+                                    body = new String(error.networkResponse.data,"UTF-8");
+                                    showShortToast(body);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }else{
+                            try {
+                                body = new String(error.networkResponse.data,"UTF-8");
+                                showLog(body);
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            showShortToast("Error en la comunicacion, por favor intente mas tarde.");
+                        }
+                        dialog.dismiss();
+
+
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

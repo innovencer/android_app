@@ -157,7 +157,7 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_posts,
+                General.endpoint_posts,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -208,7 +208,7 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

@@ -4,327 +4,334 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="40dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:gravity="center"
+        android:background="@color/darkGray"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            android:text="NIVEL 6"
-            android:id="@+id/textNivel" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:textSize="15dp"
-            android:textColor="@color/colorAccent"
-            android:text="AMATEUR"
-            android:id="@+id/textTituloNivel" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/greenApple"
+                android:textStyle="bold"
+                android:text="NIVEL" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/greenApple"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:text="9"
+                android:id="@+id/textNivel" />
+        </LinearLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/liteGray"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="13dp"
+                android:textColor="@color/greenApple"
+                android:text="AMATEUR"
+                android:id="@+id/textTituloNivel" />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:weightSum="9">
+        android:weightSum="6">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon1"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
+            <TextView
+                android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@color/greenApple"
-                android:id="@+id/bar1" />
+                android:text="0"
+                android:gravity="center"
+                android:textColor="@color/greenApple"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_green_solid_blue"
+                android:id="@+id/textNivel0" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon2"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="50dp"
-                android:background="@color/greenApple"
-                android:id="@+id/bar2" />
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="1"
+                android:gravity="center"
+                android:textColor="@color/greenApple"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_green_solid_blue"
+                android:id="@+id/textNivel1" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="visible"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="60dp"
-                android:background="@color/greenApple"
-                android:id="@+id/bar3" />
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="2"
+                android:gravity="center"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_blue_solid_green"
+                android:id="@+id/textNivel2" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon4"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="70dp"
-                android:background="@color/colorAccent"
-                android:id="@+id/bar4" />
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="3"
+                android:gravity="center"
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel3" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon5"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="85dp"
-                android:background="@color/colorAccent"
-                android:id="@+id/bar5" />
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="4"
+                android:gravity="center"
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel4" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon6"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="95dp"
-                android:background="@color/colorAccent"
-                android:id="@+id/bar6" />
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="5"
+                android:gravity="center"
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel5" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon7"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="110dp"
-                android:background="@color/colorAccent"
-                android:id="@+id/bar7" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon8"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="130dp"
-                android:background="@color/colorAccent"
-                android:id="@+id/bar8" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:orientation="vertical"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/imageBalon9"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:src="@drawable/balon_marcador"/>
-            <View
-                android:layout_width="25dp"
-                android:layout_height="140dp"
-                android:background="@color/colorAccent"
-                android:id="@+id/bar9" />
-        </LinearLayout>
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:layout_marginTop="3dp"
-        android:weightSum="9">
+        android:weightSum="6">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="6"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="1"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel6" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="7"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="2"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel7" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="8"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="3"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel8" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="9"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="4"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel9" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="10"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="5"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel10" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="11"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="6"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel11" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:weightSum="6">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="12"
+                android:gravity="center"
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel12" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="13"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="7"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel13" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="14"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="8"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel14" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1">
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="15"
                 android:gravity="center"
-                android:textColor="@android:color/darker_gray"
-                android:text="9"/>
+                android:textColor="@color/mediumGray"
+                android:textStyle="bold|italic"
+                android:background="@drawable/image_circle_gray_solid_white"
+                android:id="@+id/textNivel15" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -342,21 +349,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="10dp"
                 android:gravity="right|center_vertical"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:src="@drawable/trof_3"
                     android:id="@+id/imageTrofeo" />
                 <TextView
-                    android:layout_width="75dp"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/greenApple"
                     android:textSize="14dp"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:text="AMATEUR"
+                    android:text="Escuelita de Futbol"
                     android:id="@+id/textTituloNivel1" />
             </LinearLayout>
             <LinearLayout
@@ -364,6 +372,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
+                android:paddingLeft="10dp"
                 android:layout_weight="1">
                 <TextView
                     android:layout_width="wrap_content"
@@ -371,7 +380,7 @@
                     android:text="15"
                     android:textColor="@color/greenApple"
                     android:textStyle="bold|italic"
-                    android:textSize="30dp"
+                    android:textSize="28dp"
                     android:id="@+id/textAciertos" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -379,7 +388,7 @@
                     android:text="ACIERTOS"
                     android:textColor="@color/greenApple"
                     android:textStyle="bold"
-                    android:textSize="17dp"/>
+                    android:textSize="18dp"/>
             </LinearLayout>
         </LinearLayout>
         <View

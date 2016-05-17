@@ -8,14 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.Equipo;
-import com.advante.golazzos.Model.Post;
-import com.advante.golazzos.Model.Ranking_Item;
+import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.R;
 
 import java.io.File;
@@ -24,11 +22,11 @@ import java.util.ArrayList;
 /**
  * Created by Ruben Flores on 5/15/2016.
  */
-public class ListEquipos extends ArrayAdapter<Equipo> {
-    ArrayList<Equipo> _items;
+public class List_Ligas extends ArrayAdapter<Liga> {
+    ArrayList<Liga> _items;
     Context context;
 
-    public ListEquipos(Context context, ArrayList<Equipo> items) {
+    public List_Ligas(Context context, ArrayList<Liga> items) {
         super(context, R.layout.item_ranking_normal,items);
         this._items = items;
         this.context = context;
@@ -40,13 +38,13 @@ public class ListEquipos extends ArrayAdapter<Equipo> {
     }
 
     @Override
-    public Equipo getItem(int position) {
+    public Liga getItem(int position) {
         return super.getItem(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Equipo item = getItem(position);
+        Liga item = getItem(position);
         ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_dialog, parent, false);
@@ -58,8 +56,8 @@ public class ListEquipos extends ArrayAdapter<Equipo> {
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
-        holder.textName.setText(item.getName() + " ("+ item.getInitials()+")");
-
+        holder.textName.setText(item.getName());
+        /*
         String imagePath = item.getImage_path();
         imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
         File file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
@@ -81,6 +79,8 @@ public class ListEquipos extends ArrayAdapter<Equipo> {
             holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
                     bm, 16));
         }
+        */
+        holder.imageEquipo1.setVisibility(View.INVISIBLE);
 
         return convertView;
     }

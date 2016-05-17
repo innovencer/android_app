@@ -35,6 +35,7 @@ import com.advante.golazzos.Fragments.Nivel_Fragmet;
 import com.advante.golazzos.Fragments.PartidosEnVivo_Fragment;
 import com.advante.golazzos.Fragments.PartidosFinalizado_Fragment;
 import com.advante.golazzos.Fragments.RankingFragment;
+import com.advante.golazzos.Fragments.Trofeos_Fragment;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.LeftMenu_Item;
@@ -193,6 +194,10 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                 fragmentClass = Amigos_Fragment.class;
                 linearPuntos.setVisibility(View.INVISIBLE);
                 break;
+            case 6:
+                fragmentClass = Trofeos_Fragment.class;
+                linearPuntos.setVisibility(View.INVISIBLE);
+                break;
             default:
                 fragmentClass = PartidosPorJugar_Fragment.class;
                 linearPuntos.setVisibility(View.VISIBLE);
@@ -334,6 +339,22 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                 textTitle.setText("NIVEL");
                 showFragment(4);
                 break;
+            case R.id.menuEquipos1:
+                imageFanaticada1.setColorFilter(Color.rgb(191, 191, 191));
+                imagePartidos1.setColorFilter(Color.rgb(191, 191, 191));
+                imageEquipos1.setColorFilter(Color.rgb(14, 90, 118));
+                imageRanking1.setColorFilter(Color.rgb(191, 191, 191));
+                imageAmigos1.setColorFilter(Color.rgb(191, 191, 191));
+
+                textFanaticada1.setTextColor(Color.rgb(191, 191, 191));
+                textPartidos1.setTextColor(Color.rgb(191, 191, 191));
+                textEquipos1.setTextColor(Color.rgb(14, 90, 118));
+                textRanking1.setTextColor(Color.rgb(191, 191, 191));
+                textAmigos1.setTextColor(Color.rgb(191, 191, 191));
+
+                textTitle.setText("TROFEOS");
+                showFragment(6);
+                break;
         }
     }
 
@@ -408,7 +429,21 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                 onBackPressed();
                 return true;
             case R.id.menuSalir:
+                imageFanaticada.setColorFilter(Color.rgb(255, 255, 255));
+                imagePartidos.setColorFilter(Color.rgb(223, 253, 0));
+                imageEquipos.setColorFilter(Color.rgb(255, 255, 255));
+                imageRanking.setColorFilter(Color.rgb(255, 255, 255));
+                imageAmigos.setColorFilter(Color.rgb(255, 255, 255));
+
+                textFanaticada.setTextColor(Color.rgb(255, 255, 255));
+                textPartidos.setTextColor(Color.rgb(223, 253, 0));
+                textEquipos.setTextColor(Color.rgb(255, 255, 255));
+                textRanking.setTextColor(Color.rgb(255, 255, 255));
+                textAmigos.setTextColor(Color.rgb(255, 255, 255));
+
+                textTitle.setText("PARTIDOS");
                 showFragment(1);
+
                 bottomMenu1.setVisibility(View.VISIBLE);
                 bottomMenu2.setVisibility(View.GONE);
                 _menu.findItem(R.id.menuSalir).setVisible(false);

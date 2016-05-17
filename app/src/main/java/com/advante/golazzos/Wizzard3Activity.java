@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.android.volley.AuthFailureError;
@@ -143,7 +144,7 @@ public class Wizzard3Activity extends GeneralActivity {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_point_charges,
+                General.endpoint_point_charges,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -169,7 +170,7 @@ public class Wizzard3Activity extends GeneralActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Token "+gnr.getToken());
+                params.put("Authorization", "Token "+ General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

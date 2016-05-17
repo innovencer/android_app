@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.User;
@@ -66,7 +67,7 @@ public class CrearCuentaActivity extends GeneralActivity {
             @Override
             public void onClick(View view) {
                 dialog.show();
-                registrar(gnr.endpoint_users, userEditText.getText().toString(), passwordEditText.getText().toString(),
+                registrar(General.endpoint_users, userEditText.getText().toString(), passwordEditText.getText().toString(),
                         firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
             }
         });
@@ -205,7 +206,7 @@ public class CrearCuentaActivity extends GeneralActivity {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_tokens,
+                General.endpoint_tokens,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -215,7 +216,7 @@ public class CrearCuentaActivity extends GeneralActivity {
                         try {
                             JSONObject data = response.getJSONObject("response");
 
-                            gnr.setToken(data.getString("jwt"));
+                            General.setToken(data.getString("jwt"));
 
                             Intent intent = new Intent(CrearCuentaActivity.this,Wizzard1Activity.class);
                             startActivity(intent);
@@ -255,7 +256,7 @@ public class CrearCuentaActivity extends GeneralActivity {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_tokens,
+                General.endpoint_tokens,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -265,7 +266,7 @@ public class CrearCuentaActivity extends GeneralActivity {
                         try {
                             JSONObject data = response.getJSONObject("response");
 
-                            gnr.setToken(data.getString("jwt"));
+                            General.setToken(data.getString("jwt"));
 
                             Intent intent = new Intent(CrearCuentaActivity.this,Wizzard1Activity.class);
                             startActivity(intent);

@@ -1,17 +1,23 @@
 package com.advante.golazzos.Adapters;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.advante.golazzos.ConfirmarActivity;
@@ -25,6 +31,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -164,20 +171,26 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         holder.textPuntosJuegas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Puntos a Jugar")
-                        .setSingleChoiceItems(General.pointsToBet, 0, null)
-                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                if (selectedPosition >= 0) {
-                                    holder.textPuntosJuegas.setText(General.pointsToBet[selectedPosition]);
-                                    holder.textPuntosGanas.setText(General.pointsToWin[selectedPosition]);
-                                }
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+                final Dialog dialog = new Dialog(context,android.R.style.Theme_DeviceDefault_Dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_puntos);
+
+                List_BetPoints adapter = new List_BetPoints(context, Arrays.asList(General.pointsToBet));
+                ListView listView = (ListView) dialog.findViewById(R.id.listview);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        int selectedPosition = i;
+                        if (selectedPosition >= 0) {
+                            holder.textPuntosJuegas.setText(General.pointsToBet[selectedPosition]);
+                            holder.textPuntosGanas.setText(General.pointsToWin[selectedPosition]);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                listView.setAdapter(adapter);
+                dialog.show();
             }
         });
 

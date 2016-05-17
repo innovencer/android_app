@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Partidos;
 import com.advante.golazzos.Adapters.List_Posts;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Equipo;
@@ -75,7 +76,7 @@ public class Fanaticada_Fragment extends GeneralFragment {
         dialog.show();
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                gnr.endpoint_posts,
+                General.endpoint_posts,
                 "",
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -124,7 +125,6 @@ public class Fanaticada_Fragment extends GeneralFragment {
                                 post.setLikes(likes1);
 
                                 String trackable_type = "";
-                                showLog(data.getJSONObject(i).getJSONObject("trackable").toString());
                                 if(data.getJSONObject(i).getJSONObject("trackable").has("trackable_type")){
                                     trackable_type = data.getJSONObject(i).getJSONObject("trackable").getString("trackable_type");
                                     post.setTrackable_type(trackable_type);
@@ -147,7 +147,7 @@ public class Fanaticada_Fragment extends GeneralFragment {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     FanaticadaDetalle_Fragment fragment = new FanaticadaDetalle_Fragment();
                                     Bundle bundle = new Bundle();
-                                    Post post1 = (Post)posts.get(i);
+                                    Post post1 = posts.get(i);
                                     bundle.putString("time_ago", post1.getTime_ago());
                                     bundle.putString("label", post1.getLabel());
                                     bundle.putString("profile_pic_url", post1.getOwner().getProfile_pic_url());
@@ -181,7 +181,7 @@ public class Fanaticada_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

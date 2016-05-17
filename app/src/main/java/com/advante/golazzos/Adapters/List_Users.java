@@ -129,14 +129,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
         }else{
             holder.imageEquipo1.setVisibility(View.INVISIBLE);
         }
-        final String pic_name;
-        if(item.getPatchProfileImage().contains("facebook.com")){
-            pic_name = "" + item.getIdProfile();
-        }else{
-            pic_name = item.getPatchProfileImage().substring(
-                    item.getPatchProfileImage().lastIndexOf("/"),
-                    item.getPatchProfileImage().lastIndexOf("."));
-        }
+        final String pic_name ="" + item.getIdProfile();
 
         Target target = new Target() {
             @Override
@@ -208,7 +201,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
 
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_friends,
+                General.endpoint_friends,
                 friend,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -227,7 +220,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

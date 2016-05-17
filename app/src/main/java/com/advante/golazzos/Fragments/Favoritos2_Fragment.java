@@ -1,35 +1,32 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Adapters.List_Equipos;
+import com.advante.golazzos.Adapters.List_Ligas;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.LoginActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
-import com.advante.golazzos.Model.SoulTeam;
-import com.advante.golazzos.Model.User;
-import com.advante.golazzos.Model.UserLevel;
-import com.advante.golazzos.PrincipalActivity;
 import com.advante.golazzos.R;
-import com.advante.golazzos.Wizzard2Activity;
-import com.advante.golazzos.Wizzard3Activity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -45,7 +42,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,8 +55,8 @@ public class Favoritos2_Fragment extends GeneralFragment {
     TextView textEquipo1,textEquipo2,textEquipo3,textEquipo4,textEquipo5,textEquipo6,textEquipo7,textEquipo8;
     LinearLayout buttonFavoritos1;
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1,idEquipoDataF = -1;
-    List<Liga> ligas;
-    List<Equipo> equipos;
+    ArrayList<Liga> ligas;
+    ArrayList<Equipo> equipos;
     String nameTemp = "";
     int equipos_s[] = new int[]{-1,-1,-1,-1,-1,-1,-1,-1};
     
@@ -199,7 +195,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
         dialog.show();
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                gnr.endpoint_favorites,
+                General.endpoint_favorites,
                 "",
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -244,7 +240,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Token "+gnr.getToken());
+                params.put("Authorization", "Token "+ General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }
@@ -413,7 +409,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
             textView.setTextSize(10);
         }
         textView.setVisibility(View.VISIBLE);
-        File file = new File(gnr.local_dir_images+"equipos/"+idImage+".gif");
+        File file = new File(General.local_dir_images +"equipos/"+idImage+".gif");
         if(file.exists()){
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -439,7 +435,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
         if(ligas == null) {
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_tournaments,
+                    General.endpoint_tournaments,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -496,7 +492,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
             idLiga_Temp = idLiga;
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_teams+"&tournament_id="+idLiga,
+                    General.endpoint_teams +"&tournament_id="+idLiga,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -552,16 +548,13 @@ public class Favoritos2_Fragment extends GeneralFragment {
         }
     }
 
-    private void showDialogLigas(final List<Liga> arrayList){
-        // Create custom dialog object
-        final Dialog dialog = new Dialog(getContext());
-        // Include dialog.xml file
+    private void showDialogLigas(final ArrayList<Liga> arrayList){
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        // Set dialog title
-        dialog.setTitle("");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+        List_Ligas arrayAdapter = new List_Ligas(getContext(), arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();
@@ -582,13 +575,17 @@ public class Favoritos2_Fragment extends GeneralFragment {
         });
     }
 
-    private void showDialogEquipos(final List<Equipo> arrayList){
-        final Dialog dialog = new Dialog(getContext());
+    private void showDialogEquipos(final ArrayList<Equipo> arrayList){
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        dialog.setTitle("");
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL EQUIPO");
+        textSubTitulo.setText(buttonLigas.getText());
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+        List_Equipos arrayAdapter = new List_Equipos(getContext(), arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();
@@ -609,7 +606,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
         dialog.show();
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.PUT,
-                gnr.endpoint_favorites+"/batch_update",
+                General.endpoint_favorites +"/batch_update",
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -635,7 +632,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

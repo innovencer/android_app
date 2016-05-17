@@ -1,7 +1,6 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,15 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.advante.golazzos.Adapters.ListEquipos;
-import com.advante.golazzos.Adapters.ListLigas;
+import com.advante.golazzos.Adapters.List_Equipos;
+import com.advante.golazzos.Adapters.List_Ligas;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
@@ -29,8 +28,6 @@ import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.R;
-import com.advante.golazzos.Wizzard1Activity;
-import com.advante.golazzos.Wizzard2Activity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -41,13 +38,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -138,7 +133,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
     private void setImage(){
         String imagePath = gnr.getLoggedUser().getSoul_team().getImage_path();
         int idImage = Integer.parseInt(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-")));
-        File file = new File(gnr.local_dir_images + "equipos/" + idImage + ".gif");
+        File file = new File(General.local_dir_images + "equipos/" + idImage + ".gif");
         showLog(file.getAbsolutePath());
         if (file.exists()) {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -162,7 +157,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
         if(ligas == null) {
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_tournaments,
+                    General.endpoint_tournaments,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -214,44 +209,12 @@ public class Favoritos1_Fragment extends GeneralFragment {
         }
     }
 
-    private void showDialogLigas(final ArrayList<Liga> arrayList){
-        // Create custom dialog object
-        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_listview);
-
-        ListLigas arrayAdapter = new ListLigas(getContext(), arrayList);
-        final ListView listView = (ListView) dialog.findViewById(R.id.listview);
-        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
-        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
-        textTitulo.setText("ESCOGE EL TORNEO");
-        textSubTitulo.setVisibility(View.GONE);
-        listView.setAdapter(arrayAdapter);
-        dialog.show();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                idLiga = arrayList.get(i).getId();
-                String name = arrayList.get(i).getName();
-                if (name.length() > 18) {
-                    buttonLigas.setText(name.substring(0, 18));
-                } else {
-                    buttonLigas.setText(name);
-                }
-
-                dialog.dismiss();
-            }
-        });
-    }
-
     private void buscarEquipos(){
         if(idLiga_Temp != idLiga){
             idLiga_Temp = idLiga;
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_teams+"&tournament_id="+idLiga,
+                    General.endpoint_teams +"&tournament_id="+idLiga,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -308,6 +271,38 @@ public class Favoritos1_Fragment extends GeneralFragment {
         }
     }
 
+    private void showDialogLigas(final ArrayList<Liga> arrayList){
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_listview);
+
+        List_Ligas arrayAdapter = new List_Ligas(getContext(), arrayList);
+        final ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL TORNEO");
+        textSubTitulo.setVisibility(View.GONE);
+        listView.setAdapter(arrayAdapter);
+        dialog.show();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                idLiga = arrayList.get(i).getId();
+                String name = arrayList.get(i).getName();
+                if (name.length() > 18) {
+                    buttonLigas.setText(name.substring(0, 18));
+                } else {
+                    buttonLigas.setText(name);
+                }
+
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void showDialogEquipos(final ArrayList<Equipo> arrayList){
         final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -318,8 +313,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
         textTitulo.setText("ESCOGE EL EQUIPO");
         textSubTitulo.setText(buttonLigas.getText());
 
-
-        ListEquipos arrayAdapter = new ListEquipos(getContext(), arrayList);
+        List_Equipos arrayAdapter = new List_Equipos(getContext(), arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();
@@ -333,7 +327,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
                 textName.setText(arrayList.get(i).getName());
                 String imagePath = arrayList.get(i).getImage_path();
                 int idImage = arrayList.get(i).getData_factory_id();//imagePath.substring(imagePath.lastIndexOf("/")+1,imagePath.lastIndexOf("-"));
-                File file = new File(gnr.local_dir_images + "equipos/" + idImage + ".gif");
+                File file = new File(General.local_dir_images + "equipos/" + idImage + ".gif");
                 showLog(file.getAbsolutePath());
                 if (file.exists()) {
                     BitmapFactory.Options options = new BitmapFactory.Options();
@@ -370,7 +364,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.PUT,
-                gnr.endpoint_soul_team,
+                General.endpoint_soul_team,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -415,7 +409,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Token "+gnr.getToken());
+                params.put("Authorization", "Token "+ General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

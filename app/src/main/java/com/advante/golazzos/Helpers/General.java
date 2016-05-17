@@ -49,25 +49,25 @@ public class General {
 
 
     public General(Context context) {
-        this.context = context;
-        this.url_base = context.getString(R.string.url_base_build);
-        this.endpoint_users = url_base + context.getString(R.string.users_endpoint);
-        this.endpoint_tokens = url_base + context.getString(R.string.tokens_endpoint);
-        this.endpoint_teams = url_base + context.getString(R.string.teams_endpoint);
-        this.endpoint_tournaments = url_base + context.getString(R.string.tournaments_endpoint);
-        this.endpoint_favorites = url_base + context.getString(R.string.favorite_team_endpoint);
-        this.endpoint_soul_team = url_base + context.getString(R.string.soul_team_endpoint);
-        this.endpoint_point_charges = url_base + context.getString(R.string.point_charges_endpoint);
-        this.endpoint_maches = url_base + context.getString(R.string.matches_endpoint);
-        this.endpoint_maches_playing = url_base + context.getString(R.string.matches_live_endpoint);
-        this.endpoint_maches_played = url_base + context.getString(R.string.matches_end_endpoint);
-        this.endpoint_bets = url_base + context.getString(R.string.bet_endpoint);
-        this.endpoint_posts = url_base + context.getString(R.string.posts_endpoint);
-        this.endpoint_likes = url_base + context.getString(R.string.likes_endpoint);
-        this.endpoint_ranking = url_base + context.getString(R.string.ranking_endpoint);
-        this.endpoint_users_search = url_base + context.getString(R.string.users_search);
-        this.endpoint_friends = url_base + context.getString(R.string.friends_endpoint);
-        this.endpoint_followers = url_base + context.getString(R.string.followers_endpoint);
+        General.context = context;
+        url_base = context.getString(R.string.url_base_build);
+        endpoint_users = url_base + context.getString(R.string.users_endpoint);
+        endpoint_tokens = url_base + context.getString(R.string.tokens_endpoint);
+        endpoint_teams = url_base + context.getString(R.string.teams_endpoint);
+        endpoint_tournaments = url_base + context.getString(R.string.tournaments_endpoint);
+        endpoint_favorites = url_base + context.getString(R.string.favorite_team_endpoint);
+        endpoint_soul_team = url_base + context.getString(R.string.soul_team_endpoint);
+        endpoint_point_charges = url_base + context.getString(R.string.point_charges_endpoint);
+        endpoint_maches = url_base + context.getString(R.string.matches_endpoint);
+        endpoint_maches_playing = url_base + context.getString(R.string.matches_live_endpoint);
+        endpoint_maches_played = url_base + context.getString(R.string.matches_end_endpoint);
+        endpoint_bets = url_base + context.getString(R.string.bet_endpoint);
+        endpoint_posts = url_base + context.getString(R.string.posts_endpoint);
+        endpoint_likes = url_base + context.getString(R.string.likes_endpoint);
+        endpoint_ranking = url_base + context.getString(R.string.ranking_endpoint);
+        endpoint_users_search = url_base + context.getString(R.string.users_search);
+        endpoint_friends = url_base + context.getString(R.string.friends_endpoint);
+        endpoint_followers = url_base + context.getString(R.string.followers_endpoint);
         checkDirImages();
     }
 
@@ -92,16 +92,16 @@ public class General {
     }
 
     public void setLoggedUser(User loggedUser) {
-        this.loggedUser = loggedUser;
+        General.loggedUser = loggedUser;
     }
 
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
                                    boolean filter) {
         float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
+                maxImageSize / realImage.getWidth(),
+                maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
 
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
                 height, filter);

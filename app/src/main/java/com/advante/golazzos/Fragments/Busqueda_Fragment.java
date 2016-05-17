@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Ranking;
 import com.advante.golazzos.Adapters.List_Users;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Ranking_Item;
@@ -56,7 +57,7 @@ public class Busqueda_Fragment extends GeneralFragment{
         dialog.show();
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                gnr.endpoint_users_search+search,
+                General.endpoint_users_search +search,
                 "",
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -123,7 +124,7 @@ public class Busqueda_Fragment extends GeneralFragment{
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

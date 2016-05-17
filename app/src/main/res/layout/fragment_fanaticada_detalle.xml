@@ -271,6 +271,8 @@
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:dividerHeight="0dp"
+            android:divider="@null"
             android:layout_above="@+id/viewLine">
         </ListView>
         <View
@@ -303,6 +305,7 @@
                 android:textColor="@color/darkGray"
                 android:background="@drawable/background_gray"/>
             <TextView
+                android:id="@+id/buttonPublicar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.advante.golazzos.Adapters.List_Partidos;
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Equipo;
@@ -84,7 +85,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
         dialog.show();
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_maches,
+                    General.endpoint_maches,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -129,7 +130,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Token " + gnr.getToken());
+                        params.put("Authorization", "Token " + General.getToken());
                         params.put("Content-Type", "application/json");
                         return params;
                     }

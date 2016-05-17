@@ -156,7 +156,7 @@ public class ConfirmarActivity extends GeneralActivity {
 
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_bets,
+                General.endpoint_bets,
                 bet,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -189,7 +189,7 @@ public class ConfirmarActivity extends GeneralActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + gnr.getToken());
+                params.put("Authorization", "Token " + General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

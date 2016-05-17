@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.SoulTeam;
@@ -153,7 +154,7 @@ public class LoginActivity extends GeneralActivity {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_tokens,
+                General.endpoint_tokens,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -162,7 +163,7 @@ public class LoginActivity extends GeneralActivity {
                         dialog.dismiss();
                         try {
                             JSONObject data = response.getJSONObject("response");
-                            gnr.setToken(data.getString("jwt"));
+                            General.setToken(data.getString("jwt"));
                             getUser();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -199,7 +200,7 @@ public class LoginActivity extends GeneralActivity {
         }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                gnr.endpoint_tokens,
+                General.endpoint_tokens,
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -207,7 +208,7 @@ public class LoginActivity extends GeneralActivity {
                         // Manejo de la respuesta
                         try {
                             JSONObject data = response.getJSONObject("response");
-                            gnr.setToken(data.getString("jwt"));
+                            General.setToken(data.getString("jwt"));
                             getUser();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -250,7 +251,7 @@ public class LoginActivity extends GeneralActivity {
     private void getUser(){
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                gnr.endpoint_users+"/me",
+                General.endpoint_users +"/me",
                 "",
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -318,7 +319,7 @@ public class LoginActivity extends GeneralActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Token "+gnr.getToken());
+                params.put("Authorization", "Token "+ General.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

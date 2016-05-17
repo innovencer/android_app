@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
@@ -282,7 +283,7 @@ public class Wizzard2Activity extends GeneralActivity {
         }
 
         int idImage = idEquipoDataF;
-        File file = new File(gnr.local_dir_images+"equipos/"+idImage+".gif");
+        File file = new File(General.local_dir_images +"equipos/"+idImage+".gif");
         showLog(file.getAbsolutePath());
         if(file.exists()){
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -309,7 +310,7 @@ public class Wizzard2Activity extends GeneralActivity {
         if(ligas == null) {
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_tournaments,
+                    General.endpoint_tournaments,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -366,7 +367,7 @@ public class Wizzard2Activity extends GeneralActivity {
             idLiga_Temp = idLiga;
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    gnr.endpoint_teams+"&tournament_id="+idLiga,
+                    General.endpoint_teams +"&tournament_id="+idLiga,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -478,7 +479,7 @@ public class Wizzard2Activity extends GeneralActivity {
     private void postFavoritos(JSONObject post){
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.PUT,
-                gnr.endpoint_favorites+"/batch_update",
+                General.endpoint_favorites +"/batch_update",
                 post,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -505,7 +506,7 @@ public class Wizzard2Activity extends GeneralActivity {
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Token " + gnr.getToken());
+                        params.put("Authorization", "Token " + General.getToken());
                         params.put("Content-Type", "application/json");
                         return params;
                     }

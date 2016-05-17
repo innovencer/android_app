@@ -3,22 +3,19 @@ package com.advante.golazzos.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
-import com.advante.golazzos.Model.Post;
-import com.advante.golazzos.Model.Ranking_Item;
+import com.advante.golazzos.Model.Comentario;
 import com.advante.golazzos.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -30,18 +27,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Ruben Flores on 5/3/2016.
+ * Created by Ruben Flores on 5/15/2016.
  */
-public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
-    ArrayList<Ranking_Item> _items;
+public class List_Comentarios  extends ArrayAdapter<Comentario> {
+    ArrayList<Comentario> _items;
     Context context;
-    General gnr;
-    View tempConvertView;
-    public List_Ranking(Context context, ArrayList<Ranking_Item> items) {
+
+    public List_Comentarios(Context context, ArrayList<Comentario> items) {
         super(context, R.layout.item_ranking_normal,items);
         this._items = items;
         this.context = context;
-        gnr = new General(context);
     }
 
     @Override
@@ -50,63 +45,28 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
     }
 
     @Override
-    public Ranking_Item getItem(int position) {
+    public Comentario getItem(int position) {
         return super.getItem(position);
     }
 
     @Override
-    public int getViewTypeCount() {
-        return 5;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return _items.get(position).getType();
-    }
-
-
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Ranking_Item item = getItem(position);
+        Comentario item = getItem(position);
         final ViewHolder holder;
         if (convertView == null) {
-            switch (item.getType()){
-                case 1:
-                    convertView = LayoutInflater.from(context).inflate(R.layout.item_ranking_normal, parent, false);
-                    break;
-                case 2:
-                    convertView = LayoutInflater.from(context).inflate(R.layout.item_ranking_highlight_green, parent, false);
-                    break;
-                case 3:
-                    convertView = LayoutInflater.from(context).inflate(R.layout.item_ranking_highlight_green20, parent, false);
-                    break;
-                case 4:
-                    convertView = LayoutInflater.from(context).inflate(R.layout.item_ranking_highlight_blue, parent, false);
-                    break;
-            }
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_comentario, parent, false);
             holder = new ViewHolder();
-            holder.imageEquipo1 = (ImageView) convertView.findViewById(R.id.imageEquipo1);
             holder.imageProfile = (ImageView) convertView.findViewById(R.id.imageProfile);
-            holder.textPosicion = (TextView) convertView.findViewById(R.id.textPosicion);
-            holder.textName = (TextView) convertView.findViewById(R.id.textName);
-            holder.textEquipoAlma = (TextView) convertView.findViewById(R.id.textEquipoAlma);
-            holder.textNivel = (TextView) convertView.findViewById(R.id.textNivel);
-            holder.textAciertos = (TextView) convertView.findViewById(R.id.textAciertos);
-            holder.linearItemBackground = (LinearLayout) convertView.findViewById(R.id.linearItemBackground);
+            holder.textTimeAgo = (TextView) convertView.findViewById(R.id.textTime_ago);
+            holder.textComentario = (TextView) convertView.findViewById(R.id.textComentario);
 
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
 
-
-        holder.textName.setText(item.getName());
-        int pos = position+1;
-        holder.textPosicion.setText(""+pos);
-        holder.textNivel.setText(""+item.getLevel());
-        holder.textAciertos.setText(""+item.getAciertos());
-        holder.textEquipoAlma.setText(item.getSouldTeamName());
+        holder.textTimeAgo.setText(item.getTime_ago());
+        holder.textComentario.setText(Html.fromHtml("<strong>"+ item.getUser().getName() +"</strong> "+item.getText()));
 
         File file = new File(General.local_dir_images + "profile/no_profile.png");
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -116,24 +76,7 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
         holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
                 bm, 16));
 
-        if(item.getPatchSoulTeam() != null) {
-            String imagePath = item.getPatchSoulTeam().substring(item.getPatchSoulTeam().lastIndexOf("/") + 1, item.getPatchSoulTeam().lastIndexOf("-"));
-            file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
-            bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            holder.imageEquipo1.setImageBitmap(bm);
-            holder.imageEquipo1.setVisibility(View.VISIBLE);
-        }else{
-            holder.imageEquipo1.setVisibility(View.INVISIBLE);
-        }
-        final String pic_name;
-        if(item.getPatchProfileImage().contains("facebook.com")){
-            pic_name = "" + item.getIdProfile();
-        }else{
-            pic_name = item.getPatchProfileImage().substring(
-                    item.getPatchProfileImage().lastIndexOf("/"),
-                    item.getPatchProfileImage().lastIndexOf("."));
-        }
-
+        final String pic_name = ""+ item.getUser().getId();
         Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -178,7 +121,7 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
             }
         } else {
             Picasso.with(context)
-                    .load(item.getPatchProfileImage())
+                    .load(item.getUser().getProfile_pic_url())
                     .into(target);
         }
 
@@ -186,13 +129,8 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
     }
 
     static class ViewHolder {
-        TextView textPosicion;
-        TextView textName;
-        TextView textEquipoAlma;
-        TextView textNivel;
-        TextView textAciertos;
+        TextView textTimeAgo;
+        TextView textComentario;
         ImageView imageProfile;
-        ImageView imageEquipo1;
-        LinearLayout linearItemBackground;
     }
 }
