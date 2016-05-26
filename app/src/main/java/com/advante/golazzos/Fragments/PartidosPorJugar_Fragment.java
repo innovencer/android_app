@@ -1,16 +1,23 @@
 package com.advante.golazzos.Fragments;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.advante.golazzos.Adapters.List_Equipos;
+import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Adapters.List_Partidos;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
@@ -18,6 +25,7 @@ import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.Partido;
+import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -30,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +52,13 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
     TextView buttonEnVivo,buttonFinalizado;
     private ViewFlipper viewFlipper;
     private float lastX;
+
+    TextView buttonLigas,buttonEquipos;
+    String equipo = "";
+    int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
+    ArrayList<Liga> ligas;
+    ArrayList<Equipo> equipos;
+    SoulTeam soulteamTemp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +74,9 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
         viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
         buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
         buttonFinalizado = (TextView) view.findViewById(R.id.buttonFinalizado);
+        buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
+        buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
+
         buttonEnVivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,16 +95,46 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                 ft.commit();
             }
         });
+        buttonLigas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(equipos != null){
+                    equipos = null;
+                    idEquipo = -1;
+                    buttonEquipos.setText("Seleccionar Equipo");
+                }
+                dialog.show();
+                buscarLigas();
+            }
+        });
+        buttonEquipos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(idLiga != -1) {
+                    dialog.show();
+                    buscarEquipos();
+                }else{
+                    Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         view.setOnTouchListener(touchListener);
         buscarPartidos(R.layout.item_partido_1);
         return view;
     }
 
     private void buscarPartidos(final int resourse){
+        String url = General.endpoint_maches;
+        if(idLiga > 0){
+            url = url +"?tournament_id="+idLiga;
+        }
+        if(idEquipo > 0){
+            url = url +"&team_name="+equipo;
+        }
         dialog.show();
             jsArrayRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    General.endpoint_maches,
+                    url,
                     "",
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -140,6 +189,194 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+    }
+
+    private void buscarLigas(){
+        if(ligas == null) {
+            jsArrayRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    General.endpoint_tournaments,
+                    "",
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Manejo de la respuesta
+                            try {
+                                JSONArray data = response.getJSONArray("response");
+                                ligas = new ArrayList<>();
+                                Liga liga;
+                                for (int i = 0; i < data.length(); i++) {
+                                    liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
+                                            data.getJSONObject(i).getInt("id"),
+                                            data.getJSONObject(i).getString("name"));
+                                    ligas.add(liga);
+                                }
+                                showDialogLigas(ligas);
+                                dialog.dismiss();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Manejo de errores
+                            String body = "";
+                            //get status code here
+                            String statusCode = String.valueOf(error.networkResponse.statusCode);
+                            //get response body and parse with appropriate encoding
+                            if (error.networkResponse.data != null) {
+                                try {
+                                    body = new String(error.networkResponse.data, "UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    7000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+        }else{
+            dialog.dismiss();
+            showDialogLigas(ligas);
+        }
+    }
+
+    private void buscarEquipos(){
+        if(idLiga_Temp != idLiga){
+            idLiga_Temp = idLiga;
+            jsArrayRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    General.endpoint_teams +"&tournament_id="+idLiga,
+                    "",
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONArray data = response.getJSONArray("response");
+                                equipos = new ArrayList<>();
+                                Equipo equipo;
+                                for (int i = 0; i < data.length(); i++) {
+                                    equipo = new Equipo(data.getJSONObject(i).getInt("id"),
+                                            data.getJSONObject(i).getString("name"),
+                                            data.getJSONObject(i).getString("complete_name"),
+                                            data.getJSONObject(i).getString("country_name"),
+                                            data.getJSONObject(i).getString("image_path"),
+                                            "",
+                                            data.getJSONObject(i).getString("initials"),
+                                            data.getJSONObject(i).getInt("data_factory_id"));
+                                    equipos.add(equipo);
+                                }
+                                showDialogEquipos(equipos);
+                                dialog.dismiss();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Manejo de errores
+                            String body = "";
+                            //get status code here
+                            String statusCode = String.valueOf(error.networkResponse.statusCode);
+                            //get response body and parse with appropriate encoding
+                            if (error.networkResponse.data != null) {
+                                try {
+                                    body = new String(error.networkResponse.data, "UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    7000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+        }else{
+            showLog("Pasando temp");
+            showDialogEquipos(equipos);
+            dialog.dismiss();
+        }
+    }
+
+    private void showDialogLigas(final ArrayList<Liga> arrayList){
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_listview);
+
+        List_Ligas arrayAdapter = new List_Ligas(getContext(), arrayList);
+        final ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL TORNEO");
+        textSubTitulo.setVisibility(View.GONE);
+        listView.setAdapter(arrayAdapter);
+        dialog.show();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                idLiga = arrayList.get(i).getId();
+                idEquipo = -1;
+                equipo = "";
+                String name = arrayList.get(i).getName();
+                if (name.length() > 18) {
+                    buttonLigas.setText(name.substring(0, 18));
+                } else {
+                    buttonLigas.setText(name);
+                }
+                dialog.dismiss();
+                if(viewFlipper.getDisplayedChild() == 0) {
+                    buscarPartidos(R.layout.item_partido_1);
+                }else{
+                    buscarPartidos(R.layout.item_partido_3);
+                }
+            }
+        });
+    }
+
+    private void showDialogEquipos(final ArrayList<Equipo> arrayList){
+        final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_listview);
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL EQUIPO");
+        textSubTitulo.setText(buttonLigas.getText());
+
+        List_Equipos arrayAdapter = new List_Equipos(getContext(), arrayList);
+        final ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        listView.setAdapter(arrayAdapter);
+        dialog.show();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                idEquipo = arrayList.get(i).getId();
+                equipo = arrayList.get(i).getName();
+                soulteamTemp = new SoulTeam(arrayList.get(i).getImage_path(),arrayList.get(i).getName(),arrayList.get(i).getId());
+                buttonEquipos.setText(arrayList.get(i).getName());
+                dialog.dismiss();
+                if(viewFlipper.getDisplayedChild() == 0) {
+                    buscarPartidos(R.layout.item_partido_1);
+                }else{
+                    buscarPartidos(R.layout.item_partido_3);
+                }
+            }
+        });
     }
 
     private View.OnTouchListener touchListener = new View.OnTouchListener(){

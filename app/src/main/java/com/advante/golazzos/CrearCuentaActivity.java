@@ -10,8 +10,11 @@ import android.widget.Toast;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Model.Counters;
+import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,6 +26,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -31,6 +35,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Ruben Flores on 3/31/2016.
@@ -84,20 +90,23 @@ public class CrearCuentaActivity extends GeneralActivity {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
+                final AccessToken accessToken = loginResult.getAccessToken();
+                LoginManager.getInstance().logInWithPublishPermissions(
+                        CrearCuentaActivity.this,
+                        Arrays.asList("publish_actions"));
                 if (Profile.getCurrentProfile() == null) {
-                    AccessToken accessToken = loginResult.getAccessToken();
                     mProfileTracker = new ProfileTracker() {
                         @Override
                         protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
                             // profile2 is the new profile
-                            showLog(profile2.getFirstName());
+                            loginFB(accessToken.getToken());
                             mProfileTracker.stopTracking();
                         }
                     };
                     mProfileTracker.startTracking();
                 } else {
                     Profile profile = Profile.getCurrentProfile();
-                    showLog(profile.getFirstName());
+                    loginFB(accessToken.getToken());
                 }
             }
 
@@ -242,13 +251,13 @@ public class CrearCuentaActivity extends GeneralActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
     }
 
-    private void loginFB(String email, String password){
+    private void loginFB(String token){
+        dialog.show();
         JSONObject post = new JSONObject();
         JSONObject parametros = new JSONObject();
         try {
-            parametros.put("from", "credentials");
-            parametros.put("email", email);
-            parametros.put("password", password);
+            parametros.put("from", "facebook");
+            parametros.put("value", token);
             post.put("token",parametros);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -265,11 +274,8 @@ public class CrearCuentaActivity extends GeneralActivity {
                         dialog.dismiss();
                         try {
                             JSONObject data = response.getJSONObject("response");
-
                             General.setToken(data.getString("jwt"));
-
-                            Intent intent = new Intent(CrearCuentaActivity.this,Wizzard1Activity.class);
-                            startActivity(intent);
+                            getUser();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -284,6 +290,94 @@ public class CrearCuentaActivity extends GeneralActivity {
 
                     }
                 });
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
+    }
+
+    private void getUser(){
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                General.endpoint_users +"/me",
+                "",
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        showLog(response.toString());
+                        User user1 = new User();
+                        try {
+                            JSONObject data = response.getJSONObject("response");
+                            user1.setEmail(data.getString("email"));
+                            user1.setId(data.getInt("id"));
+                            user1.setName(data.optString("name"));
+                            user1.setPaid_subscription(data.getBoolean("paid_subscription"));
+                            user1.setPoints(data.getDouble("points"));
+                            user1.setProfile_pic_url(data.getString("profile_pic_url"));
+
+                            if(!data.isNull("soul_team")){
+                                JSONObject soul_team = data.getJSONObject("soul_team");
+                                user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
+                            }
+
+                            JSONObject level = data.getJSONObject("level");
+                            user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
+                                    level.getString("name"), level.getInt("order"),level.getInt("points")));
+
+                            user1.setCounters(new Counters(
+                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets")
+                            ));
+
+                            gnr.setLoggedUser(user1);
+                            dialog.dismiss();
+
+                            preferences.edit().putString("token",General.getToken()).apply();
+                            Intent intent = new Intent(CrearCuentaActivity.this,Wizzard1Activity.class);
+                            startActivity(intent);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(CrearCuentaActivity.this,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejo de errores
+                        /*
+                        String body = "";
+                        //get status code here
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if (error.networkResponse.data != null) {
+                            try {
+                                body = new String(error.networkResponse.data, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        */
+                        dialog.dismiss();
+                        Toast.makeText(CrearCuentaActivity.this,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
+                    }
+                }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Token "+ General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
         jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 7000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

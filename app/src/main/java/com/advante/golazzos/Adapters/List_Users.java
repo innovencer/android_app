@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +128,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
                     bm, 16));
             holder.imageEquipo1.setVisibility(View.VISIBLE);
         }else{
-            holder.imageEquipo1.setVisibility(View.INVISIBLE);
+            holder.imageEquipo1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_main));
         }
         final String pic_name ="" + item.getIdProfile();
 

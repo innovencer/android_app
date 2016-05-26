@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1055548549498",
+    "firebase_url": "https://golazzosdev.firebaseio.com",
+    "project_id": "golazzosdev",
+    "storage_bucket": "golazzosdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055548549498:android:d1cfb3967e882927",
+        "android_client_info": {
+          "package_name": "com.advante.golazzos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055548549498-p0vjt96fhrdjebi9ve3gh1ltl1k0tsfu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.advante.golazzos",
+            "certificate_hash": "18C5D54F20564C7DCDF22A5949925C14DBBF83DC"
+          }
+        },
+        {
+          "client_id": "1055548549498-7co0qe9t5pt4j8q5kd5lcdd1u47ecs37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqKNa1AIrPJsa8zQTfsUTgumE8TNKlu2k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055548549498-7co0qe9t5pt4j8q5kd5lcdd1u47ecs37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

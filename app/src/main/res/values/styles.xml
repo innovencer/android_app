@@ -10,6 +10,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarSize">@dimen/actionBarSize</item>
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/grayFlush</item>
+        <item name="colorControlHighlight">@color/grayFlush</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -22,8 +25,8 @@
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/green</item>
+        <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
 
     <style name="FacebookLoginButton">

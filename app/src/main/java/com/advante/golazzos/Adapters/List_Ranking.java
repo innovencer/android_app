@@ -123,7 +123,7 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
             holder.imageEquipo1.setImageBitmap(bm);
             holder.imageEquipo1.setVisibility(View.VISIBLE);
         }else{
-            holder.imageEquipo1.setVisibility(View.INVISIBLE);
+            holder.imageEquipo1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_main));
         }
         final String pic_name;
         if(item.getPatchProfileImage().contains("facebook.com")){

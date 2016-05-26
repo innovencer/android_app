@@ -147,7 +147,10 @@ public class ConfirmarActivity extends GeneralActivity {
             values.put("amount_centavos",amount_centavos);
             values.put("local_score",local_score);
             values.put("visitant_score",visitant_score);
-            values.put("bet_option_id", bet_option_id);
+            //Esto esta asi por temas de back, no pueden existir otro tipo de apuestas que no tengan
+            //bet_options.
+            if(bet_option_id>0)
+                values.put("bet_option_id", bet_option_id);
             bet.put("bet",values);
             showLog(bet.toString());
         } catch (JSONException e) {

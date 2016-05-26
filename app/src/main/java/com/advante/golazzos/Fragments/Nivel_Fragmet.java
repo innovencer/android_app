@@ -28,6 +28,7 @@ public class Nivel_Fragmet extends GeneralFragment {
              textNivel8, textNivel9, textNivel10, textNivel11, textNivel12, textNivel13, textNivel14, textNivel15;
     ImageView imageTrofeo;
     BitmapFactory.Options options;
+    int nivel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +57,23 @@ public class Nivel_Fragmet extends GeneralFragment {
         textNivel14 = (TextView) view.findViewById(R.id.textNivel14);
         textNivel15 = (TextView) view.findViewById(R.id.textNivel15);
 
+        textNivel0.setOnClickListener(onClickLevel);
+        textNivel1.setOnClickListener(onClickLevel);
+        textNivel2.setOnClickListener(onClickLevel);
+        textNivel3.setOnClickListener(onClickLevel);
+        textNivel4.setOnClickListener(onClickLevel);
+        textNivel5.setOnClickListener(onClickLevel);
+        textNivel6.setOnClickListener(onClickLevel);
+        textNivel7.setOnClickListener(onClickLevel);
+        textNivel8.setOnClickListener(onClickLevel);
+        textNivel9.setOnClickListener(onClickLevel);
+        textNivel10.setOnClickListener(onClickLevel);
+        textNivel11.setOnClickListener(onClickLevel);
+        textNivel12.setOnClickListener(onClickLevel);
+        textNivel13.setOnClickListener(onClickLevel);
+        textNivel14.setOnClickListener(onClickLevel);
+        textNivel15.setOnClickListener(onClickLevel);
+
         imageTrofeo = (ImageView) view.findViewById(R.id.imageTrofeo);
 
         textAciertos.setText(""+gnr.getLoggedUser().getLevel().getHits_count());
@@ -66,7 +84,7 @@ public class Nivel_Fragmet extends GeneralFragment {
 
 
 
-        int nivel = gnr.getLoggedUser().getLevel().getOrder();
+        nivel = gnr.getLoggedUser().getLevel().getOrder();
 
         tintLevel(nivel);
         File file = new File(General.local_dir_images + "levels/trof_" + nivel + ".png");
@@ -79,6 +97,70 @@ public class Nivel_Fragmet extends GeneralFragment {
         return view;
     }
 
+    View.OnClickListener onClickLevel = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            textTituloNivel.setText(view.getTag().toString().split(";")[0].toUpperCase());
+            textTituloNivel1.setText(view.getTag().toString().split(";")[0]);
+            textAciertos.setText(view.getTag().toString().split(";")[2].toUpperCase());
+            textPuntos.setText(view.getTag().toString().split(";")[1].toUpperCase());
+            switch (view.getId()){
+                case R.id.textNivel0:
+                    tintLevel2(0);
+                    break;
+                case R.id.textNivel1:
+                    tintLevel2(1);
+                    break;
+                case R.id.textNivel2:
+                    tintLevel2(2);
+                    break;
+                case R.id.textNivel3:
+                    tintLevel2(3);
+                    break;
+                case R.id.textNivel4:
+                    tintLevel2(4);
+                    break;
+                case R.id.textNivel5:
+                    tintLevel2(5);
+                    break;
+                case R.id.textNivel6:
+                    tintLevel2(6);
+                    break;
+                case R.id.textNivel7:
+                    tintLevel2(7);
+                    break;
+                case R.id.textNivel8:
+                    tintLevel2(8);
+                    break;
+                case R.id.textNivel9:
+                    tintLevel2(9);
+                    break;
+                case R.id.textNivel10:
+                    tintLevel2(10);
+                    break;
+                case R.id.textNivel11:
+                    tintLevel2(11);
+                    break;
+                case R.id.textNivel12:
+                    tintLevel2(12);
+                    break;
+                case R.id.textNivel13:
+                    tintLevel2(13);
+                    break;
+                case R.id.textNivel14:
+                    tintLevel2(14);
+                    break;
+                case R.id.textNivel15:
+                    tintLevel2(15);
+                    break;
+                default:
+                    tintLevel2(0);
+                    break;
+            }
+
+        }
+    };
+
     private void tintLevel(int level){
         int i;
         setActiveTextView(getTextView(level));
@@ -90,6 +172,27 @@ public class Nivel_Fragmet extends GeneralFragment {
         }
 
     }
+    private void tintLevel2(int levelClick){
+        //int i;
+        tintLevel(nivel);
+        setPassedTextView(getTextView(levelClick));
+        File file = new File(General.local_dir_images + "levels/trof_" + levelClick + ".png");
+        if(file.exists()){
+            options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            imageTrofeo.setImageBitmap(bm);
+        }
+        /*
+        for(i=0; i < level; i++){
+            setAlpha(getImageView(i),0.5f);
+        }
+        for(i=level+1; i <= 15; i++){
+            setAlpha(getImageView(i),0.5f);
+        }
+        */
+    }
+
     private TextView getTextView(int order){
         switch (order){
             case 0:

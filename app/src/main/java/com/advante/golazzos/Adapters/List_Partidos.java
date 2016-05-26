@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,15 @@ import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.Partido;
 import com.advante.golazzos.R;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Duration;
+import org.joda.time.Hours;
+import org.joda.time.Minutes;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Ruben Flores on 4/22/2016.
@@ -97,20 +108,21 @@ public class List_Partidos extends ArrayAdapter<Partido> {
 
         }
         final ViewHolder holder = (ViewHolder) convertView.getTag();
-        long diff[] = getDifference(item.getStart_time_utc());
+
+        String timestamp = item.getStart_time_utc();
+        DateTime currentDateTime = new DateTime();
+
+        DateTime dateTime = ISODateTimeFormat.dateTimeParser().parseDateTime(timestamp);
+        DateTimeFormatter fmt =  DateTimeFormat.forPattern("MMM dd hh:mm aaa");
+        Duration duration = new Duration(currentDateTime, dateTime);
+
+        long diff[] = getDifference(timestamp);
         holder.textDia.setText(""+diff[0]);
         holder.textHora.setText(""+diff[1]);
         holder.textMins.setText(""+diff[2]);
         holder.textTorneo.setText(item.getTournament().getName());
-        SimpleDateFormat format = new SimpleDateFormat("MMM dd hh:mm aaa");
-        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        try {
-            Date date = format2.parse(item.getStart_time_utc().replace("T", " ").replace("Z", ""));
-            holder.textFecha.setText(format.format(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        holder.textFecha.setText(fmt.print(dateTime));
 
         String imagePath = item.getLocal().getImage_path();
         final String tempPathV,tempPathL;
@@ -343,11 +355,10 @@ public class List_Partidos extends ArrayAdapter<Partido> {
     public long[] getDifference(String date){
         try {
             Calendar c = Calendar.getInstance();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             Date endDate = c.getTime();
-            Date startDate = format.parse(date.replace("T", " ").replace("Z", ""));
-            long different = startDate.getTime() - endDate.getTime();
+            DateTime startDate = ISODateTimeFormat.dateTimeParser().parseDateTime(date);
+            long different = startDate.getMillis() - endDate.getTime();
 
             long secondsInMilli = 1000;
             long minutesInMilli = secondsInMilli * 60;

@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -13,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Adapters.List_Equipos;
+import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.GraphicsUtil;
@@ -47,8 +52,8 @@ public class Wizzard1Activity extends GeneralActivity {
     TextView buttonLigas,buttonEquipos,buttonSiguiente;
 
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
-    List<Liga> ligas;
-    List<Equipo> equipos;
+    ArrayList<Liga> ligas;
+    ArrayList<Equipo> equipos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,36 +161,6 @@ public class Wizzard1Activity extends GeneralActivity {
         }
     }
 
-    private void showDialogLigas(final List<Liga> arrayList){
-        // Create custom dialog object
-        final Dialog dialog = new Dialog(this);
-        // Include dialog.xml file
-        dialog.setContentView(R.layout.dialog_listview);
-        // Set dialog title
-        dialog.setTitle("");
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,
-                                                        android.R.id.text1,arrayList);
-        final ListView listView = (ListView) dialog.findViewById(R.id.listview);
-        listView.setAdapter(arrayAdapter);
-        dialog.show();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                idLiga = arrayList.get(i).getId();
-                String name = arrayList.get(i).getName();
-                if (name.length() > 18) {
-                    buttonLigas.setText(name.substring(0, 18));
-                } else {
-                    buttonLigas.setText(name);
-                }
-
-                dialog.dismiss();
-            }
-        });
-    }
-
     private void buscarEquipos(){
         if(idLiga_Temp != idLiga){
             idLiga_Temp = idLiga;
@@ -248,16 +223,49 @@ public class Wizzard1Activity extends GeneralActivity {
         }
     }
 
-    private void showDialogEquipos(final List<Equipo> arrayList){
+    private void showDialogLigas(final ArrayList<Liga> arrayList){
         // Create custom dialog object
-        final Dialog dialog = new Dialog(this);
-        // Include dialog.xml file
+        final Dialog dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        // Set dialog title
-        dialog.setTitle("");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+        List_Ligas arrayAdapter = new List_Ligas(this, arrayList);
+        final ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL TORNEO");
+        textSubTitulo.setVisibility(View.GONE);
+        listView.setAdapter(arrayAdapter);
+        dialog.show();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                idLiga = arrayList.get(i).getId();
+                String name = arrayList.get(i).getName();
+                if (name.length() > 18) {
+                    buttonLigas.setText(name.substring(0, 18));
+                } else {
+                    buttonLigas.setText(name);
+                }
+
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showDialogEquipos(final ArrayList<Equipo> arrayList){
+        final Dialog dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_listview);
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL EQUIPO");
+        textSubTitulo.setText(buttonLigas.getText());
+
+        List_Equipos arrayAdapter = new List_Equipos(this, arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();
@@ -266,7 +274,6 @@ public class Wizzard1Activity extends GeneralActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 idEquipo = arrayList.get(i).getId();
-
                 buttonEquipos.setText(arrayList.get(i).getName());
                 String imagePath = arrayList.get(i).getImage_path();
                 int idImage = arrayList.get(i).getData_factory_id();//imagePath.substring(imagePath.lastIndexOf("/")+1,imagePath.lastIndexOf("-"));

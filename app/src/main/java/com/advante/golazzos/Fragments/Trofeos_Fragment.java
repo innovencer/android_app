@@ -18,6 +18,7 @@ public class Trofeos_Fragment extends GeneralFragment {
               imageTrofeo7,imageTrofeo8,imageTrofeo9,imageTrofeo10,imageTrofeo11,imageTrofeo12,imageTrofeo13,
               imageTrofeo14,imageTrofeo15;
     TextView textTituloNivel;
+    int nivel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class Trofeos_Fragment extends GeneralFragment {
 
         textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
 
-        int nivel = gnr.getLoggedUser().getLevel().getOrder();
+        nivel = gnr.getLoggedUser().getLevel().getOrder();
 
         tintLevel(nivel);
 
@@ -177,14 +178,17 @@ public class Trofeos_Fragment extends GeneralFragment {
     }
 
     private void tintLevel2(int level){
-        int i;
+        //int i;
+        tintLevel(nivel);
         setAlpha(getImageView(level),1);
+        /*
         for(i=0; i < level; i++){
             setAlpha(getImageView(i),0.5f);
         }
         for(i=level+1; i <= 15; i++){
             setAlpha(getImageView(i),0.5f);
         }
+        */
     }
 
     private void setAlpha(ImageView imageView, float alpha){

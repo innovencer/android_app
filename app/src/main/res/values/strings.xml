@@ -42,8 +42,10 @@
     <string name="menuEstadio">ESTADIO</string>
     <string name="menuPartidos">PARTIDOS</string>
     <string name="menuJugadas">JUGADAS</string>
+    <string name="menuCuenta">CUENTA</string>
     <string name="menuAyuda">AYUDA</string>
     <string name="menuGolazzos">GOLAZZOS</string>
+    <string name="menuSalir">SALIR</string>
 
 
     <!-- Urls not played matches -->

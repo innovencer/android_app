@@ -13,11 +13,12 @@ public class User extends Model {
     String profile_pic_url;
     UserLevel level;
     SoulTeam soul_team;
+    Counters counters;
 
     public User() {
     }
 
-    public User(int id, String name, String email, Boolean paid_subscription, Double points, String profile_pic_url, UserLevel level, SoulTeam soul_team) {
+    public User(int id, String name, String email, Boolean paid_subscription, Double points, String profile_pic_url, UserLevel level, SoulTeam soul_team, Counters counters) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -26,6 +27,7 @@ public class User extends Model {
         this.profile_pic_url = profile_pic_url;
         this.level = level;
         this.soul_team = soul_team;
+        this.counters = counters;
     }
 
     public int getId() {
@@ -90,5 +92,13 @@ public class User extends Model {
 
     public void setSoul_team(SoulTeam soul_team) {
         this.soul_team = soul_team;
+    }
+
+    public Counters getCounters() {
+        return counters;
+    }
+
+    public void setCounters(Counters counters) {
+        this.counters = counters;
     }
 }

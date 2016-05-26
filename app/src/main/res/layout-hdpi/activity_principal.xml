@@ -23,14 +23,27 @@
             android:orientation="horizontal"
             android:paddingTop="2.5dp"
             android:paddingBottom="2.5dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:visibility="gone"
-            android:background="@color/colorAccent">
+            android:background="@drawable/bg_marcador">
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/left_arrow"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/balon_ver"/>
             <TextView
+                android:id="@+id/textPuntosGlobal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="9dp"
+                android:layout_marginLeft="2dp"
+                android:textSize="10dp"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 android:text="11.150 pts."/>
         </LinearLayout>
         <LinearLayout
@@ -313,16 +326,16 @@
                 android:id="@+id/list_leftmenu_items"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.7"
+                android:layout_weight="0.8"
                 android:background="#08435E"
                 android:choiceMode="singleChoice" />
             <LinearLayout
                 android:id="@+id/linearTitular"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:background="#08435E"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal|bottom">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

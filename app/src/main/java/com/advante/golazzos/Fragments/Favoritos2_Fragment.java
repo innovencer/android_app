@@ -596,7 +596,19 @@ public class Favoritos2_Fragment extends GeneralFragment {
                 idEquipo = arrayList.get(i).getId();
                 nameTemp = arrayList.get(i).getName();
                 idEquipoDataF = arrayList.get(i).getData_factory_id();
-                buttonEquipos.setText(arrayList.get(i).getName());
+                //buttonEquipos.setText(arrayList.get(i).getName());
+                if (!agregado(idEquipo)) {
+                    for (int j = 0; j < 8; j++) {
+                        if (equipos_s[j] == -1) {
+                            equipos_s[j] = idEquipo;
+                            setImage(j + 1, idEquipoDataF, nameTemp);
+                            dialog.dismiss();
+                            return;
+                        }
+                    }
+                }else{
+                    Toast.makeText(getContext(),"Ya selecciono este equipo.",Toast.LENGTH_SHORT).show();
+                }
                 dialog.dismiss();
             }
         });

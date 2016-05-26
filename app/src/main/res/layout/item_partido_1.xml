@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
             android:orientation="vertical">
             <TextView
@@ -24,19 +24,19 @@
                 android:layout_gravity="center"
                 android:text="Cierra en:"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:weightSum="3"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
                     android:text="1"
                     android:id="@+id/textDia" />
                 <View
@@ -44,63 +44,61 @@
                     android:layout_height="20dp"
                     android:background="@android:color/black"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="13dp"
+                    android:gravity="center"
                     android:text="2"
                     android:id="@+id/textHora" />
                 <View
                     android:layout_width="1dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="5dp"
                     android:background="@android:color/black"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="9dp"
+                    android:gravity="center"
                     android:text="27"
                     android:id="@+id/textMins" />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:weightSum="3"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="9dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
                     android:text="DÍA"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="9dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
+                    android:gravity="center"
                     android:text="HORAS"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="9dp"
                     android:textStyle="bold"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
                     android:text="MINS"/>
             </LinearLayout>
         </LinearLayout>
@@ -153,7 +151,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:weightSum="4">
@@ -188,8 +186,9 @@
                     android:layout_marginBottom="-2dp"
                     android:id="@+id/buttonUpLocal">
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:scaleType="centerInside"
                         android:src="@android:drawable/arrow_up_float" />
                 </LinearLayout>
                 <TextView
@@ -206,8 +205,9 @@
                     android:layout_marginTop="-2dp"
                     android:id="@+id/buttonDownLocal">
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:scaleType="centerInside"
                         android:src="@android:drawable/arrow_down_float" />
                 </LinearLayout>
 
@@ -229,8 +229,9 @@
                     android:layout_marginBottom="-2dp"
                     android:id="@+id/buttonUpVisitante">
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:scaleType="centerInside"
                         android:src="@android:drawable/arrow_up_float" />
                 </LinearLayout>
                 <TextView
@@ -247,8 +248,9 @@
                     android:layout_marginTop="-2dp"
                     android:id="@+id/buttonDownVisitante">
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:scaleType="centerInside"
                         android:src="@android:drawable/arrow_down_float" />
                 </LinearLayout>
             </LinearLayout>
@@ -371,7 +373,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:weightSum="2"
             android:background="@drawable/background_black_rounded">
@@ -392,16 +394,14 @@
                     android:text="JUEGAS"/>
                 <LinearLayout
                     android:layout_width="77dp"
-                    android:layout_height="39dp"
+                    android:layout_height="34dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
                     android:background="@drawable/linear_gray"
                     android:gravity="center">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22dp"
+                        android:textSize="18dp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/colorAccent"
                         android:text="50"
@@ -409,7 +409,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="9dp"
+                        android:textSize="8dp"
                         android:layout_marginTop="-5dp"
                         android:textColor="@color/colorAccent"
                         android:text="PUNTOS"/>
@@ -437,7 +437,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="28dp"
+                    android:textSize="20dp"
                     android:layout_gravity="center"
                     android:textColor="@color/greenApple"
                     android:textStyle="bold|italic"
@@ -458,7 +458,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="3"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="15dp"
             android:gravity="center"

@@ -16,7 +16,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_0"
+                android:src="@drawable/trof_0_v"
                 android:id="@+id/imageTrofeo0"
                 android:tag="Escuelita de Fútbol"/>
         </LinearLayout>
@@ -28,7 +28,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_1"
+                android:src="@drawable/trof_1_v"
                 android:id="@+id/imageTrofeo1"
                 android:tag="Aprendíz"/>
         </LinearLayout>
@@ -40,7 +40,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_2"
+                android:src="@drawable/trof_2_v"
                 android:id="@+id/imageTrofeo2"
                 android:tag="Amateur"/>
         </LinearLayout>
@@ -52,7 +52,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_3"
+                android:src="@drawable/trof_3_v"
                 android:id="@+id/imageTrofeo3"
                 android:tag="Primera B  "/>
         </LinearLayout>
@@ -71,7 +71,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_4"
+                android:src="@drawable/trof_4_v"
                 android:id="@+id/imageTrofeo4"
                 android:tag="Primera C"/>
         </LinearLayout>
@@ -83,7 +83,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_5"
+                android:src="@drawable/trof_5_v"
                 android:id="@+id/imageTrofeo5"
                 android:tag="Jugador de Liga"/>
         </LinearLayout>
@@ -95,7 +95,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_6"
+                android:src="@drawable/trof_6_v"
                 android:id="@+id/imageTrofeo6"
                 android:tag="Promesa"/>
         </LinearLayout>
@@ -107,7 +107,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_7"
+                android:src="@drawable/trof_7_v"
                 android:id="@+id/imageTrofeo7"
                 android:tag="Realidad"/>
         </LinearLayout>
@@ -126,7 +126,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_8"
+                android:src="@drawable/trof_8_v"
                 android:id="@+id/imageTrofeo8"
                 android:tag="Seleccionado Nacional"/>
         </LinearLayout>
@@ -138,7 +138,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_9"
+                android:src="@drawable/trof_9_v"
                 android:id="@+id/imageTrofeo9"
                 android:tag="Estrella Nacional"/>
         </LinearLayout>
@@ -150,7 +150,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_10"
+                android:src="@drawable/trof_10_v"
                 android:id="@+id/imageTrofeo10"
                 android:tag="Leyenda Nacional"/>
         </LinearLayout>
@@ -162,7 +162,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_11"
+                android:src="@drawable/trof_11_v"
                 android:id="@+id/imageTrofeo11"
                 android:tag="Grandes Ligas"/>
         </LinearLayout>
@@ -181,7 +181,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_12"
+                android:src="@drawable/trof_12_v"
                 android:id="@+id/imageTrofeo12"
                 android:tag="Celebridad"/>
         </LinearLayout>
@@ -193,7 +193,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_13"
+                android:src="@drawable/trof_13_v"
                 android:id="@+id/imageTrofeo13"
                 android:tag="Estrella Internacional"/>
         </LinearLayout>
@@ -205,7 +205,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_14"
+                android:src="@drawable/trof_14_v"
                 android:id="@+id/imageTrofeo14"
                 android:tag="Leyenda Internacional"/>
         </LinearLayout>
@@ -217,7 +217,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/trof_15"
+                android:src="@drawable/trof_15_v"
                 android:id="@+id/imageTrofeo15"
                 android:tag="Golazzos"/>
         </LinearLayout>

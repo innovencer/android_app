@@ -126,6 +126,7 @@
                     android:layout_marginTop="15dp"
                     android:textSize="14dp"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:textColor="@android:color/black"
                     android:background="@drawable/background_green_rounded"
                     android:text="AGREGAR"

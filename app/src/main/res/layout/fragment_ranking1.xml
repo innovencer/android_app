@@ -35,7 +35,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOP 20"
+                    android:text="DESDE EL INICIO"
                     android:textColor="@color/colorAccent"
                     android:textSize="10dp"/>
             </LinearLayout>

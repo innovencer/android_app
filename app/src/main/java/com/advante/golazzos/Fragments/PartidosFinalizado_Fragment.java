@@ -110,7 +110,7 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                                     partidos.add(partido);
 
                                 }
-                                List_Partidos list_partidos = new List_Partidos(getContext(),partidos,R.layout.item_partido_3);
+                                List_Partidos list_partidos = new List_Partidos(getContext(),partidos,R.layout.item_partido_4);
                                 listView.setAdapter(list_partidos);
                                 dialog.dismiss();
                             } catch (JSONException e) {

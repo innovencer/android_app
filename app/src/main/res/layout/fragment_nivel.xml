@@ -73,6 +73,7 @@
                 android:textColor="@color/greenApple"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_green_solid_blue"
+                android:tag="Escuelita de Fútbol;0;0"
                 android:id="@+id/textNivel0" />
         </LinearLayout>
         <LinearLayout
@@ -88,6 +89,7 @@
                 android:textColor="@color/greenApple"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_green_solid_blue"
+                android:tag="Aprendiz;200;5"
                 android:id="@+id/textNivel1" />
         </LinearLayout>
         <LinearLayout
@@ -103,6 +105,7 @@
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_blue_solid_green"
+                android:tag="Amateur;200;10"
                 android:id="@+id/textNivel2" />
         </LinearLayout>
         <LinearLayout
@@ -118,6 +121,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Primera C;200;15"
                 android:id="@+id/textNivel3" />
         </LinearLayout>
         <LinearLayout
@@ -133,6 +137,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Primera B;200;20"
                 android:id="@+id/textNivel4" />
         </LinearLayout>
         <LinearLayout
@@ -148,6 +153,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Jugador de liga;200;25"
                 android:id="@+id/textNivel5" />
         </LinearLayout>
     </LinearLayout>
@@ -172,6 +178,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Promesa;300;35"
                 android:id="@+id/textNivel6" />
         </LinearLayout>
         <LinearLayout
@@ -187,6 +194,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Realidad;300;45"
                 android:id="@+id/textNivel7" />
         </LinearLayout>
         <LinearLayout
@@ -202,6 +210,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Seleccionado Nacional;300;55"
                 android:id="@+id/textNivel8" />
         </LinearLayout>
         <LinearLayout
@@ -217,6 +226,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Estrella Nacional;300;65"
                 android:id="@+id/textNivel9" />
         </LinearLayout>
         <LinearLayout
@@ -232,6 +242,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Leyenda Nacional;300;75"
                 android:id="@+id/textNivel10" />
         </LinearLayout>
         <LinearLayout
@@ -247,6 +258,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Grandes Ligas;400;90"
                 android:id="@+id/textNivel11" />
         </LinearLayout>
     </LinearLayout>
@@ -272,6 +284,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Celebridad;400;105"
                 android:id="@+id/textNivel12" />
         </LinearLayout>
         <LinearLayout
@@ -287,6 +300,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Estrella Internacional;400;120"
                 android:id="@+id/textNivel13" />
         </LinearLayout>
         <LinearLayout
@@ -302,6 +316,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="Leyenda Internacional;400;135"
                 android:id="@+id/textNivel14" />
         </LinearLayout>
         <LinearLayout
@@ -317,6 +332,7 @@
                 android:textColor="@color/mediumGray"
                 android:textStyle="bold|italic"
                 android:background="@drawable/image_circle_gray_solid_white"
+                android:tag="GolaZZo$;400;150"
                 android:id="@+id/textNivel15" />
         </LinearLayout>
         <LinearLayout
@@ -353,12 +369,12 @@
                 android:gravity="right|center_vertical"
                 android:layout_weight="1">
                 <ImageView
-                    android:layout_width="85dp"
+                    android:layout_width="95dp"
                     android:layout_height="85dp"
                     android:src="@drawable/trof_3"
                     android:id="@+id/imageTrofeo" />
                 <TextView
-                    android:layout_width="85dp"
+                    android:layout_width="95dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/greenApple"
                     android:textSize="14dp"

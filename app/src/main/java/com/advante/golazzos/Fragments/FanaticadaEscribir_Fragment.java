@@ -1,9 +1,12 @@
 package com.advante.golazzos.Fragments;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,10 +18,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.advante.golazzos.Adapters.List_BetPoints;
+import com.advante.golazzos.Adapters.List_Input;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
@@ -46,6 +54,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -240,25 +249,33 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
     }
 
     private void selectImage() {
-        final CharSequence[] items = { "Camara", "Galeria", "Cancelar" };
+        final String[] items = { "Camara", "Galeria", "Cancelar" };
+        final Dialog dialog = new Dialog(getContext(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_input);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Seleccionar");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        List_Input adapter = new List_Input(getContext(), Arrays.asList(items));
+        ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Camara")) {
-                    pickImageFromSource(Sources.CAMERA);
-                    linearAttached.setVisibility(View.VISIBLE);
-                } else if (items[item].equals("Galeria")) {
-                    pickImageFromSource(Sources.GALLERY);
-                    linearAttached.setVisibility(View.VISIBLE);
-                } else if (items[item].equals("Cancelar")) {
-                    dialog.dismiss();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0:
+                        pickImageFromSource(Sources.CAMERA);
+                        linearAttached.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        pickImageFromSource(Sources.GALLERY);
+                        linearAttached.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        dialog.dismiss();
                 }
             }
         });
-        builder.show();
+        listView.setAdapter(adapter);
+        dialog.show();
     }
 
     Target target = new Target() {

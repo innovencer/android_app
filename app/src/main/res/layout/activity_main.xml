@@ -17,6 +17,7 @@
         android:layout_above="@+id/linearButton2"
         android:layout_marginBottom="20dp"
         android:gravity="center"
+        android:visibility="invisible"
         android:background="@drawable/background_green_rounded">
         <TextView
             android:layout_width="wrap_content"
@@ -34,6 +35,7 @@
         android:layout_above="@+id/linearButton3"
         android:layout_marginBottom="20dp"
         android:gravity="center"
+        android:visibility="invisible"
         android:background="@drawable/linear_gray">
         <TextView
             android:layout_width="wrap_content"
@@ -50,6 +52,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
+        android:visibility="invisible"
         android:gravity="center">
         <TextView
             android:layout_width="wrap_content"

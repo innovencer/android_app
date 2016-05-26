@@ -21,7 +21,29 @@
             android:value="aysi160BEoVT7NPkbb5ZLtv8M"/>
         <meta-data
             android:name="sdk_key"
-            android:value="b1431e56dcb20ec91a020287268d120bacf4db1c362752d08b3f654633322021"/>
+            android:value="c4c7b727693b86bde5d6778db0a0fe3f9baf7815da49cede58697a9447bbc29d"/>
+        <receiver android:name="io.npay.custom_view.NPayDialogUserData$NPayPinSMSReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="io.npay.hub_pin.HubDialogUserData$NPayPinSMSReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".Helpers.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Helpers.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -38,6 +60,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:noHistory="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity android:name=".CrearCuentaActivity"

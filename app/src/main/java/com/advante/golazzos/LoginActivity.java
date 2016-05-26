@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
@@ -275,9 +276,20 @@ public class LoginActivity extends GeneralActivity {
                             JSONObject level = data.getJSONObject("level");
                             user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
                                     level.getString("name"), level.getInt("order"),level.getInt("points")));
-                            gnr.setLoggedUser(user1);
 
+                            user1.setCounters(new Counters(
+                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets"),
+                                    data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets")
+                                    ));
+
+                            gnr.setLoggedUser(user1);
                             dialog.dismiss();
+
+                            preferences.edit().putString("token",General.getToken()).apply();
                             if(preferences.getBoolean("wizzardComplete",false)){
                                 Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
                                 startActivity(intent);
