@@ -1,5 +1,6 @@
 package com.advante.golazzos;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -70,28 +71,16 @@ public class MainActivity extends GeneralActivity {
         if(!preferences.getString("token","").equals("")){
             General.setToken(preferences.getString("token",""));
             getUser();
+
         }else{
             linearButton1.setVisibility(View.VISIBLE);
             linearButton2.setVisibility(View.VISIBLE);
         }
 
         FirebaseMessaging.getInstance().subscribeToTopic("news");
-        showLog("Subscribed to news topic");
         showShortToast("InstanceID token: " + FirebaseInstanceId.getInstance().getToken());
         iniTwitter();
     }
-
-    private boolean isRegistered() {
-        //Getting shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(General.SHARED_PREF, MODE_PRIVATE);
-
-        //Getting the value from shared preferences
-        //The second parameter is the default value
-        //if there is no value in sharedprference then it will return false
-        //that means the device is not registered
-        return sharedPreferences.getBoolean(General.REGISTERED, false);
-    }
-
 
     private void iniTwitter(){
         TwitterAuthConfig authConfig =  new TwitterAuthConfig("aysi160BEoVT7NPkbb5ZLtv8M", "EDYDQIADENYbYkI57nCjsj7xMQu2rJx90x5Y4eaJvPVhn2xGBh");
@@ -184,4 +173,5 @@ public class MainActivity extends GeneralActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
     }
+
 }
