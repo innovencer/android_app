@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,16 +19,17 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.advante.golazzos.Adapters.List_Equipos;
+import com.advante.golazzos.Adapters.List_Jugadas;
 import com.advante.golazzos.Adapters.List_Ligas;
-import com.advante.golazzos.Adapters.List_Partidos;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Equipo;
+import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.Liga;
-import com.advante.golazzos.Model.Partido;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.R;
+import com.advante.golazzos.widget.DividerItemDecoration;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -44,12 +47,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Ruben Flores on 4/22/2016.
+ * Created by Ruben Flores on 5/27/2016.
  */
-public class PartidosFinalizado_Fragment extends GeneralFragment {
+public class Jugadas_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
-    ListView listView;
-    TextView buttonPorJugar, buttonEnVivo;
+    RecyclerView recycler;
+    TextView buttonFinalizado, buttonEnVivo, buttonPORJUGAR;
+
     private ViewFlipper viewFlipper;
     private float lastX;
 
@@ -58,44 +62,51 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
-    SoulTeam soulteamTemp;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
+    String status = "?status=not_started",bet_type_id = "";
+    int tab = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_partidos_3, container, false);
-        listView = (ListView) view.findViewById(R.id.listview);
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
+        View view = inflater.inflate(R.layout.fragment_jugadas_realizadas_1, container, false);
 
-        buttonPorJugar = (TextView) view.findViewById(R.id.buttonPorJugar);
+        viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
+        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
+        buttonFinalizado = (TextView) view.findViewById(R.id.buttonFinalizado);
         buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
+        buttonPORJUGAR = (TextView) view.findViewById(R.id.buttonPORJUGAR);
         buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
         buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
 
-        buttonPorJugar.setOnClickListener(new View.OnClickListener() {
+        buttonFinalizado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.flContent, new PartidosPorJugar_Fragment(), "");
-                ft.addToBackStack(null);
-                ft.commit();
+                menuTint(3);
+                status = "?status=finished";
+                getData(status+bet_type_id);
+            }
+        });
+        buttonPORJUGAR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuTint(1);
+                status = "?status=not_started";
+                getData(status+bet_type_id);
             }
         });
         buttonEnVivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.flContent, new PartidosEnVivo_Fragment(), "");
-                ft.addToBackStack(null);
-                ft.commit();
+                menuTint(2);
+                status = "?status=being_played";
+                getData(status+bet_type_id);
             }
         });
+
         buttonLigas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,9 +130,119 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                 }
             }
         });
+
         view.setOnTouchListener(touchListener);
-        buscarPartidos(R.layout.item_partido_4);
+        getData(status+bet_type_id);
+
         return view;
+    }
+
+    private void getData(String param){
+        dialog.show();
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                General.endpoint_bets+param,
+                "",
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        try {
+                            JSONArray data = response.getJSONArray("response");
+                            ArrayList<Jugada> jugadas = new ArrayList<>();
+                            Jugada jugada;
+                            Equipo equipo;
+                            for(int i = 0;i < data.length(); i++){
+                                jugada = new Jugada();
+                                jugada.setId(data.getJSONObject(i).getInt("id"));
+                                jugada.setTextTime_ago("Waiting");
+
+                                equipo = new Equipo();
+                                equipo.setData_factory_id(data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getInt("data_factory_id"));
+                                equipo.setName(data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name"));
+                                equipo.setInitials(data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("initials"));
+                                jugada.setEquipo1(equipo);
+
+                                equipo = new Equipo();
+                                equipo.setData_factory_id(data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getInt("data_factory_id"));
+                                equipo.setName(data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name"));
+                                equipo.setInitials(data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("initials"));
+                                jugada.setEquipo2(equipo);
+
+                                if(i%2 == 0){
+                                    jugada.setType(2);
+                                }else{
+                                    jugada.setType(1);
+                                }
+                                jugadas.add(jugada);
+                            }
+
+                            List_Jugadas adapter = new List_Jugadas(getActivity(), jugadas);
+                            recycler.setAdapter(adapter);
+                            dialog.dismiss();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showLog(""+error.getMessage());
+                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+    }
+
+    private void menuTint(int option){
+        buttonLigas.setText("Ligas");
+        buttonEquipos.setText("Equipos");
+        switch (option){
+            case 1:
+                buttonPORJUGAR.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
+                buttonEnVivo.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.liteGray));
+                buttonFinalizado.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.liteGray));
+
+                buttonPORJUGAR.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                buttonEnVivo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                buttonFinalizado.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                tab = 1;
+                break;
+            case 2:
+                buttonPORJUGAR.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.liteGray));
+                buttonEnVivo.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greenApple));
+                buttonFinalizado.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.liteGray));
+
+                buttonPORJUGAR.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                buttonEnVivo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                buttonFinalizado.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                tab = 2;
+                break;
+            case 3:
+                buttonPORJUGAR.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.liteGray));
+                buttonEnVivo.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.liteGray));
+                buttonFinalizado.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
+
+                buttonPORJUGAR.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                buttonEnVivo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                buttonFinalizado.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                tab = 3;
+                break;
+        }
     }
 
     private void buscarLigas(){
@@ -270,12 +391,8 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                 } else {
                     buttonLigas.setText(name);
                 }
+                getData(status+bet_type_id+"&tournament_id="+idLiga);
                 dialog.dismiss();
-                if(viewFlipper.getDisplayedChild() == 0) {
-                    buscarPartidos(R.layout.item_partido_4);
-                }else{
-                    buscarPartidos(R.layout.item_partido_6);
-                }
             }
         });
     }
@@ -300,86 +417,12 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 idEquipo = arrayList.get(i).getId();
                 equipo = arrayList.get(i).getName();
-                soulteamTemp = new SoulTeam(arrayList.get(i).getImage_path(),arrayList.get(i).getName(),arrayList.get(i).getId());
                 buttonEquipos.setText(arrayList.get(i).getName());
+                getData(status+bet_type_id+"&team_id="+idEquipo);
                 dialog.dismiss();
-                if(viewFlipper.getDisplayedChild() == 0) {
-                    buscarPartidos(R.layout.item_partido_4);
-                }else{
-                    buscarPartidos(R.layout.item_partido_6);
-                }
+
             }
         });
-    }
-
-    private void buscarPartidos(final int resourse){
-        String url = General.endpoint_maches_played;
-        if(idLiga > 0){
-            url = url +"&tournament_id="+idLiga;
-        }
-        if(idEquipo > 0){
-            url = url +"&team_name="+equipo.replace(" ","%20");
-        }
-        dialog.show();
-        jsArrayRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                "",
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Manejo de la respuesta
-                        try {
-                            JSONArray data = response.getJSONArray("response");
-                            ArrayList<Partido> partidos = new ArrayList<>();
-                            Partido partido;
-                            for(int i=0;i< data.length();i++){
-                                partido = new Partido();
-                                partido.setId(data.getJSONObject(i).getInt("id"));
-                                partido.setStart_time_utc(data.getJSONObject(i).getString("start_time_utc"));
-                                partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
-                                partido.setTournament(new Liga(0,
-                                        data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
-                                        data.getJSONObject(i).getJSONObject("tournament").getString("name")));
-                                partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
-                                        data.getJSONObject(i).getJSONObject("local_team").getString("name"),
-                                        data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));
-                                partido.setVisitante(new Equipo(data.getJSONObject(i).getJSONObject("visitant_team").getInt("id"),
-                                        data.getJSONObject(i).getJSONObject("visitant_team").getString("name"),
-                                        data.getJSONObject(i).getJSONObject("visitant_team").getString("image_path")));
-                                partido.setLocal_score(data.getJSONObject(i).getInt("local_score"));
-                                partido.setVisitant_score(data.getJSONObject(i).getInt("visitant_score"));
-                                partidos.add(partido);
-
-                            }
-                            List_Partidos list_partidos = new List_Partidos(getContext(),partidos,resourse);
-                            listView.setAdapter(list_partidos);
-                            dialog.dismiss();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
-                params.put("Content-Type", "application/json");
-                return params;
-            }
-        };
-        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                7000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
     }
 
     private View.OnTouchListener touchListener = new View.OnTouchListener(){
@@ -411,7 +454,8 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                         viewFlipper.setOutAnimation(getContext(), R.anim.out_to_right);
                         // Show the next Screen
                         viewFlipper.showNext();
-                        buscarPartidos(R.layout.item_partido_4);
+                        bet_type_id = "";
+                        getData(status+bet_type_id);
                     }
 
                     // if right to left swipe on screen
@@ -425,7 +469,8 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                         viewFlipper.setOutAnimation(getContext(), R.anim.out_to_left);
                         // Show The Previous Screen
                         viewFlipper.showPrevious();
-                        buscarPartidos(R.layout.item_partido_6);
+                        bet_type_id = "&bet_type_id=1";
+                        getData(status+bet_type_id);
                     }
                     break;
                 }

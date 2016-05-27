@@ -19,5 +19,6 @@
     <color name="blueDark">#08435E</color>
     <color name="blueSky">#2CAE86</color>
     <color name="blueSky100">#40FBFF</color>
+    <color name="red">#FF0000</color>
 
 </resources>

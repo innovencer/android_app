@@ -50,6 +50,7 @@ import com.advante.golazzos.Fragments.Amigos_Fragment;
 import com.advante.golazzos.Fragments.Busqueda_Fragment;
 import com.advante.golazzos.Fragments.Cuenta_Fragment;
 import com.advante.golazzos.Fragments.Fragment_Ganadores;
+import com.advante.golazzos.Fragments.Jugadas_Fragment;
 import com.advante.golazzos.Fragments.Nivel_Fragmet;
 import com.advante.golazzos.Fragments.PartidosEnVivo_Fragment;
 import com.advante.golazzos.Fragments.PartidosFinalizado_Fragment;
@@ -58,6 +59,7 @@ import com.advante.golazzos.Fragments.RankingFragment;
 import com.advante.golazzos.Fragments.Trofeos_Fragment;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.LeftMenu_Item;
 import com.advante.golazzos.Fragments.Fanaticada_Fragment;
 import com.advante.golazzos.Fragments.Favoritos1_Fragment;
@@ -166,6 +168,13 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                         bottomMenu1.setVisibility(View.VISIBLE);
                         bottomMenu2.setVisibility(View.GONE);
                         break;
+                    case 3:
+                        showFragment(11);
+                        pintarMenu(4);
+                        textTitle.setText("JUGADAS");
+                        bottomMenu1.setVisibility(View.GONE);
+                        bottomMenu2.setVisibility(View.GONE);
+                        break;
                     case 4:
                         showFragment(8);
                         pintarMenu(3);
@@ -271,6 +280,10 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
             case 10:
                 fragmentClass = Fragment_Ganadores.class;
                 linearPuntos.setVisibility(View.INVISIBLE);
+                break;
+            case 11:
+                fragmentClass = Jugadas_Fragment.class;
+                linearPuntos.setVisibility(View.VISIBLE);
                 break;
             default:
                 fragmentClass = PartidosPorJugar_Fragment.class;
@@ -647,6 +660,16 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                 textTitle.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
                 search.setImageResource(R.drawable.magnify_blue);
                 toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+                toggle.syncState();
+                _menu.findItem(R.id.menuSalir).setVisible(false);
+                break;
+            case 4:
+                colorDrawable = new ColorDrawable(ContextCompat.getColor(this, R.color.red));
+                getSupportActionBar().setBackgroundDrawable(colorDrawable);
+                colorizeToolbar(toolbar , ContextCompat.getColor(this, R.color.white),this);
+                textTitle.setTextColor(ContextCompat.getColor(this, R.color.white));
+                search.setImageResource(R.drawable.magnify_white);
+                toggle.setHomeAsUpIndicator(R.drawable.ic_drawer_w);
                 toggle.syncState();
                 _menu.findItem(R.id.menuSalir).setVisible(false);
                 break;
