@@ -15,6 +15,7 @@ import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
+import com.advante.golazzos.Model.UserSettings;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -277,15 +278,42 @@ public class LoginActivity extends GeneralActivity {
                             user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
                                     level.getString("name"), level.getInt("order"),level.getInt("points")));
 
+                            int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
+                            total_bets = 0, won_bets = 0;
+                            if(data.getJSONObject("counters").has("Marcador"))
+                                marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Marcador"))
+                                marcadorWon_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Gana/Pierde"))
+                                ganaPierdeTotal_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Gana/Pierde"))
+                                ganaPierdeWon_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Total"))
+                                total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Total"))
+                                won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
                             user1.setCounters(new Counters(
-                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets")
+                                    marcadorTotal_bets,
+                                    marcadorWon_bets,
+                                    ganaPierdeTotal_bets,
+                                    ganaPierdeWon_bets,
+                                    total_bets,
+                                    won_bets
                                     ));
-
+                            /*
+                            user1.setUserSettings(new UserSettings(
+                                    data.getJSONObject("settings").getBoolean("won_notification"),
+                                    data.getJSONObject("settings").getBoolean("lose_notification"),
+                                    data.getJSONObject("settings").getBoolean("new_bet_notification"),
+                                    false,
+                                    data.getJSONObject("settings").getBoolean("closed_match_notification")));
+                            */
+                            user1.setUserSettings(new UserSettings(
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false));
                             gnr.setLoggedUser(user1);
                             dialog.dismiss();
 

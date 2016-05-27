@@ -179,7 +179,6 @@ public class List_Partidos extends ArrayAdapter<Partido> {
             holder.editVisitante.setText("" + item.getVisitant_score());
         }
 
-
         holder.textPuntosJuegas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -323,6 +322,16 @@ public class List_Partidos extends ArrayAdapter<Partido> {
                 }
             }
         });
+
+        if(viewLayout == R.layout.item_partido_5 || viewLayout == R.layout.item_partido_6){
+            if(item.getLocal_score() > item.getVisitant_score()){
+                holder.edit.setText(General.resultTypes[0]);
+            }else if(item.getLocal_score() < item.getVisitant_score()){
+                holder.edit.setText(General.resultTypes[1]);
+            }else{
+                holder.edit.setText(General.resultTypes[2]);
+            }
+        }
         return convertView;
     }
 

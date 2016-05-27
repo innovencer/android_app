@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CREAR TU CUENTA"
+            android:text="INICIA SESIÓN"
             android:textSize="12dp"
             android:textStyle="bold"
             android:layout_marginLeft="15dp"
@@ -148,7 +148,7 @@
             android:textSize="12dp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
-            android:text="CREAR"/>
+            android:text="INGRESAR"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/line5"
@@ -164,6 +164,6 @@
             android:textSize="8dp"
             android:textColor="@android:color/white"
             android:paddingBottom="2dp"
-            android:text="@string/terminos"/>
+            android:text="¿OLVIDASTE LA CONTRASEÑA?"/>
     </LinearLayout>
 </RelativeLayout>

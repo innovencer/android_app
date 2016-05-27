@@ -129,7 +129,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         linearTitular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PrincipalActivity.this, NPayExample.class);
+                Intent intent = new Intent(PrincipalActivity.this, ServiceDetailActivity.class);
                 startActivity(intent);
             }
         });

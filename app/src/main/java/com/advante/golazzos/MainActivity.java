@@ -13,11 +13,13 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
+import com.advante.golazzos.Helpers.MyFirebaseInstanceIDService;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
+import com.advante.golazzos.Model.UserSettings;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -78,7 +80,12 @@ public class MainActivity extends GeneralActivity {
         }
 
         FirebaseMessaging.getInstance().subscribeToTopic("news");
-        showShortToast("InstanceID token: " + FirebaseInstanceId.getInstance().getToken());
+        if(FirebaseInstanceId.getInstance().getToken() != null && !FirebaseInstanceId.getInstance().getToken().isEmpty() ){
+            if(!FirebaseInstanceId.getInstance().getToken().equals(preferences.getString("device_registration_id",""))) {
+                sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken());
+            }
+        }
+        //showShortToast("InstanceID token: " + FirebaseInstanceId.getInstance().getToken());
         iniTwitter();
     }
 
@@ -115,14 +122,42 @@ public class MainActivity extends GeneralActivity {
                             user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
                                     level.getString("name"), level.getInt("order"),level.getInt("points")));
 
+                            int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
+                                    total_bets = 0, won_bets = 0;
+                            if(data.getJSONObject("counters").has("Marcador"))
+                                marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Marcador"))
+                                marcadorWon_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Gana/Pierde"))
+                                ganaPierdeTotal_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Gana/Pierde"))
+                                ganaPierdeWon_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Total"))
+                                total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Total"))
+                                won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
                             user1.setCounters(new Counters(
-                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets"),
-                                    data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets")
+                                    marcadorTotal_bets,
+                                    marcadorWon_bets,
+                                    ganaPierdeTotal_bets,
+                                    ganaPierdeWon_bets,
+                                    total_bets,
+                                    won_bets
                             ));
+                            /*
+                            user1.setUserSettings(new UserSettings(
+                                    data.getJSONObject("settings").getBoolean("won_notification"),
+                                    data.getJSONObject("settings").getBoolean("lose_notification"),
+                                    data.getJSONObject("settings").getBoolean("new_bet_notification"),
+                                    false,
+                                    data.getJSONObject("settings").getBoolean("closed_match_notification")));
+                            */
+                            user1.setUserSettings(new UserSettings(
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false));
 
                             gnr.setLoggedUser(user1);
 
@@ -174,4 +209,49 @@ public class MainActivity extends GeneralActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
     }
 
+    private void sendRegistrationToServer(final String device_registration_id) {
+        JSONObject user = new JSONObject();
+        JSONObject values = new JSONObject();
+        try {
+            values.put("device_registration_id", device_registration_id);
+
+            user.put("user",values);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                General.endpoint_users+"/me",
+                user,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        SharedPreferences preferences = MainActivity.this.getSharedPreferences(
+                                General.packetname, Context.MODE_PRIVATE);
+                            preferences.edit().putString("device_registration_id",device_registration_id).apply();
+                            Toast.makeText(MainActivity.this,"Device ID Actualizado",Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this,"Error en al tratar de conectar con el servicio web. Intente mas tarde",Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
+    }
 }

@@ -62,7 +62,7 @@ public class Wizzard1Activity extends GeneralActivity {
         picView = (ImageView)findViewById(R.id.imageEquipoAlma);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.rect_white);
         GraphicsUtil graphicUtil = new GraphicsUtil();
-        // picView.setImageBitmap(graphicUtil.getRoundedShape(thePic,(float)1.5,92));
+        //picView.setImageBitmap(graphicUtil.getRoundedShape(thePic,(float)1.5,92));
         picView.setImageBitmap(graphicUtil.getCircleBitmap(
                 bm, 16));
 

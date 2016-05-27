@@ -129,7 +129,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
             url = url +"?tournament_id="+idLiga;
         }
         if(idEquipo > 0){
-            url = url +"&team_name="+equipo;
+            url = url +"&team_name="+equipo.replace(" ","%20");
         }
         dialog.show();
             jsArrayRequest = new JsonObjectRequest(

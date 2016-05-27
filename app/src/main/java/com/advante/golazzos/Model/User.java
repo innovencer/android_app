@@ -14,6 +14,7 @@ public class User extends Model {
     UserLevel level;
     SoulTeam soul_team;
     Counters counters;
+    UserSettings userSettings;
 
     public User() {
     }
@@ -100,5 +101,13 @@ public class User extends Model {
 
     public void setCounters(Counters counters) {
         this.counters = counters;
+    }
+
+    public UserSettings getUserSettings() {
+        return userSettings;
+    }
+
+    public void setUserSettings(UserSettings userSettings) {
+        this.userSettings = userSettings;
     }
 }

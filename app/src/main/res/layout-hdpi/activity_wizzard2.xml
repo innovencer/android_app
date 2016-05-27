@@ -158,6 +158,7 @@
                     android:id="@+id/buttonEquipo" />
             </LinearLayout>
             <TextView
+                android:visibility="gone"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"

@@ -4,15 +4,21 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Adapters.List_Equipos;
+import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.GraphicsUtil;
@@ -45,11 +51,13 @@ public class Wizzard2Activity extends GeneralActivity {
     ImageView imageEquipo1,imageEquipo2,imageEquipo3,imageEquipo4,imageEquipo5,imageEquipo6,imageEquipo7,imageEquipo8;
     ImageView imageElimina1,imageElimina2,imageElimina3,imageElimina4,imageElimina5,imageElimina6,imageElimina7,imageElimina8;
     TextView buttonLigas,buttonEquipos,buttonSiguiente,buttonAgregar;
+    //TextView textEquipo1,textEquipo2,textEquipo3,textEquipo4,textEquipo5,textEquipo6,textEquipo7,textEquipo8;
+    LinearLayout buttonFavoritos1;
 
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1,idEquipoDataF = -1;
-    List<Liga> ligas;
-    List<Equipo> equipos;
-
+    ArrayList<Liga> ligas;
+    ArrayList<Equipo> equipos;
+    String nameTemp = "";
     int equipos_s[] = new int[]{-1,-1,-1,-1,-1,-1,-1,-1};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +95,17 @@ public class Wizzard2Activity extends GeneralActivity {
         imageEquipo6 = (ImageView) findViewById(R.id.imageEquipo6);
         imageEquipo7 = (ImageView) findViewById(R.id.imageEquipo7);
         imageEquipo8 = (ImageView) findViewById(R.id.imageEquipo8);
+
+        /*
+        textEquipo1 = (TextView) findViewById(R.id.textEquipo1);
+        textEquipo2 = (TextView) findViewById(R.id.textEquipo2);
+        textEquipo3 = (TextView) findViewById(R.id.textEquipo3);
+        textEquipo4 = (TextView) findViewById(R.id.textEquipo4);
+        textEquipo5 = (TextView) findViewById(R.id.textEquipo5);
+        textEquipo6 = (TextView) findViewById(R.id.textEquipo6);
+        textEquipo7 = (TextView) findViewById(R.id.textEquipo7);
+        textEquipo8 = (TextView) findViewById(R.id.textEquipo8);
+        */
 
         for(int i = 1; i <= 8; i++){
             clearImage(i);
@@ -135,6 +154,7 @@ public class Wizzard2Activity extends GeneralActivity {
                 }
             }
         });
+        /*
         buttonAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,7 +170,7 @@ public class Wizzard2Activity extends GeneralActivity {
                     Toast.makeText(Wizzard2Activity.this,"Ya selecciono este equipo.",Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
 
     View.OnClickListener onEliminarClick = new View.OnClickListener(){
@@ -242,49 +262,65 @@ public class Wizzard2Activity extends GeneralActivity {
         imageView1.setVisibility(View.INVISIBLE);
     }
 
-    private void setImage(int num_image){
+    private void setImage(int num_image, int idDataFactory, String name){
         ImageView imageView = null,imageView1 = null;
+        TextView textView;
+        showLog(num_image);
         switch (num_image){
             case 1:
                 imageView = imageEquipo1;
                 imageView1 = imageElimina1;
+                //textView = textEquipo1;
                 break;
             case 2:
                 imageView = imageEquipo2;
                 imageView1 = imageElimina2;
+                //textView = textEquipo2;
                 break;
             case 3:
                 imageView = imageEquipo3;
                 imageView1 = imageElimina3;
+                //textView = textEquipo3;
                 break;
             case 4:
                 imageView = imageEquipo4;
                 imageView1 = imageElimina4;
+                //textView = textEquipo4;
                 break;
             case 5:
                 imageView = imageEquipo5;
                 imageView1 = imageElimina5;
+                //textView = textEquipo5;
                 break;
             case 6:
                 imageView = imageEquipo6;
                 imageView1 = imageElimina6;
+                //textView = textEquipo6;
                 break;
             case 7:
                 imageView = imageEquipo7;
                 imageView1 = imageElimina7;
+                //textView = textEquipo7;
                 break;
             case 8:
                 imageView = imageEquipo8;
                 imageView1 = imageElimina8;
+                //textView = textEquipo8;
                 break;
             default:
                 imageView = imageEquipo1;
                 imageView1 = imageElimina1;
+                //textView = textEquipo1;
         }
 
-        int idImage = idEquipoDataF;
+
+        int idImage = idDataFactory;
+        /*textView.setText(name);
+        if(name.length()>10){
+            textView.setTextSize(10);
+        }
+        textView.setVisibility(View.VISIBLE);*/
         File file = new File(General.local_dir_images +"equipos/"+idImage+".gif");
-        showLog(file.getAbsolutePath());
         if(file.exists()){
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -424,16 +460,13 @@ public class Wizzard2Activity extends GeneralActivity {
         }
     }
 
-    private void showDialogLigas(final List<Liga> arrayList){
-        // Create custom dialog object
-        final Dialog dialog = new Dialog(this);
-        // Include dialog.xml file
+    private void showDialogLigas(final ArrayList<Liga> arrayList){
+        final Dialog dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        // Set dialog title
-        dialog.setTitle("");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+        List_Ligas arrayAdapter = new List_Ligas(this, arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();
@@ -454,13 +487,17 @@ public class Wizzard2Activity extends GeneralActivity {
         });
     }
 
-    private void showDialogEquipos(final List<Equipo> arrayList){
-        final Dialog dialog = new Dialog(this);
+    private void showDialogEquipos(final ArrayList<Equipo> arrayList){
+        final Dialog dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_listview);
-        dialog.setTitle("");
+        TextView textTitulo = (TextView) dialog.findViewById(R.id.textTitulo);
+        TextView textSubTitulo = (TextView) dialog.findViewById(R.id.textSubTitulo);
+        textTitulo.setText("ESCOGE EL EQUIPO");
+        textSubTitulo.setText(buttonLigas.getText());
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,
-                android.R.id.text1,arrayList);
+        List_Equipos arrayAdapter = new List_Equipos(this, arrayList);
         final ListView listView = (ListView) dialog.findViewById(R.id.listview);
         listView.setAdapter(arrayAdapter);
         dialog.show();
@@ -469,8 +506,21 @@ public class Wizzard2Activity extends GeneralActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 idEquipo = arrayList.get(i).getId();
+                nameTemp = arrayList.get(i).getName();
                 idEquipoDataF = arrayList.get(i).getData_factory_id();
-                buttonEquipos.setText(arrayList.get(i).getName());
+                //buttonEquipos.setText(arrayList.get(i).getName());
+                if (!agregado(idEquipo)) {
+                    for (int j = 0; j < 8; j++) {
+                        if (equipos_s[j] == -1) {
+                            equipos_s[j] = idEquipo;
+                            setImage(j + 1, idEquipoDataF, nameTemp);
+                            dialog.dismiss();
+                            return;
+                        }
+                    }
+                }else{
+                    Toast.makeText(Wizzard2Activity.this,"Ya selecciono este equipo.",Toast.LENGTH_SHORT).show();
+                }
                 dialog.dismiss();
             }
         });

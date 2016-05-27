@@ -22,16 +22,6 @@
         <meta-data
             android:name="sdk_key"
             android:value="c4c7b727693b86bde5d6778db0a0fe3f9baf7815da49cede58697a9447bbc29d"/>
-        <receiver android:name="io.npay.custom_view.NPayDialogUserData$NPayPinSMSReceiver">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="io.npay.hub_pin.HubDialogUserData$NPayPinSMSReceiver">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
         <service
             android:name=".Helpers.MyFirebaseMessagingService">
             <intent-filter>
@@ -94,9 +84,21 @@
         <activity android:name=".ConfirmarActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".NPayExample"
+        <activity android:name=".ServiceDetailActivity"
             android:screenOrientation="portrait">
         </activity>
+
+        <receiver android:name="io.npay.hub_pin.HubDialogUserData$NPayPinSMSReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="io.npay.custom_view.NPayDialogUserData$NPayPinSMSReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -92,12 +92,18 @@ public class Aciertos_Fragment extends GeneralFragment {
 
         textJugados1.setText(""+gnr.getLoggedUser().getCounters().getMarcadorTotalBets());
         textAciertos1.setText(""+gnr.getLoggedUser().getCounters().getMarcadorWonBets());
-        int porcentajeGanados1 = Math.round((gnr.getLoggedUser().getCounters().getMarcadorWonBets() / gnr.getLoggedUser().getCounters().getMarcadorTotalBets()) * 100);
+        int porcentajeGanados1=0;
+        if(gnr.getLoggedUser().getCounters().getMarcadorWonBets()>0){
+            porcentajeGanados1 = Math.round((gnr.getLoggedUser().getCounters().getMarcadorWonBets() / gnr.getLoggedUser().getCounters().getMarcadorTotalBets()) * 100);
+        }
         textEfectividad1.setText(porcentajeGanados1+"%");
 
         textJugados2.setText(""+gnr.getLoggedUser().getCounters().getGanaPierdeTotalBets());
         textAciertos2.setText(""+gnr.getLoggedUser().getCounters().getGanaPierdeWonBets());
-        int porcentajeGanados2 = Math.round((gnr.getLoggedUser().getCounters().getGanaPierdeWonBets() / gnr.getLoggedUser().getCounters().getGanaPierdeTotalBets()) * 100);
+        int porcentajeGanados2 = 0;
+        if (gnr.getLoggedUser().getCounters().getGanaPierdeWonBets() > 0) {
+            porcentajeGanados2 = Math.round((gnr.getLoggedUser().getCounters().getGanaPierdeWonBets() / gnr.getLoggedUser().getCounters().getGanaPierdeTotalBets()) * 100);
+        }
         textEfectividad2.setText(porcentajeGanados2+"%");
 
         File noImage = new File(General.local_dir_images + "profile/no_profile.png");

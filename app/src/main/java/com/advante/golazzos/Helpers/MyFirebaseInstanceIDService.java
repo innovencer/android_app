@@ -64,17 +64,15 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.PUT,
-                General.endpoint_users,
+                General.endpoint_users+"/me",
                 user,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         SharedPreferences preferences = MyFirebaseInstanceIDService.this.getSharedPreferences(
                                 General.packetname, Context.MODE_PRIVATE);
-                        if(!preferences.getString("device_registration_id", "").equals(device_registration_id)){
                             preferences.edit().putString("device_registration_id",device_registration_id).apply();
-                            Toast.makeText(MyFirebaseInstanceIDService.this,"Device ID Actualizado",Toast.LENGTH_SHORT).show();
-                        }
+                            //Toast.makeText(MyFirebaseInstanceIDService.this,"Device ID Actualizado",Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

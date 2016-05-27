@@ -57,7 +57,7 @@ public class Wizzard3Activity extends GeneralActivity {
         imageTW = (ImageView) findViewById(R.id.imageTW);
         imageMA = (ImageView) findViewById(R.id.imageMA);
 
-        changeColorButton(1);
+        //changeColorButton(1);
 
         buttonFB.setOnClickListener(new View.OnClickListener() {
             @Override

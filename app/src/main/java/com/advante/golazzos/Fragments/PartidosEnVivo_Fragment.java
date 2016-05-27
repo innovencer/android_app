@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.advante.golazzos.Adapters.List_Equipos;
 import com.advante.golazzos.Adapters.List_Ligas;
@@ -53,8 +55,11 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     ListView listView;
     TextView buttonPorJugar, buttonFinalizado;
+    private ViewFlipper viewFlipper;
+    private float lastX;
 
     TextView buttonLigas,buttonEquipos;
+    String equipo = "";
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
@@ -71,6 +76,7 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_partidos_2, container, false);
         listView = (ListView) view.findViewById(R.id.listview);
+        viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
 
         buttonPorJugar = (TextView) view.findViewById(R.id.buttonPorJugar);
         buttonFinalizado = (TextView) view.findViewById(R.id.buttonFinalizado);
@@ -118,7 +124,8 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
                 }
             }
         });
-        buscarPartidos();
+        view.setOnTouchListener(touchListener);
+        buscarPartidos(R.layout.item_partido_2);
         return view;
     }
 
@@ -260,14 +267,20 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 idLiga = arrayList.get(i).getId();
+                idEquipo = -1;
+                equipo = "";
                 String name = arrayList.get(i).getName();
                 if (name.length() > 18) {
                     buttonLigas.setText(name.substring(0, 18));
                 } else {
                     buttonLigas.setText(name);
                 }
-
                 dialog.dismiss();
+                if(viewFlipper.getDisplayedChild() == 0) {
+                    buscarPartidos(R.layout.item_partido_2);
+                }else{
+                    buscarPartidos(R.layout.item_partido_5);
+                }
             }
         });
     }
@@ -291,73 +304,138 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 idEquipo = arrayList.get(i).getId();
+                equipo = arrayList.get(i).getName();
                 soulteamTemp = new SoulTeam(arrayList.get(i).getImage_path(),arrayList.get(i).getName(),arrayList.get(i).getId());
                 buttonEquipos.setText(arrayList.get(i).getName());
                 dialog.dismiss();
+                if(viewFlipper.getDisplayedChild() == 0) {
+                    buscarPartidos(R.layout.item_partido_2);
+                }else{
+                    buscarPartidos(R.layout.item_partido_5);
+                }
             }
         });
     }
 
-    private void buscarPartidos(){
+    private void buscarPartidos(final int resourse){
+        String url = General.endpoint_maches_playing;
+        if(idLiga > 0){
+            url = url +"&tournament_id="+idLiga;
+        }
+        if(idEquipo > 0){
+            url = url +"&team_name="+equipo.replace(" ","%20");
+        }
         dialog.show();
-            jsArrayRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    General.endpoint_maches_playing,
-                    "",
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Manejo de la respuesta
-                            try {
-                                JSONArray data = response.getJSONArray("response");
-                                ArrayList<Partido> partidos = new ArrayList<>();
-                                Partido partido;
-                                for(int i=0;i< data.length();i++){
-                                    partido = new Partido();
-                                    partido.setId(data.getJSONObject(i).getInt("id"));
-                                    partido.setStart_time_utc(data.getJSONObject(i).getString("start_time_utc"));
-                                    partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
-                                    partido.setTournament(new Liga(0,
-                                            data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
-                                            data.getJSONObject(i).getJSONObject("tournament").getString("name")));
-                                    partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
-                                            data.getJSONObject(i).getJSONObject("local_team").getString("name"),
-                                            data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));
-                                    partido.setVisitante(new Equipo(data.getJSONObject(i).getJSONObject("visitant_team").getInt("id"),
-                                            data.getJSONObject(i).getJSONObject("visitant_team").getString("name"),
-                                            data.getJSONObject(i).getJSONObject("visitant_team").getString("image_path")));
-                                    partido.setLocal_score(data.getJSONObject(i).getInt("local_score"));
-                                    partido.setVisitant_score(data.getJSONObject(i).getInt("visitant_score"));
-                                    partidos.add(partido);
-
-                                }
-                                List_Partidos list_partidos = new List_Partidos(getContext(),partidos,R.layout.item_partido_2);
-                                listView.setAdapter(list_partidos);
-                                dialog.dismiss();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    }){
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                "",
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Token " + General.getToken());
-                        params.put("Content-Type", "application/json");
-                        return params;
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        try {
+                            JSONArray data = response.getJSONArray("response");
+                            ArrayList<Partido> partidos = new ArrayList<>();
+                            Partido partido;
+                            for(int i=0;i< data.length();i++){
+                                partido = new Partido();
+                                partido.setId(data.getJSONObject(i).getInt("id"));
+                                partido.setStart_time_utc(data.getJSONObject(i).getString("start_time_utc"));
+                                partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
+                                partido.setTournament(new Liga(0,
+                                        data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
+                                        data.getJSONObject(i).getJSONObject("tournament").getString("name")));
+                                partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
+                                        data.getJSONObject(i).getJSONObject("local_team").getString("name"),
+                                        data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));
+                                partido.setVisitante(new Equipo(data.getJSONObject(i).getJSONObject("visitant_team").getInt("id"),
+                                        data.getJSONObject(i).getJSONObject("visitant_team").getString("name"),
+                                        data.getJSONObject(i).getJSONObject("visitant_team").getString("image_path")));
+                                partido.setLocal_score(data.getJSONObject(i).getInt("local_score"));
+                                partido.setVisitant_score(data.getJSONObject(i).getInt("visitant_score"));
+                                partidos.add(partido);
+
+                            }
+                            List_Partidos list_partidos = new List_Partidos(getContext(),partidos,resourse);
+                            listView.setAdapter(list_partidos);
+                            dialog.dismiss();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                };
-            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    7000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
     }
+
+    private View.OnTouchListener touchListener = new View.OnTouchListener(){
+
+        @Override
+        public boolean onTouch(View view, MotionEvent touchevent) {
+            switch (touchevent.getAction())
+            {
+                // when user first touches the screen to swap
+                case MotionEvent.ACTION_DOWN:
+                {
+                    lastX = touchevent.getX();
+                    break;
+                }
+                case MotionEvent.ACTION_UP:
+                {
+                    float currentX = touchevent.getX();
+
+                    // if left to right swipe on screen
+                    if (lastX < currentX)
+                    {
+                        // If no more View/Child to flip
+                        if (viewFlipper.getDisplayedChild() == 0)
+                            break;
+
+                        // set the required Animation type to ViewFlipper
+                        // The Next screen will come in form Left and current Screen will go OUT from Right
+                        viewFlipper.setInAnimation(getContext(), R.anim.in_from_left);
+                        viewFlipper.setOutAnimation(getContext(), R.anim.out_to_right);
+                        // Show the next Screen
+                        viewFlipper.showNext();
+                        buscarPartidos(R.layout.item_partido_2);
+                    }
+
+                    // if right to left swipe on screen
+                    if (lastX > currentX)
+                    {
+                        if (viewFlipper.getDisplayedChild() == 1)
+                            break;
+                        // set the required Animation type to ViewFlipper
+                        // The Next screen will come in form Right and current Screen will go OUT from Left
+                        viewFlipper.setInAnimation(getContext(), R.anim.in_from_right);
+                        viewFlipper.setOutAnimation(getContext(), R.anim.out_to_left);
+                        // Show The Previous Screen
+                        viewFlipper.showPrevious();
+                        buscarPartidos(R.layout.item_partido_5);
+                    }
+                    break;
+                }
+            }
+            return true;
+        }
+    };
 }
