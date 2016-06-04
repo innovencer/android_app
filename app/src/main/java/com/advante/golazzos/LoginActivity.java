@@ -258,7 +258,6 @@ public class LoginActivity extends GeneralActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showLog(response.toString());
                         User user1 = new User();
                         try {
                             JSONObject data = response.getJSONObject("response");

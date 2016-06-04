@@ -75,4 +75,7 @@
 
     <string name="text.equipo_alma">Todos tenemos un equipo del alma, selecciona el tuyo</string>
     <string name="text.wizzard3.text1">¡Invita a tus amigos y te regalamos <b>300 puntos</b>!</string>
+
+    <string name="hintEscribir"><i>QUÉ TIENES EN MENTE?</i></string>
+    <string name="text1"><i>"Como recompeza obtendrás"</i></string>
 </resources>

@@ -1,8 +1,10 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,12 +17,16 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,13 +73,14 @@ import rx.functions.Func1;
  */
 public class FanaticadaEscribir_Fragment extends GeneralFragment {
     EditText editComentarios;
-    LinearLayout buttonPublicar, buttonCamera, linearAttached,buttonClearImage;
+    LinearLayout buttonBack,buttonPublicar, buttonCamera, linearAttached,buttonClearImage,linear1;
     JsonObjectRequest jsArrayRequest;
     ImageView imageAttached, imageEquipo1;
     String pic_name;
     Bitmap bitmapAttached;
     public static Uri path;
-    int id;
+    int id, normalHeight = 0;
+    InputMethodManager imm;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,12 +89,16 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fanaticada_escribir, container, false);
+        final View view = inflater.inflate(R.layout.fragment_fanaticada_escribir, container, false);
+
+        imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         buttonPublicar = (LinearLayout) view.findViewById(R.id.buttonPublicar);
         buttonCamera = (LinearLayout) view.findViewById(R.id.buttonCamera);
+        buttonBack = (LinearLayout) view.findViewById(R.id.buttonBack);
         buttonClearImage = (LinearLayout) view.findViewById(R.id.buttonClearImage);
         linearAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
+        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
         editComentarios = (EditText) view.findViewById(R.id.editCometario);
         imageAttached = (ImageView) view.findViewById(R.id.imageAttached);
         imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
@@ -100,6 +111,7 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
         buttonPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 Comentar();
             }
         });
@@ -115,6 +127,39 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
                 imageAttached.setImageBitmap(null);
                 bitmapAttached = null;
                 linearAttached.setVisibility(View.GONE);
+            }
+        });
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                getFragmentManager().popBackStack();
+            }
+        });
+
+        final Resources r = getResources();
+        final int dp50 = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                50,
+                r.getDisplayMetrics()
+        );
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
+            public void onGlobalLayout(){
+                if(normalHeight == 0){
+                    normalHeight = view.getHeight();
+                }
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT
+                        ,LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                if(view.getHeight()< normalHeight){
+                    params.setMargins(0, 0, 0, 0);
+                    linear1.setLayoutParams(params);
+                }else if(view.getHeight() == normalHeight){
+                    params.setMargins(0, 0, 0, dp50);
+                    linear1.setLayoutParams(params);
+                }
+
             }
         });
         return view;
@@ -264,10 +309,12 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
                     case 0:
                         pickImageFromSource(Sources.CAMERA);
                         linearAttached.setVisibility(View.VISIBLE);
+                        dialog.dismiss();
                         break;
                     case 1:
                         pickImageFromSource(Sources.GALLERY);
                         linearAttached.setVisibility(View.VISIBLE);
+                        dialog.dismiss();
                         break;
                     case 2:
                         dialog.dismiss();

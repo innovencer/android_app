@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +25,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
 import com.facebook.share.model.AppInviteContent;
+import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.AppInviteDialog;
+import com.facebook.share.widget.SendButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +49,7 @@ public class Amigos_Fragment extends GeneralFragment {
     ListView listView;
     LinearLayout linear1, linear2, linear3, linear4;
     ImageView imgInvitar;
-
+    private CallbackManager callbackManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,6 +83,35 @@ public class Amigos_Fragment extends GeneralFragment {
                 }
             }
         });
+
+        callbackManager = CallbackManager.Factory.create();
+        SendButton sendButton = (SendButton) view.findViewById(R.id.button_facebook);
+        sendButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+                    @Override
+                    public void onSuccess(Sharer.Result result) {
+                        showLog(result.toString());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        showLog("cancelled");
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        showLog(error.getMessage());
+                    }
+                });
+
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentTitle("Hello")
+                .setContentDescription("How are you? here's a link")
+                .setImageUrl(Uri.parse("https://pbs.twimg.com/profile_images/596777148435705856/tsE4inUQ.jpg"))
+                .setContentUrl(Uri.parse("https://pbs.twimg.com/profile_images/596777148435705856/tsE4inUQ.jpg"))
+                .build();
+
+        sendButton.setShareContent(linkContent);
+
         getData(General.endpoint_friends);
         return view;
     }

@@ -180,7 +180,7 @@
             android:orientation="horizontal">
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo1"
                     android:layout_width="60dp"
@@ -196,10 +196,21 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="invisible"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo1" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo2"
                     android:layout_width="60dp"
@@ -214,10 +225,20 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo2" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo3"
                     android:layout_width="60dp"
@@ -232,10 +253,20 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina3" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo3" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo4"
                     android:layout_width="60dp"
@@ -250,6 +281,16 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina4" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo4" />
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
@@ -262,7 +303,7 @@
             android:orientation="horizontal">
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo5"
                     android:layout_width="60dp"
@@ -277,10 +318,20 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina5" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo5" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo6"
                     android:layout_width="60dp"
@@ -295,10 +346,20 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina6" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo6" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo7"
                     android:layout_width="60dp"
@@ -313,10 +374,20 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina7" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo7" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="76dp"
-                android:layout_height="76dp">
+                android:layout_height="90dp">
                 <ImageView
                     android:id="@+id/imageEquipo8"
                     android:layout_width="60dp"
@@ -331,6 +402,16 @@
                     android:tint="@color/black"
                     android:src="@android:drawable/ic_delete"
                     android:id="@+id/imageElimina8" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Real Madrid"
+                    android:id="@+id/textEquipo8" />
             </RelativeLayout>
         </LinearLayout>
         <TextView

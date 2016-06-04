@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -20,9 +21,14 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.Partido;
+import com.advante.golazzos.Model.SoulTeam;
+import com.advante.golazzos.Model.User;
+import com.advante.golazzos.Model.UserLevel;
+import com.advante.golazzos.Model.UserSettings;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -103,25 +109,27 @@ public class ConfirmarActivity extends GeneralActivity {
         textNombreLocal.setText(nombreLocal);
         textNombreVisitante.setText(nombreVisitante);
 
+        if(local_score != visitant_score) {
+            File file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
+            if (file.exists()) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        File file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
-        showLog(imagePath);
-        if (file.exists()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                GraphicsUtil graphicUtil = new GraphicsUtil();
+                imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
+                        bm, 16));
+            } else {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-        } else {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.rect_white);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.rect_white);
+                GraphicsUtil graphicUtil = new GraphicsUtil();
+                imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
+                        bm, 16));
+            }
+        }else{
+            imageEquipo1.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_main));
         }
 
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
@@ -145,12 +153,20 @@ public class ConfirmarActivity extends GeneralActivity {
         try {
             values.put("match_id", idPartido);
             values.put("amount_centavos",amount_centavos);
-            values.put("local_score",local_score);
-            values.put("visitant_score",visitant_score);
             //Esto esta asi por temas de back, no pueden existir otro tipo de apuestas que no tengan
             //bet_options.
-            if(bet_option_id>0)
-                values.put("bet_option_id", bet_option_id);
+            if(bet_option_id>0) {
+                if(local_score > visitant_score){
+                    values.put("bet_option_id", 1);
+                }else if(visitant_score > local_score){
+                    values.put("bet_option_id", 2);
+                }else if( local_score == visitant_score){
+                    values.put("bet_option_id", 3);
+                }
+            }else{
+                values.put("local_score",local_score);
+                values.put("visitant_score",visitant_score);
+            }
             bet.put("bet",values);
             showLog(bet.toString());
         } catch (JSONException e) {
@@ -170,7 +186,65 @@ public class ConfirmarActivity extends GeneralActivity {
                         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog1.setContentView(R.layout.dialog_confirmar_jugada);
                         dialog1.setCancelable(false);
+                        User user1 = new User();
+                        try {
+                            JSONObject data = response.getJSONObject("current_user");
+                            user1.setEmail(data.getString("email"));
+                            user1.setId(data.getInt("id"));
+                            user1.setName(data.optString("name"));
+                            user1.setPaid_subscription(data.getBoolean("paid_subscription"));
+                            user1.setPoints(data.getDouble("points"));
+                            user1.setProfile_pic_url(data.getString("profile_pic_url"));
 
+                            if(!data.isNull("soul_team")){
+                                JSONObject soul_team = data.getJSONObject("soul_team");
+                                user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
+                            }
+
+                            JSONObject level = data.getJSONObject("level");
+                            user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
+                                    level.getString("name"), level.getInt("order"),level.getInt("points")));
+
+                            int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
+                                    total_bets = 0, won_bets = 0;
+                            if(data.getJSONObject("counters").has("Marcador"))
+                                marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Marcador"))
+                                marcadorWon_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Gana/Pierde"))
+                                ganaPierdeTotal_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Gana/Pierde"))
+                                ganaPierdeWon_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Total"))
+                                total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
+                            if(data.getJSONObject("counters").has("Total"))
+                                won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
+                            user1.setCounters(new Counters(
+                                    marcadorTotal_bets,
+                                    marcadorWon_bets,
+                                    ganaPierdeTotal_bets,
+                                    ganaPierdeWon_bets,
+                                    total_bets,
+                                    won_bets
+                            ));
+                            /*
+                            user1.setUserSettings(new UserSettings(
+                                    data.getJSONObject("settings").getBoolean("won_notification"),
+                                    data.getJSONObject("settings").getBoolean("lose_notification"),
+                                    data.getJSONObject("settings").getBoolean("new_bet_notification"),
+                                    false,
+                                    data.getJSONObject("settings").getBoolean("closed_match_notification")));
+                            */
+                            user1.setUserSettings(new UserSettings(
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false));
+                            gnr.setLoggedUser(user1);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         ImageView image = (ImageView) dialog1.findViewById(R.id.image);
 
                         image.setOnClickListener(new View.OnClickListener() {

@@ -18,6 +18,8 @@ import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.R;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ruben Flores on 5/8/2016.
@@ -25,10 +27,12 @@ import java.io.File;
 public class Nivel_Fragmet extends GeneralFragment {
     TextView textNivel, textTituloNivel, textAciertos, textPuntos, textTituloNivel1;
     TextView textNivel0, textNivel1, textNivel2, textNivel3, textNivel4, textNivel5, textNivel6, textNivel7,
-             textNivel8, textNivel9, textNivel10, textNivel11, textNivel12, textNivel13, textNivel14, textNivel15;
-    ImageView imageTrofeo;
+             textNivel8, textNivel9, textNivel10, textNivel11, textNivel12, textNivel13, textNivel14, textNivel15,text1;
+    ImageView imageTrofeo, image0, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12,
+                        image13, image14, image15;
     BitmapFactory.Options options;
     int nivel;
+    List<ImageView> imageViews = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class Nivel_Fragmet extends GeneralFragment {
         textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
         textPuntos = (TextView) view.findViewById(R.id.textPuntos);
         textTituloNivel1 = (TextView) view.findViewById(R.id.textTituloNivel1);
+        text1 = (TextView) view.findViewById(R.id.text1);
 
         textNivel0 = (TextView) view.findViewById(R.id.textNivel0);
         textNivel1 = (TextView) view.findViewById(R.id.textNivel1);
@@ -57,6 +62,23 @@ public class Nivel_Fragmet extends GeneralFragment {
         textNivel14 = (TextView) view.findViewById(R.id.textNivel14);
         textNivel15 = (TextView) view.findViewById(R.id.textNivel15);
 
+        image0 = (ImageView) view.findViewById(R.id.image0);
+        image1 = (ImageView) view.findViewById(R.id.image1);
+        image2 = (ImageView) view.findViewById(R.id.image2);
+        image3 = (ImageView) view.findViewById(R.id.image3);
+        image4 = (ImageView) view.findViewById(R.id.image4);
+        image5 = (ImageView) view.findViewById(R.id.image5);
+        image6 = (ImageView) view.findViewById(R.id.image6);
+        image7 = (ImageView) view.findViewById(R.id.image7);
+        image8 = (ImageView) view.findViewById(R.id.image8);
+        image9 = (ImageView) view.findViewById(R.id.image9);
+        image10 = (ImageView) view.findViewById(R.id.image10);
+        image11 = (ImageView) view.findViewById(R.id.image11);
+        image12 = (ImageView) view.findViewById(R.id.image12);
+        image13 = (ImageView) view.findViewById(R.id.image13);
+        image14 = (ImageView) view.findViewById(R.id.image14);
+        image15 = (ImageView) view.findViewById(R.id.image15);
+
         textNivel0.setOnClickListener(onClickLevel);
         textNivel1.setOnClickListener(onClickLevel);
         textNivel2.setOnClickListener(onClickLevel);
@@ -74,13 +96,30 @@ public class Nivel_Fragmet extends GeneralFragment {
         textNivel14.setOnClickListener(onClickLevel);
         textNivel15.setOnClickListener(onClickLevel);
 
+        imageViews.add(image0);
+        imageViews.add(image1);
+        imageViews.add(image2);
+        imageViews.add(image3);
+        imageViews.add(image4);
+        imageViews.add(image5);
+        imageViews.add(image6);
+        imageViews.add(image7);
+        imageViews.add(image8);
+        imageViews.add(image9);
+        imageViews.add(image10);
+        imageViews.add(image11);
+        imageViews.add(image12);
+        imageViews.add(image13);
+        imageViews.add(image14);
+        imageViews.add(image15);
+
         imageTrofeo = (ImageView) view.findViewById(R.id.imageTrofeo);
 
         textAciertos.setText(""+gnr.getLoggedUser().getLevel().getHits_count());
         textNivel.setText(""+ gnr.getLoggedUser().getLevel().getOrder());
         textTituloNivel.setText(""+gnr.getLoggedUser().getLevel().getName());
         textTituloNivel1.setText(""+gnr.getLoggedUser().getLevel().getName());
-        textPuntos.setText(""+gnr.getLoggedUser().getLevel().getPoints());
+        textPuntos.setText(""+gnr.getLoggedUser().getLevel().getPoints() +" puntos");
 
 
 
@@ -100,10 +139,10 @@ public class Nivel_Fragmet extends GeneralFragment {
     View.OnClickListener onClickLevel = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            textTituloNivel.setText(view.getTag().toString().split(";")[0].toUpperCase());
+            //textTituloNivel.setText(view.getTag().toString().split(";")[0].toUpperCase());
             textTituloNivel1.setText(view.getTag().toString().split(";")[0]);
             textAciertos.setText(view.getTag().toString().split(";")[2].toUpperCase());
-            textPuntos.setText(view.getTag().toString().split(";")[1].toUpperCase());
+            textPuntos.setText(view.getTag().toString().split(";")[1].toUpperCase() +" puntos");
             switch (view.getId()){
                 case R.id.textNivel0:
                     tintLevel2(0);
@@ -170,11 +209,23 @@ public class Nivel_Fragmet extends GeneralFragment {
         for(i=level+1; i <= 15; i++){
             setInActiveTextView(getTextView(i));
         }
+        for(i=0;i<imageViews.size();i++){
+            if(i==level){
+                imageViews.get(i).setVisibility(View.VISIBLE);
+            }else{
+                imageViews.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
 
     }
     private void tintLevel2(int levelClick){
         //int i;
         tintLevel(nivel);
+        if(nivel<levelClick){
+            text1.setText(getString(R.string.text1));
+        }else{
+            text1.setText("Como recompeza obtuviste");
+        }
         setPassedTextView(getTextView(levelClick));
         File file = new File(General.local_dir_images + "levels/trof_" + levelClick + ".png");
         if(file.exists()){
@@ -182,6 +233,13 @@ public class Nivel_Fragmet extends GeneralFragment {
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
             imageTrofeo.setImageBitmap(bm);
+        }
+        for(int i=0;i<imageViews.size();i++){
+            if(i==levelClick){
+                imageViews.get(i).setVisibility(View.VISIBLE);
+            }else{
+                imageViews.get(i).setVisibility(View.INVISIBLE);
+            }
         }
         /*
         for(i=0; i < level; i++){

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,9 +25,11 @@ import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.OnItemClickListener;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.Liga;
+import com.advante.golazzos.Model.Post;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.R;
 import com.advante.golazzos.widget.DividerItemDecoration;
@@ -156,6 +159,9 @@ public class Jugadas_Fragment extends GeneralFragment {
                                 jugada = new Jugada();
                                 jugada.setId(data.getJSONObject(i).getInt("id"));
                                 jugada.setTextTime_ago("Waiting");
+                                jugada.setTrackable_type(data.getJSONObject(i).getJSONObject("match").getString("trackable_type"));
+                                if(data.getJSONObject(i).getJSONObject("match").has("html_center_url"))
+                                    jugada.setHtml_center_url(data.getJSONObject(i).getJSONObject("match").getString("html_center_url"));
 
                                 equipo = new Equipo();
                                 equipo.setData_factory_id(data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getInt("data_factory_id"));
@@ -169,15 +175,72 @@ public class Jugadas_Fragment extends GeneralFragment {
                                 equipo.setInitials(data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("initials"));
                                 jugada.setEquipo2(equipo);
 
-                                if(i%2 == 0){
-                                    jugada.setType(2);
-                                }else{
-                                    jugada.setType(1);
+                                String label = "";
+                                switch (status){
+                                    case "?status=not_started":
+                                        label = "Estás jugando "+
+                                                data.getJSONObject(i).getInt("amount")+ " puntos al "+
+                                                //data.getJSONObject(i).getString("type")+ " en "+
+                                                "<font color='#0E5A80'>"+data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + "</font> vs <font color='#0E5A80'>"+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name")+"</font>"+
+                                                " resultado "+ data.getJSONObject(i).getString("option");
+                                        jugada.setType(1);
+                                        break;
+                                    case "?status=being_played":
+                                        label = "Estás jugando "+
+                                                data.getJSONObject(i).getInt("amount")+ " puntos al "+
+                                                //data.getJSONObject(i).getString("type")+ " en "+
+                                                "<font color='#0E5A80'>"+data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + "</font> vs <font color='#0E5A80'>"+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name")+"</font>"+
+                                                " resultado "+ data.getJSONObject(i).getString("option");
+                                        jugada.setType(1);
+                                        break;
+                                    case "?status=finished":
+                                        if(data.getJSONObject(i).getString("won") != "null"){
+                                            if(data.getJSONObject(i).getBoolean("won")) {
+                                                label = "Ganaste jugando " + data.getJSONObject(i).getInt("amount") + " puntos a que " +
+                                                        data.getJSONObject(i).getString("option") + " en " +
+                                                        data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + " vs " + data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name");
+                                                jugada.setType(2);
+                                            }else{
+                                                label = "Perdiste jugando "+ data.getJSONObject(i).getInt("amount")+ " puntos a que "+
+                                                        data.getJSONObject(i).getString("option") +" en "+
+                                                        data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + " vs "+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name");
+                                                jugada.setType(1);
+                                            }
+                                        }else{
+                                            label = "Error de Data.";
+                                            jugada.setType(1);
+                                        }
+                                        break;
                                 }
+                                jugada.setLabel(label);
                                 jugadas.add(jugada);
                             }
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            List_Jugadas adapter = new List_Jugadas(getActivity(), jugadas, new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(Jugada item) {
+                                    FanaticadaDetalle_Fragment fragment = new FanaticadaDetalle_Fragment();
+                                    Bundle bundle = new Bundle();
 
-                            List_Jugadas adapter = new List_Jugadas(getActivity(), jugadas);
+                                    bundle.putString("time_ago", item.getTextTime_ago());
+                                    bundle.putString("label", item.getLabel());
+                                    bundle.putInt("idImage", gnr.getLoggedUser().getId());
+                                    bundle.putString("profile_pic_url", gnr.getLoggedUser().getProfile_pic_url());
+                                    bundle.putString("html_center_url", item.getHtml_center_url());
+                                    bundle.putString("trackable_type", item.getTrackable_type());
+                                    /*
+                                    bundle.putString("imageAttached",post1.getImage_url());
+                                    bundle.putInt("like",post1.getLikedByMe());
+                                    bundle.putInt("id",post1.getId());
+                                    */
+
+                                    fragment.setArguments(bundle);
+                                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                    ft.replace(R.id.flContent, fragment, "");
+                                    ft.addToBackStack(null);
+                                    ft.commit();
+                                }
+                            });
                             recycler.setAdapter(adapter);
                             dialog.dismiss();
                         } catch (JSONException e) {

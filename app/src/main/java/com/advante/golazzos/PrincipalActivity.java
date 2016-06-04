@@ -32,12 +32,14 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +52,7 @@ import com.advante.golazzos.Fragments.Amigos_Fragment;
 import com.advante.golazzos.Fragments.Busqueda_Fragment;
 import com.advante.golazzos.Fragments.Cuenta_Fragment;
 import com.advante.golazzos.Fragments.Fragment_Ganadores;
+import com.advante.golazzos.Fragments.Golazzos_Fragment;
 import com.advante.golazzos.Fragments.Jugadas_Fragment;
 import com.advante.golazzos.Fragments.Nivel_Fragmet;
 import com.advante.golazzos.Fragments.PartidosEnVivo_Fragment;
@@ -103,7 +106,8 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
 
     public String sku;
     public int items_qty = 0;
-
+    int normalHeight = 0;
+    boolean no_menu = false;
     NPay npay;
 
     @Override
@@ -146,6 +150,8 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         LeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                loadProfile();
+                no_menu = false;
                 switch (i){
                     case 0:
                         showFragment(7);
@@ -153,13 +159,17 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                         textTitle.setText("PERFIL");
                         bottomMenu1.setVisibility(View.GONE);
                         bottomMenu2.setVisibility(View.GONE);
+                        no_menu = true;
                         break;
                     case 1:
+                        /*
                         showFragment(0);
                         pintarMenu(1);
                         textTitle.setText("FANATICADA");
                         bottomMenu1.setVisibility(View.VISIBLE);
                         bottomMenu2.setVisibility(View.GONE);
+                        */
+                        onClickBottomMenu(findViewById(R.id.menuFanaticada));
                         break;
                     case 2:
                         showFragment(1);
@@ -181,9 +191,19 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                         textTitle.setText("PERFIL");
                         bottomMenu1.setVisibility(View.GONE);
                         bottomMenu2.setVisibility(View.GONE);
+                        no_menu = true;
                         break;
-                    case 7:
+                    case 5:
+                        showFragment(12);
+                        pintarMenu(3);
+                        textTitle.setText("GOLAZZOS");
+                        bottomMenu1.setVisibility(View.GONE);
+                        bottomMenu2.setVisibility(View.GONE);
+                        no_menu = true;
+                        break;
+                    case 6:
                         finish();
+                        break;
                 }
             }
         });
@@ -229,9 +249,30 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         npay = new NPay(this);
 
+        final Resources r = getResources();
+        final int dp50 = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                50,
+                r.getDisplayMetrics()
+        );
+
+        final FrameLayout view = (FrameLayout) findViewById(R.id.flContent);
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
+            public void onGlobalLayout(){
+                if(!no_menu) {
+                    if (normalHeight == 0) {
+                        normalHeight = view.getHeight();
+                    }
+                    if (view.getHeight() < normalHeight) {
+                        bottomMenu1.setVisibility(View.GONE);
+                    } else if (view.getHeight() == normalHeight) {
+                        bottomMenu1.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
     }
-
-
 
     private void showFragment(int position){
         Fragment fragment = null;
@@ -285,6 +326,10 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                 fragmentClass = Jugadas_Fragment.class;
                 linearPuntos.setVisibility(View.VISIBLE);
                 break;
+            case 12:
+                fragmentClass = Golazzos_Fragment.class;
+                linearPuntos.setVisibility(View.GONE);
+                break;
             default:
                 fragmentClass = PartidosPorJugar_Fragment.class;
                 linearPuntos.setVisibility(View.VISIBLE);
@@ -303,6 +348,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     }
 
     public void onClickBottomMenu(View v){
+        loadProfile();
         switch (v.getId()){
             case R.id.menuFanaticada:
                 imageFanaticada.setColorFilter(Color.rgb(223, 253, 0));
@@ -495,7 +541,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuPartidos)));
         leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuJugadas)));
         leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuCuenta)));
-        leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuAyuda)));
+        //leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuAyuda)));
         leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuGolazzos)));
         leftMenu_items.add(new LeftMenu_Item(0, getResources().getString(R.string.menuSalir)));
         return leftMenu_items;
@@ -698,8 +744,8 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
 
                 pintarMenu(1);
 
-                textTitle.setText("PARTIDOS");
-                showFragment(1);
+                textTitle.setText("FANATICADA");
+                showFragment(0);
 
                 bottomMenu1.setVisibility(View.VISIBLE);
                 bottomMenu2.setVisibility(View.GONE);
@@ -741,52 +787,54 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         public void onPrepareLoad(Drawable placeHolderDrawable) {}
     };
 
-    private void loadProfile(){
-        File file = new File(General.local_dir_images + "profile/no_profile.png");
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        GraphicsUtil graphicUtil = new GraphicsUtil();
-        imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
+    private void loadProfile() {
+        if (gnr.getLoggedUser() != null) {
+            File file = new File(General.local_dir_images + "profile/no_profile.png");
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            GraphicsUtil graphicUtil = new GraphicsUtil();
+            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                    bm, 16));
 
-        textName.setText("Hola, " + gnr.getLoggedUser().getName().split(" ")[0]);
-        textPuntos.setText(""+gnr.getLoggedUser().getPoints());
-        String s = String.format("%,d", Math.round(gnr.getLoggedUser().getPoints()));
-        textPuntosGlobal.setText(s +" pts");
-        textNivel.setText(""+gnr.getLoggedUser().getLevel().getOrder());
-        if(gnr.getLoggedUser().getProfile_pic_url().contains("facebook.com")) {
-            pic_name = "" + gnr.getLoggedUser().getId();
+            textName.setText("Hola, " + gnr.getLoggedUser().getName().split(" ")[0]);
+            String s = String.format("%,d", Math.round(gnr.getLoggedUser().getPoints()));
+            textPuntos.setText(s);
+            textPuntosGlobal.setText(s + " pts");
+            textNivel.setText("" + gnr.getLoggedUser().getLevel().getOrder());
+            if (gnr.getLoggedUser().getProfile_pic_url().contains("facebook.com")) {
+                pic_name = "" + gnr.getLoggedUser().getId();
 
-            file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-            if (file.exists()) {
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                graphicUtil = new GraphicsUtil();
-                imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
+                file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
+                if (file.exists()) {
+                    options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                    graphicUtil = new GraphicsUtil();
+                    imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                            bm, 16));
+                } else {
+                    Picasso.with(this)
+                            .load(gnr.getLoggedUser().getProfile_pic_url())
+                            .into(target);
+                }
+
             } else {
-                Picasso.with(this)
-                        .load(gnr.getLoggedUser().getProfile_pic_url())
-                        .into(target);
-            }
-
-        }else{
-            pic_name = gnr.getLoggedUser().getProfile_pic_url().substring(
-                    gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("/"),
-                    gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("."));
-            if (file.exists()) {
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                graphicUtil = new GraphicsUtil();
-                imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-            } else {
-                Picasso.with(this)
-                        .load(gnr.getLoggedUser().getProfile_pic_url())
-                        .into(target);
+                pic_name = gnr.getLoggedUser().getProfile_pic_url().substring(
+                        gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("/"),
+                        gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("."));
+                if (file.exists()) {
+                    options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                    graphicUtil = new GraphicsUtil();
+                    imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                            bm, 16));
+                } else {
+                    Picasso.with(this)
+                            .load(gnr.getLoggedUser().getProfile_pic_url())
+                            .into(target);
+                }
             }
         }
     }
@@ -795,6 +843,12 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     protected void onDestroy() {
         android.os.Process.killProcess(android.os.Process.myPid());
         super.onDestroy();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadProfile();
     }
 
     @Override
@@ -809,4 +863,5 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
     }
+
 }

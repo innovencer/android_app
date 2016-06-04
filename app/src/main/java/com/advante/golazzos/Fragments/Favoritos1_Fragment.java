@@ -52,7 +52,7 @@ public class Favoritos1_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     ImageView picView;
     TextView buttonLigas,buttonEquipos, buttonGuardar, textName;
-    LinearLayout buttonFavoritos2;
+    LinearLayout buttonFavoritos2, linear4;
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
@@ -79,9 +79,13 @@ public class Favoritos1_Fragment extends GeneralFragment {
         buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
         buttonGuardar = (TextView) view.findViewById(R.id.buttonGuardar);
         buttonFavoritos2 = (LinearLayout) view.findViewById(R.id.buttonFavoritos2);
+        linear4 = (LinearLayout) view.findViewById(R.id.linear4);
 
         textName = (TextView) view.findViewById(R.id.textName);
-        textName.setText(gnr.getLoggedUser().getSoul_team().getName());
+        if(gnr.getLoggedUser().getSoul_team() != null) {
+            textName.setText(gnr.getLoggedUser().getSoul_team().getName());
+            setImage();
+        }
 
         buttonLigas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,18 +121,21 @@ public class Favoritos1_Fragment extends GeneralFragment {
             }
         });
 
-        buttonFavoritos2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.flContent, new Favoritos2_Fragment(), "");
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-        setImage();
+        buttonFavoritos2.setOnClickListener(clickFavoritos1);
+        linear4.setOnClickListener(clickFavoritos1);
+
         return view;
     }
+
+    View.OnClickListener clickFavoritos1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.flContent, new Favoritos2_Fragment(), "");
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    };
 
     private void setImage(){
         String imagePath = gnr.getLoggedUser().getSoul_team().getImage_path();

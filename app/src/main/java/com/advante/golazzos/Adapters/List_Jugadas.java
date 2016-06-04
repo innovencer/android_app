@@ -5,20 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.advante.golazzos.Fragments.FanaticadaDetalle_Fragment;
 import com.advante.golazzos.Helpers.General;
+import com.advante.golazzos.Interface.OnItemClickListener;
 import com.advante.golazzos.Model.Jugada;
+import com.advante.golazzos.Model.Post;
 import com.advante.golazzos.Model.Ranking_Item;
+import com.advante.golazzos.PrincipalActivity;
 import com.advante.golazzos.R;
 import com.advante.golazzos.ServiceDetailActivity;
 
@@ -34,10 +43,13 @@ import io.npay.hub.services.ServiceItem;
 public class List_Jugadas extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity context;
     private ArrayList<Jugada> items;
+    private final OnItemClickListener listener;
+    FragmentTransaction ft;
 
-    public List_Jugadas(Activity context, ArrayList<Jugada> items) {
+    public List_Jugadas(Activity context, ArrayList<Jugada> items, OnItemClickListener listener) {
         this.context = context;
         this.items = items;
+        this.listener = listener;
     }
 
     @Override
@@ -63,21 +75,14 @@ public class List_Jugadas extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bm;
-        Log.d("Golazz", "type"+ holder.getItemViewType());
-        /*
-        switch (holder.getItemViewType()){
-            case 1:
 
-                break;
-
-        }
-        */
         ViewHolder0 viewHolder0 = (ViewHolder0) holder;
         viewHolder0.textEquipo1.setText(jugada.getEquipo1().getInitials());
         viewHolder0.textEquipo2.setText(jugada.getEquipo2().getInitials());
-        String label = "Estas jugando al <font color='#0E5A80'>"+ jugada.getEquipo1().getName() +"</font> vs <font color='#0E5A80'>"+ jugada.getEquipo2().getName()+"</font>";
+        viewHolder0.bind(items.get(position), listener);
+        //String label = "Estas jugando al <font color='#0E5A80'>"+ jugada.getEquipo1().getName() +"</font> vs <font color='#0E5A80'>"+ jugada.getEquipo2().getName()+"</font>";
 
-        viewHolder0.textLabel.setText(Html.fromHtml(label), TextView.BufferType.SPANNABLE);
+        viewHolder0.textLabel.setText(Html.fromHtml(jugada.getLabel()), TextView.BufferType.SPANNABLE);
         viewHolder0.textTime_ago.setText(jugada.getTextTime_ago());
 
         File file = new File(General.local_dir_images + "equipos/" + jugada.getEquipo1().getData_factory_id() + ".gif");
@@ -102,7 +107,7 @@ public class List_Jugadas extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    class ViewHolder0 extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder0 extends RecyclerView.ViewHolder {
         public TextView textEquipo1;
         public TextView textEquipo2;
         public TextView textTime_ago;
@@ -121,22 +126,17 @@ public class List_Jugadas extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             imageEquipo1 = (ImageView)itemView.findViewById(R.id.imageEquipo1);
             imageEquipo2 = (ImageView)itemView.findViewById(R.id.imageEquipo2);
 
+        }
 
-            // Attach a click listener to the entire row view
-            itemView.setOnClickListener(this);
+        public void bind(final Jugada item, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
         }
 
 
-        // Handles the row being being clicked
-        @Override
-        public void onClick(View view) {
-            int position = getLayoutPosition();
-        /*
-            Intent i = new Intent(context, ServiceDetailActivity.class);
-            i.putExtra("id_service", items.get(position).getIdService());
-            context.startActivity(i);
-            */
-        }
     }
 
     @Override

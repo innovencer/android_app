@@ -53,7 +53,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
     ImageView imageElimina1,imageElimina2,imageElimina3,imageElimina4,imageElimina5,imageElimina6,imageElimina7,imageElimina8;
     TextView buttonLigas,buttonEquipos,buttonSiguiente,buttonAgregar;
     TextView textEquipo1,textEquipo2,textEquipo3,textEquipo4,textEquipo5,textEquipo6,textEquipo7,textEquipo8;
-    LinearLayout buttonFavoritos1;
+    LinearLayout buttonFavoritos1,linear3;
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1,idEquipoDataF = -1;
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
@@ -76,6 +76,7 @@ public class Favoritos2_Fragment extends GeneralFragment {
         buttonAgregar = (TextView) view.findViewById(R.id.buttonAgregar);
         buttonSiguiente = (TextView) view.findViewById(R.id.buttonSiguiente);
         buttonFavoritos1 = (LinearLayout) view.findViewById(R.id.buttonFavoritos1);
+        linear3 = (LinearLayout) view.findViewById(R.id.linear3);
 
         imageElimina1 = (ImageView) view.findViewById(R.id.imageElimina1);
         imageElimina2 = (ImageView) view.findViewById(R.id.imageElimina2);
@@ -177,19 +178,22 @@ public class Favoritos2_Fragment extends GeneralFragment {
                 }
             }
         });
-        buttonFavoritos1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.flContent, new Favoritos1_Fragment(), "");
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
+        buttonFavoritos1.setOnClickListener(clickFavoritos1);
+        linear3.setOnClickListener(clickFavoritos1);
 
         buscaEquipos();
         return view;
     }
+
+    View.OnClickListener clickFavoritos1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.flContent, new Favoritos1_Fragment(), "");
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    };
 
     private void buscaEquipos(){
         dialog.show();

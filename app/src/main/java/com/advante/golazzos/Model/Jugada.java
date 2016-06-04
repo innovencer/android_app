@@ -8,6 +8,9 @@ public class Jugada extends Model {
     String textTime_ago;
     Equipo equipo1;
     Equipo equipo2;
+    String label;
+    String html_center_url;
+    String trackable_type;
     int type = 1;
 
     public Jugada() {
@@ -43,6 +46,30 @@ public class Jugada extends Model {
 
     public void setEquipo2(Equipo equipo2) {
         this.equipo2 = equipo2;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getHtml_center_url() {
+        return html_center_url;
+    }
+
+    public void setHtml_center_url(String html_center_url) {
+        this.html_center_url = html_center_url;
+    }
+
+    public String getTrackable_type() {
+        return trackable_type;
+    }
+
+    public void setTrackable_type(String trackable_type) {
+        this.trackable_type = trackable_type;
     }
 
     public int getType() {

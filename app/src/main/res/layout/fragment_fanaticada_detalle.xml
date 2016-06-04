@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="50dp"
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/actionBarSize"
+        android:layout_height="40dp"
         android:background="@color/mediumGray"
         android:orientation="horizontal">
         <LinearLayout
@@ -15,13 +14,14 @@
             android:gravity="center_vertical"
             android:id="@+id/buttonBack">
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/back_arrow"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
                 android:textSize="12dp"
                 android:textColor="@color/colorAccent"
                 android:text="VOLVER"/>
@@ -34,9 +34,9 @@
         android:background="@color/darkGray"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:weightSum="10">
         <LinearLayout
             android:layout_width="0dp"
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:lines="2"
+                    android:maxLines="3"
                     android:textSize="11dp"
                     android:layout_marginTop="5dp"
                     android:id="@+id/textLabel" />
@@ -102,12 +102,12 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/mediumGray"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="@dimen/marginButtonConfirmar"
         android:layout_marginRight="@dimen/marginButtonConfirmar"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:gravity="center"
@@ -119,16 +119,35 @@
             android:layout_weight="1.5"
             android:orientation="vertical"
             android:id="@+id/buttonComentar">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/comentar_btn"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="8dp"
-                android:text="Comentar"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|bottom"
+                    android:layout_weight="0.6">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/comentar_btn"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|top"
+                    android:layout_weight="0.4">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="8dp"
+                        android:text="Comentar"/>
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -137,18 +156,36 @@
             android:layout_weight="1.5"
             android:orientation="vertical"
             android:id="@+id/buttonLike">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/like_btn"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="7.5dp"
-                android:gravity="center"
-                android:text="Me gusta"
-                android:id="@+id/textLike" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|bottom"
+                    android:layout_weight="0.6">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/like_btn"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|top"
+                    android:layout_weight="0.4">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="8dp"
+                        android:gravity="center"
+                        android:text="Me gusta"
+                        android:id="@+id/textLike" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -160,29 +197,45 @@
             android:id="@+id/buttonEstadisticas">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
                 <LinearLayout
-                    android:layout_width="90dp"
-                    android:layout_height="25dp"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:background="@drawable/background_blue_rounded">
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:tint="@color/white"
-                        android:layout_marginRight="5dp"
-                        android:src="@android:drawable/ic_menu_compass"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="7dp"
-                        android:textStyle="bold"
-                        android:text="ESTADÍSTICAS"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.6">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal|bottom">
+                        <LinearLayout
+                            android:layout_width="90dp"
+                            android:layout_height="26dp"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/background_blue_rounded">
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginRight="5dp"
+                                android:src="@drawable/ic_stat"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textColor="@color/white"
+                                android:textSize="7dp"
+                                android:textStyle="bold"
+                                android:text="ESTADÍSTICAS"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal|top"
+                    android:layout_weight="0.4">
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -193,138 +246,159 @@
             android:layout_weight="3">
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="3"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="0dp"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
                         android:gravity="center"
-                        android:layout_weight="1.5"
-                        android:id="@+id/buttonFacebook"
                         android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/facebook_btn" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="1.5"
-                        android:id="@+id/buttonTwitter"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/twitter_btn"/>
-                    </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|bottom"
+                            android:layout_weight="1.5"
+                            android:id="@+id/buttonFacebook"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/facebook_btn" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal|bottom"
+                            android:layout_weight="1.5"
+                            android:id="@+id/buttonTwitter"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/twitter_btn"/>
+                        </LinearLayout>
 
+                    </LinearLayout>
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="8dp"
-                    android:text="Compartir"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="0.4">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorAccent"
+                        android:layout_marginTop="2dp"
+                        android:textSize="8dp"
+                        android:text="Compartir"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linearJugar">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/marginButtonConfirmar"
-            android:layout_marginRight="@dimen/marginButtonConfirmar"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:background="@drawable/background_green_rounded"
-            android:orientation="vertical"
-            android:id="@+id/buttonJUGAR">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13dp"
-                android:textColor="@color/black"
-                android:text="JUGAR"
-                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp">
-        <ListView
-            android:id="@+id/listview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="0dp"
-            android:divider="@null"
-            android:layout_above="@+id/viewLine">
-        </ListView>
-        <View
-            android:id="@+id/viewLine"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginBottom="3dp"
-            android:layout_above="@+id/linear1" />
-        <LinearLayout
-            android:id="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_above="@+id/linear2"
-            android:visibility="gone"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/editCometario"
-                android:layout_width="0dp"
+            android:layout_above="@+id/linearJugar">
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:textSize="14dp"
-                android:hint="¿Qué tienes en mente?"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/darkGray"
-                android:background="@drawable/background_gray"/>
-            <TextView
-                android:id="@+id/buttonPublicar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:background="@drawable/background_green_rounded"
-                android:text="Publicar"/>
+                android:dividerHeight="0dp"
+                android:divider="@null">
+            </ListView>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/linear2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_alignParentBottom="true"></LinearLayout>
+            android:id="@+id/linearJugar"
+            android:layout_marginBottom="5dp"
+            android:layout_above="@+id/linear1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/marginButtonConfirmar"
+                android:layout_marginRight="@dimen/marginButtonConfirmar"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:background="@drawable/background_green_rounded"
+                android:orientation="vertical"
+                android:id="@+id/buttonJUGAR">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:textColor="@color/black"
+                    android:text="JUGAR"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible"
+            android:orientation="vertical">
+            <View
+                android:id="@+id/viewLine"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"
+                android:layout_marginBottom="3dp"
+                android:layout_above="@+id/linear2" />
+            <LinearLayout
+                android:id="@+id/linear2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/editCometario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:textSize="14dp"
+                    android:hint="¿Qué tienes en mente?"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/darkGray"
+                    android:background="@drawable/background_gray"/>
+                <TextView
+                    android:id="@+id/buttonPublicar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:background="@drawable/background_green_rounded"
+                    android:text="Publicar"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

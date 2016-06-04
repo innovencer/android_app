@@ -2,18 +2,23 @@ package com.advante.golazzos.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +79,8 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     CallbackManager callbackManager;
     String label,html_center_url,trackable_type, imageAttached;
     String pic_name;
-    int id,idImage, idLike = -1;
+    int id,idImage, idLike = -1, normalHeight = 0;
+    InputMethodManager imm;
     ListView listView;
     JsonObjectRequest jsArrayRequest;
 
@@ -87,7 +93,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fanaticada_detalle, container, false);
+        final View view = inflater.inflate(R.layout.fragment_fanaticada_detalle, container, false);
         callbackManager = CallbackManager.Factory.create();
 
         buttonBack = (LinearLayout) view.findViewById(R.id.buttonBack);
@@ -117,7 +123,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         idImage = bundle.getInt("idImage",0);
         idLike = bundle.getInt("like", -1);
 
-        textLabel.setText(label);
+        textLabel.setText(Html.fromHtml(label), TextView.BufferType.SPANNABLE);
         textTime_ago.setText(bundle.getString("time_ago",""));
         if(idLike > 0){
             textLike.setText("No me gusta");
@@ -229,6 +235,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                 editComentario.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(editComentario, InputMethodManager.SHOW_IMPLICIT);
+
             }
         });
 
@@ -243,6 +250,13 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                 Comentar();
             }
         });
+
+        final Resources r = getResources();
+        final int dp50 = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                50,
+                r.getDisplayMetrics()
+        );
 
         getData();
 
@@ -424,6 +438,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                                 comentario.setUser(user);
 
                                 comentarios.add(comentario);
+                                comentario.toString();
                             }
                             List_Comentarios adapter = new List_Comentarios(getContext(),comentarios);
                             listView.setAdapter(adapter);

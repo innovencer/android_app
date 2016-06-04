@@ -38,6 +38,7 @@ public class General {
     public static String endpoint_weekly_awards;
 
     public static final String KEYWORD = "TESTSERVICE6";
+    public static final String KEYWORD_UNS= "TESTSERVICE6BAJA";
     public static final String MEDIA = "inapp";
 
     public static final String local_dir = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+appname+"/";

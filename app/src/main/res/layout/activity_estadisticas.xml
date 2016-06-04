@@ -15,9 +15,9 @@
             android:orientation="horizontal"
             android:id="@+id/buttonBack">
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_media_rew"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/back_arrow"
                 android:tint="@color/white" />
         </LinearLayout>
         <TextView

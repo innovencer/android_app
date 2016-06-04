@@ -51,7 +51,7 @@ public class Wizzard2Activity extends GeneralActivity {
     ImageView imageEquipo1,imageEquipo2,imageEquipo3,imageEquipo4,imageEquipo5,imageEquipo6,imageEquipo7,imageEquipo8;
     ImageView imageElimina1,imageElimina2,imageElimina3,imageElimina4,imageElimina5,imageElimina6,imageElimina7,imageElimina8;
     TextView buttonLigas,buttonEquipos,buttonSiguiente,buttonAgregar;
-    //TextView textEquipo1,textEquipo2,textEquipo3,textEquipo4,textEquipo5,textEquipo6,textEquipo7,textEquipo8;
+    TextView textEquipo1,textEquipo2,textEquipo3,textEquipo4,textEquipo5,textEquipo6,textEquipo7,textEquipo8;
     LinearLayout buttonFavoritos1;
 
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1,idEquipoDataF = -1;
@@ -96,7 +96,7 @@ public class Wizzard2Activity extends GeneralActivity {
         imageEquipo7 = (ImageView) findViewById(R.id.imageEquipo7);
         imageEquipo8 = (ImageView) findViewById(R.id.imageEquipo8);
 
-        /*
+
         textEquipo1 = (TextView) findViewById(R.id.textEquipo1);
         textEquipo2 = (TextView) findViewById(R.id.textEquipo2);
         textEquipo3 = (TextView) findViewById(R.id.textEquipo3);
@@ -105,7 +105,7 @@ public class Wizzard2Activity extends GeneralActivity {
         textEquipo6 = (TextView) findViewById(R.id.textEquipo6);
         textEquipo7 = (TextView) findViewById(R.id.textEquipo7);
         textEquipo8 = (TextView) findViewById(R.id.textEquipo8);
-        */
+
 
         for(int i = 1; i <= 8; i++){
             clearImage(i);
@@ -216,42 +216,52 @@ public class Wizzard2Activity extends GeneralActivity {
 
     private void clearImage(int num_image){
         ImageView imageView = null,imageView1 = null;
+        TextView textView;
         switch (num_image){
             case 1:
                 imageView = imageEquipo1;
                 imageView1 = imageElimina1;
+                textView = textEquipo1;
                 break;
             case 2:
                 imageView = imageEquipo2;
                 imageView1 = imageElimina2;
+                textView = textEquipo2;
                 break;
             case 3:
                 imageView = imageEquipo3;
                 imageView1 = imageElimina3;
+                textView = textEquipo3;
                 break;
             case 4:
                 imageView = imageEquipo4;
                 imageView1 = imageElimina4;
+                textView = textEquipo4;
                 break;
             case 5:
                 imageView = imageEquipo5;
                 imageView1 = imageElimina5;
+                textView = textEquipo5;
                 break;
             case 6:
                 imageView = imageEquipo6;
                 imageView1 = imageElimina6;
+                textView = textEquipo6;
                 break;
             case 7:
                 imageView = imageEquipo7;
                 imageView1 = imageElimina7;
+                textView = textEquipo7;
                 break;
             case 8:
                 imageView = imageEquipo8;
                 imageView1 = imageElimina8;
+                textView = textEquipo8;
                 break;
             default:
                 imageView = imageEquipo1;
                 imageView1 = imageElimina1;
+                textView = textEquipo1;
         }
         equipos_s[num_image-1] = -1;
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.rect_white);
@@ -260,6 +270,7 @@ public class Wizzard2Activity extends GeneralActivity {
         imageView.setImageBitmap(graphicUtil.getCircleBitmap(
                 bm, 16));
         imageView1.setVisibility(View.INVISIBLE);
+        textView.setVisibility(View.INVISIBLE);
     }
 
     private void setImage(int num_image, int idDataFactory, String name){
@@ -270,56 +281,56 @@ public class Wizzard2Activity extends GeneralActivity {
             case 1:
                 imageView = imageEquipo1;
                 imageView1 = imageElimina1;
-                //textView = textEquipo1;
+                textView = textEquipo1;
                 break;
             case 2:
                 imageView = imageEquipo2;
                 imageView1 = imageElimina2;
-                //textView = textEquipo2;
+                textView = textEquipo2;
                 break;
             case 3:
                 imageView = imageEquipo3;
                 imageView1 = imageElimina3;
-                //textView = textEquipo3;
+                textView = textEquipo3;
                 break;
             case 4:
                 imageView = imageEquipo4;
                 imageView1 = imageElimina4;
-                //textView = textEquipo4;
+                textView = textEquipo4;
                 break;
             case 5:
                 imageView = imageEquipo5;
                 imageView1 = imageElimina5;
-                //textView = textEquipo5;
+                textView = textEquipo5;
                 break;
             case 6:
                 imageView = imageEquipo6;
                 imageView1 = imageElimina6;
-                //textView = textEquipo6;
+                textView = textEquipo6;
                 break;
             case 7:
                 imageView = imageEquipo7;
                 imageView1 = imageElimina7;
-                //textView = textEquipo7;
+                textView = textEquipo7;
                 break;
             case 8:
                 imageView = imageEquipo8;
                 imageView1 = imageElimina8;
-                //textView = textEquipo8;
+                textView = textEquipo8;
                 break;
             default:
                 imageView = imageEquipo1;
                 imageView1 = imageElimina1;
-                //textView = textEquipo1;
+                textView = textEquipo1;
         }
 
 
         int idImage = idDataFactory;
-        /*textView.setText(name);
+        textView.setText(name);
         if(name.length()>10){
             textView.setTextSize(10);
         }
-        textView.setVisibility(View.VISIBLE);*/
+        textView.setVisibility(View.VISIBLE);
         File file = new File(General.local_dir_images +"equipos/"+idImage+".gif");
         if(file.exists()){
             BitmapFactory.Options options = new BitmapFactory.Options();

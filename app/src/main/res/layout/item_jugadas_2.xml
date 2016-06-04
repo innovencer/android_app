@@ -23,8 +23,8 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
                     android:src="@drawable/venezuela"
                     android:id="@+id/imageEquipo1" />
                 <TextView
@@ -50,8 +50,8 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
                     android:src="@drawable/venezuela"
                     android:id="@+id/imageEquipo2" />
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textSize="10dp"
+                    android:textSize="8dp"
                     android:ellipsize="end"
                     android:maxEms="40"
                     android:singleLine="true"

@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:gravity="center"
-            android:layout_weight="3">
+            android:layout_weight="2.5">
             <ImageView
                 android:id="@+id/imageEquipo1"
                 android:layout_width="45dp"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="6">
+            android:layout_weight="6.5">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,6 +46,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:lines="2"
+                    android:ellipsize="end"
+                    android:maxEms="60"
                     android:textSize="11dp"
                     android:layout_marginTop="5dp"
                     android:id="@+id/textLabel" />

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Ruben Flores on 5/17/2016.
  */
@@ -17,8 +20,11 @@ public class Trofeos_Fragment extends GeneralFragment {
     ImageView imageTrofeo0,imageTrofeo1,imageTrofeo2,imageTrofeo3,imageTrofeo4,imageTrofeo5,imageTrofeo6,
               imageTrofeo7,imageTrofeo8,imageTrofeo9,imageTrofeo10,imageTrofeo11,imageTrofeo12,imageTrofeo13,
               imageTrofeo14,imageTrofeo15;
+    ImageView image0, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12,
+              image13, image14, image15;
     TextView textTituloNivel;
     int nivel;
+    List<ImageView> imageViews = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +47,23 @@ public class Trofeos_Fragment extends GeneralFragment {
         imageTrofeo14 = (ImageView) view.findViewById(R.id.imageTrofeo14);
         imageTrofeo15 = (ImageView) view.findViewById(R.id.imageTrofeo15);
 
+        image0 = (ImageView) view.findViewById(R.id.image0);
+        image1 = (ImageView) view.findViewById(R.id.image1);
+        image2 = (ImageView) view.findViewById(R.id.image2);
+        image3 = (ImageView) view.findViewById(R.id.image3);
+        image4 = (ImageView) view.findViewById(R.id.image4);
+        image5 = (ImageView) view.findViewById(R.id.image5);
+        image6 = (ImageView) view.findViewById(R.id.image6);
+        image7 = (ImageView) view.findViewById(R.id.image7);
+        image8 = (ImageView) view.findViewById(R.id.image8);
+        image9 = (ImageView) view.findViewById(R.id.image9);
+        image10 = (ImageView) view.findViewById(R.id.image10);
+        image11 = (ImageView) view.findViewById(R.id.image11);
+        image12 = (ImageView) view.findViewById(R.id.image12);
+        image13 = (ImageView) view.findViewById(R.id.image13);
+        image14 = (ImageView) view.findViewById(R.id.image14);
+        image15 = (ImageView) view.findViewById(R.id.image15);
+
         imageTrofeo0.setOnClickListener(onClickTrofeo);
         imageTrofeo1.setOnClickListener(onClickTrofeo);
         imageTrofeo2.setOnClickListener(onClickTrofeo);
@@ -57,6 +80,23 @@ public class Trofeos_Fragment extends GeneralFragment {
         imageTrofeo13.setOnClickListener(onClickTrofeo);
         imageTrofeo14.setOnClickListener(onClickTrofeo);
         imageTrofeo15.setOnClickListener(onClickTrofeo);
+
+        imageViews.add(image0);
+        imageViews.add(image1);
+        imageViews.add(image2);
+        imageViews.add(image3);
+        imageViews.add(image4);
+        imageViews.add(image5);
+        imageViews.add(image6);
+        imageViews.add(image7);
+        imageViews.add(image8);
+        imageViews.add(image9);
+        imageViews.add(image10);
+        imageViews.add(image11);
+        imageViews.add(image12);
+        imageViews.add(image13);
+        imageViews.add(image14);
+        imageViews.add(image15);
 
         textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
 
@@ -175,12 +215,26 @@ public class Trofeos_Fragment extends GeneralFragment {
         for(i=level+1; i <= 15; i++){
             setAlpha(getImageView(i),0.5f);
         }
+        for(i=0;i<imageViews.size();i++){
+            if(i==level){
+                imageViews.get(i).setVisibility(View.VISIBLE);
+            }else{
+                imageViews.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private void tintLevel2(int level){
         //int i;
         tintLevel(nivel);
         setAlpha(getImageView(level),1);
+        for(int i=0;i<imageViews.size();i++){
+            if(i==level){
+                imageViews.get(i).setVisibility(View.VISIBLE);
+            }else{
+                imageViews.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
         /*
         for(i=0; i < level; i++){
             setAlpha(getImageView(i),0.5f);

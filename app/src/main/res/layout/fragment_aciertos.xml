@@ -104,7 +104,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:orientation="horizontal">
-                    <com.advante.golazzos.Helpers.Bar
+                    <com.advante.golazzos.Helpers.BarWin
                         android:layout_width="match_parent"
                         android:layout_height="15dp"
                         android:id="@+id/barWin1" />
@@ -144,7 +144,7 @@
                     android:layout_marginRight="15dp"
                     android:gravity="center"
                     android:orientation="horizontal">
-                    <com.advante.golazzos.Helpers.Bar
+                    <com.advante.golazzos.Helpers.BarLose
                         android:layout_width="match_parent"
                         android:layout_height="15dp"
                         android:id="@+id/barLose" />
@@ -162,9 +162,6 @@
                     android:layout_weight="0.3"
                     android:paddingRight="15dp"
                     android:orientation="vertical">
-
-
-
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="0dp"

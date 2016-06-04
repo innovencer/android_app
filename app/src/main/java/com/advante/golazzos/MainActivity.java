@@ -34,6 +34,10 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +74,7 @@ public class MainActivity extends GeneralActivity {
             }
         });
 
+        //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
         if(!preferences.getString("token","").equals("")){
             General.setToken(preferences.getString("token",""));
             getUser();
@@ -163,6 +168,18 @@ public class MainActivity extends GeneralActivity {
 
                             dialog.dismiss();
                             Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
+                            try{
+                                File myFile = new File(gnr.local_dir+"tests.txt");
+                                myFile.createNewFile();
+                                FileOutputStream fOut = new FileOutputStream(myFile);
+                                OutputStreamWriter myOutWriter =
+                                        new OutputStreamWriter(fOut);
+                                myOutWriter.append(General.getToken());
+                                myOutWriter.close();
+                                fOut.close();
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
                             startActivity(intent);
                             finish();
                         } catch (JSONException e) {

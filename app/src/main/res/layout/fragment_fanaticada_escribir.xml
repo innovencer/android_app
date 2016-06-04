@@ -5,25 +5,27 @@
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/actionBarSize"
+        android:layout_height="40dp"
         android:background="@color/mediumGray"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:id="@+id/buttonBack">
+            android:id="@+id/buttonBack"
+            android:orientation="horizontal">
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/back_arrow"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="10dp"
+                android:textStyle="bold"
                 android:textColor="@color/colorAccent"
-                android:text="VOLVER"/>
+                android:text="CANCELAR"/>
         </LinearLayout>
     </LinearLayout>
     <View
@@ -32,7 +34,8 @@
         android:background="@color/darkGray"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:weightSum="10">
@@ -40,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:gravity="center"
-            android:layout_weight="3">
+            android:layout_weight="2.2">
             <ImageView
                 android:id="@+id/imageEquipo1"
                 android:layout_width="45dp"
@@ -52,24 +55,30 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
             android:orientation="vertical"
-            android:layout_weight="6">
+            android:layout_weight="7">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:lines="2"
+                    android:layout_height="wrap_content"
                     android:textSize="11dp"
-                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorAccent"
+                    android:gravity="start"
+                    android:hint="@string/hintEscribir"
                     android:id="@+id/editCometario" />
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/mediumGray"/>
     <LinearLayout
         android:id="@+id/linearAttached"
         android:layout_width="match_parent"
@@ -125,31 +134,43 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/linear1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center_vertical"
         android:weightSum="10">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:gravity="center"
             android:layout_weight="3"
             android:orientation="vertical"
             android:id="@+id/buttonCamera">
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="36dp"
-                android:tint="@color/colorAccent"
-                android:src="@android:drawable/ic_menu_camera"/>
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_camera"/>
         </LinearLayout>
+        <View
+            android:layout_width="0.7dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/mediumGray"/>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginRight="15dp"
+            android:gravity="center"
             android:layout_weight="7">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="27dp"
                 android:background="@drawable/background_green_rounded"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:id="@+id/buttonPublicar">
@@ -157,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PUBLICAR"
-                    android:textSize="11dp"
+                    android:textSize="10dp"
                     android:textStyle="bold"
                     android:textColor="@color/colorAccent"/>
             </LinearLayout>
