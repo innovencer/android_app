@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
-import com.advante.golazzos.Model.Partido;
 import com.advante.golazzos.Model.Post;
 import com.advante.golazzos.R;
 import com.squareup.picasso.Picasso;
@@ -25,9 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -67,7 +63,7 @@ public class List_Posts extends ArrayAdapter<Post> {
             convertView.setTag(viewHolder);
         }
         final ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.textLabel.setText(item.getLabel());
+        holder.textLabel.setText(Html.fromHtml(item.getLabel()));
         holder.textTime_ago.setText(item.getTime_ago());
 
         final String pic_name = ""+ item.getOwner().getId();

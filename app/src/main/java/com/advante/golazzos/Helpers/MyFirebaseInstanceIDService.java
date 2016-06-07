@@ -1,18 +1,10 @@
 package com.advante.golazzos.Helpers;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.advante.golazzos.ConfirmarActivity;
-import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;

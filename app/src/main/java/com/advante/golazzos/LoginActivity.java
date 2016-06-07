@@ -31,8 +31,6 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,8 +39,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Ruben Flores on 4/10/2016.
@@ -299,20 +295,21 @@ public class LoginActivity extends GeneralActivity {
                                     total_bets,
                                     won_bets
                                     ));
-                            /*
+
                             user1.setUserSettings(new UserSettings(
                                     data.getJSONObject("settings").getBoolean("won_notification"),
                                     data.getJSONObject("settings").getBoolean("lose_notification"),
                                     data.getJSONObject("settings").getBoolean("new_bet_notification"),
                                     false,
                                     data.getJSONObject("settings").getBoolean("closed_match_notification")));
-                            */
+/*
                             user1.setUserSettings(new UserSettings(
                                     false,
                                     false,
                                     false,
                                     false,
                                     false));
+                                    */
                             gnr.setLoggedUser(user1);
                             dialog.dismiss();
 

@@ -25,12 +25,11 @@ import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.IBuscarLigas;
 import com.advante.golazzos.Interface.OnItemClickListener;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.Liga;
-import com.advante.golazzos.Model.Post;
-import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.R;
 import com.advante.golazzos.widget.DividerItemDecoration;
 import com.android.volley.AuthFailureError;
@@ -118,8 +117,17 @@ public class Jugadas_Fragment extends GeneralFragment {
                     idEquipo = -1;
                     buttonEquipos.setText("Seleccionar Equipo");
                 }
-                dialog.show();
-                buscarLigas();
+                //dialog.show();
+                //buscarLigas();
+                gnr.buscarLigas(new IBuscarLigas() {
+                    @Override
+                    public void onComplete(ArrayList<Liga> items) {
+                        ligas = items;
+                        if(ligas != null){
+                            showDialogLigas(ligas);
+                        }
+                    }
+                });
             }
         });
         buttonEquipos.setOnClickListener(new View.OnClickListener() {
@@ -305,62 +313,6 @@ public class Jugadas_Fragment extends GeneralFragment {
                 buttonFinalizado.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 tab = 3;
                 break;
-        }
-    }
-
-    private void buscarLigas(){
-        if(ligas == null) {
-            jsArrayRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    General.endpoint_tournaments,
-                    "",
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Manejo de la respuesta
-                            try {
-                                JSONArray data = response.getJSONArray("response");
-                                ligas = new ArrayList<>();
-                                Liga liga;
-                                for (int i = 0; i < data.length(); i++) {
-                                    liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
-                                            data.getJSONObject(i).getInt("id"),
-                                            data.getJSONObject(i).getString("name"));
-                                    ligas.add(liga);
-                                }
-                                showDialogLigas(ligas);
-                                dialog.dismiss();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Manejo de errores
-                            String body = "";
-                            //get status code here
-                            String statusCode = String.valueOf(error.networkResponse.statusCode);
-                            //get response body and parse with appropriate encoding
-                            if (error.networkResponse.data != null) {
-                                try {
-                                    body = new String(error.networkResponse.data, "UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    7000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
-        }else{
-            dialog.dismiss();
-            showDialogLigas(ligas);
         }
     }
 

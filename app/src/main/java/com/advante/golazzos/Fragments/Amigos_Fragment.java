@@ -1,6 +1,5 @@
 package com.advante.golazzos.Fragments;
 
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;

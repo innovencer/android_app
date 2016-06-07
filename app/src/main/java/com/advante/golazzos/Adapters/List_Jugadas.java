@@ -1,41 +1,24 @@
 package com.advante.golazzos.Adapters;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.advante.golazzos.Fragments.FanaticadaDetalle_Fragment;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Interface.OnItemClickListener;
 import com.advante.golazzos.Model.Jugada;
-import com.advante.golazzos.Model.Post;
-import com.advante.golazzos.Model.Ranking_Item;
-import com.advante.golazzos.PrincipalActivity;
 import com.advante.golazzos.R;
-import com.advante.golazzos.ServiceDetailActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
-import io.npay.hub.services.ServiceItem;
 
 /**
  * Created by Ruben Flores on 5/27/2016.

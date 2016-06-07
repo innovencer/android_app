@@ -606,6 +606,9 @@ public class Favoritos2_Fragment extends GeneralFragment {
                         if (equipos_s[j] == -1) {
                             equipos_s[j] = idEquipo;
                             setImage(j + 1, idEquipoDataF, nameTemp);
+                            if(j == 7){
+                                buttonEquipos.setText(nameTemp);
+                            }
                             dialog.dismiss();
                             return;
                         }

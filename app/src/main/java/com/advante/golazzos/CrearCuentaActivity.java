@@ -348,21 +348,21 @@ public class CrearCuentaActivity extends GeneralActivity {
                                     total_bets,
                                     won_bets
                             ));
-                            /*
+
                             user1.setUserSettings(new UserSettings(
                                     data.getJSONObject("settings").getBoolean("won_notification"),
                                     data.getJSONObject("settings").getBoolean("lose_notification"),
                                     data.getJSONObject("settings").getBoolean("new_bet_notification"),
                                     false,
                                     data.getJSONObject("settings").getBoolean("closed_match_notification")));
-                            */
+/*
                             user1.setUserSettings(new UserSettings(
                                     false,
                                     false,
                                     false,
                                     false,
                                     false));
-
+*/
                             gnr.setLoggedUser(user1);
                             dialog.dismiss();
 

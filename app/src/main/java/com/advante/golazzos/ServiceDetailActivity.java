@@ -1,28 +1,26 @@
 package com.advante.golazzos;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 import io.npay.activity.NPay;
-import io.npay.custom_view.NPayDialogTexts;
+import io.npay.check_subscription.OnCheckSubscriptionListener;
 import io.npay.hub.service_detail.OnServiceDetailReceivedListener;
 import io.npay.hub.service_detail.ServiceDetailItem;
+import io.npay.hub.services.OnServiceItemReceivedListener;
+import io.npay.hub.services.ServiceItem;
 import io.npay.hub_cancel_subscription.CancelResponse;
 import io.npay.hub_cancel_subscription.OnSubscriptionCancelledListener;
-import io.npay.hub_service_information.OnServiceInformationReceivedListener;
-import io.npay.hub_service_information.ServiceInformationItem;
 import io.npay.hub_subscriptions.OnSubscriptionCreatedListener;
 import io.npay.hub_subscriptions.SubscriptionResponse;
 
@@ -37,7 +35,7 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
 
     private OnSubscriptionCreatedListener listenCreate;
     private OnSubscriptionCancelledListener listenCancel;
-    private OnServiceInformationReceivedListener listenInfo;
+    private OnCheckSubscriptionListener listenSub;
 
     LinearLayout linearSerTitular, linearSerTitular2;
     @Override
@@ -53,6 +51,7 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
         listenCreate = new OnSubscriptionCreatedListener() {
             @Override
             public void onSubscriptionCreatedListener(SubscriptionResponse result) {
+
                 try {
                     Log.e("---CREATE---", "*--------------------*");
                     Log.v("Object", result.getObject());
@@ -65,6 +64,7 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
                     Log.v("Cancelled", result.getCancelled());
                     Log.v("Status", result.getStatus());
                     //Querys.addSubscription(ServiceDetailActivity.this, result.getIdSubscription(), result.getIDService());
+
                     Toast toast = Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_LONG);
                 } catch(Exception e){
                     e.printStackTrace();
@@ -73,10 +73,13 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
                 }
             }
 
+            @Override
+            public void onCancel() {
+
+            }
         };
 
         listenCancel = new OnSubscriptionCancelledListener() {
-
             @Override
             public void onSubscriptionCancelledListener(CancelResponse resultItem) {
                 try {
@@ -96,34 +99,28 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
             }
         };
 
-        listenInfo = new OnServiceInformationReceivedListener() {
+        OnServiceItemReceivedListener listen = new OnServiceItemReceivedListener() {
             @Override
-            public void onServiceInformationReceivedListener(ServiceInformationItem result) {
+            public void onServiceItemReceivedListener(List<ServiceItem> result) {
+                DecimalFormat f = new DecimalFormat("#.00");
                 try {
-                    Log.e("---INFORMATION---", "*----------------------*");
-
-                    String information =
-                                    "Objeto: " + result.getObject() + "\n" +
-                                    "Creado: " + result.getCreated() + "\n" +
-                                    "Primer cargo: " + result.getFirstCharge() + "\n" +
-                                    "Siguiente cargo: " + result.getNextCharge() + "\n" +
-                                    "Cliente ID: " + result.getIdCustomer() + "\n" +
-                                    "Servicio ID: " + result.getIDService() + "\n" +
-                                    "Cancelado: " + result.getCancelled() + "\n" +
-                                    "Estatus: " + result.getStatus();
-
-                    new AlertDialog.Builder(ServiceDetailActivity.this)
-                            .setTitle("Información ")
-                            .setMessage(information)
-                            .setPositiveButton(new NPayDialogTexts().getDialogText("btn_accept"), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
+                    for (ServiceItem service : result) {
+                        System.out.println(String.valueOf(service.getName()));
+                        System.out.println(String.valueOf(service.getDescription()));
+                        System.out.println(String.valueOf(service.getHubDetails().getCountry()));
+                        System.out.println(String.valueOf(service.getHubDetails().getCarrier()));
+                        System.out.println(f.format( service.getHubDetails().getAmount()));
+                    }
                 } catch(Exception e){
                     e.printStackTrace();
                 }
+            }
+        };
+
+        listenSub = new OnCheckSubscriptionListener() {
+            @Override
+            public void onFinishCheckResponse(String s) {
+                Log.d("golazz",s);
             }
         };
 
@@ -139,17 +136,19 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
         linearSerTitular2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CancelSubscription().CancelSubscription(id_service, General.KEYWORD_UNS, General.MEDIA);
+                npay.CancelSubscription().CancelSubscription("e78ae033116118775bf03c955657e861", id_service);
             }
         });
-
 
         npay.setOnServiceDetailReceivedListener(this);
 
         npay.setOnSubscriptionCreatedListener(listenCreate);
         npay.setOnSubscriptionCancelledListener(listenCancel);
-        npay.setOnServiceInformationReceivedListener(listenInfo);
+        npay.setOnCheckSubscriptionListener(listenSub);
+        npay.setOnServiceItemReceivedListener(listen);
 
+        npay.getServices().getServices();
+        npay.checkSubscription(id_service);
         npay.getServiceDetails().getServiceDetails(id_service);
     }
 
@@ -173,7 +172,6 @@ public class ServiceDetailActivity extends Activity implements OnServiceDetailRe
                             "Doble Opt In: " + result.getDoubleOptIn() + "\n" +
                             "Tipo: " + result.getType();
             Toast.makeText(this,information,Toast.LENGTH_LONG).show();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

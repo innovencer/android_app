@@ -1,8 +1,6 @@
 package com.advante.golazzos.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,11 +17,8 @@ import android.widget.Toast;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
-import com.advante.golazzos.Helpers.MyFirebaseInstanceIDService;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.LoginActivity;
 import com.advante.golazzos.MainActivity;
-import com.advante.golazzos.PrincipalActivity;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;

@@ -3,10 +3,8 @@ package com.advante.golazzos.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
-import com.advante.golazzos.Model.Post;
 import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.R;
 import com.squareup.picasso.Picasso;

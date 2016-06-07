@@ -1,13 +1,10 @@
 package com.advante.golazzos.Fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,7 +13,6 @@ import android.widget.ToggleButton;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
-import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
@@ -29,7 +25,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,7 +118,7 @@ public class Notificaciones_Fragment extends GeneralFragment {
             values.put("lose_notification", toggle4.isChecked());
             values.put("new_bet_notification", toggle1.isChecked());
             values.put("closed_match_notification", toggle2.isChecked());
-
+            //values.put("friendship_notification", toggle5.isChecked());
             user.put("user",values);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -140,6 +135,7 @@ public class Notificaciones_Fragment extends GeneralFragment {
                         gnr.getLoggedUser().getUserSettings().setLose_notification(toggle4.isChecked());
                         gnr.getLoggedUser().getUserSettings().setNew_bet_notification(toggle1.isChecked());
                         gnr.getLoggedUser().getUserSettings().setWon_notification(toggle3.isChecked());
+                        gnr.getLoggedUser().getUserSettings().setFriendship_notification(toggle5.isChecked());
                         Toast.makeText(getContext(),"Notificaciones Actualizadas ...",Toast.LENGTH_SHORT).show();
                     }
                 },

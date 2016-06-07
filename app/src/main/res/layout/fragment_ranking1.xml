@@ -53,6 +53,7 @@
                 android:tag="1"
                 android:id="@+id/linear3">
                 <ImageView
+                    android:id="@+id/image1"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:scaleType="fitXY"
@@ -65,9 +66,10 @@
                 android:gravity="center"
                 android:layout_weight="5"
                 android:tag="2"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:id="@+id/linear4">
                 <ImageView
+                    android:id="@+id/image2"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:scaleType="fitXY"

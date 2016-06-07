@@ -1,7 +1,6 @@
 package com.advante.golazzos;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -13,14 +12,12 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -51,22 +48,19 @@ import com.advante.golazzos.Fragments.Aciertos_Fragment;
 import com.advante.golazzos.Fragments.Amigos_Fragment;
 import com.advante.golazzos.Fragments.Busqueda_Fragment;
 import com.advante.golazzos.Fragments.Cuenta_Fragment;
+import com.advante.golazzos.Fragments.Fanaticada_Fragment;
+import com.advante.golazzos.Fragments.Favoritos1_Fragment;
 import com.advante.golazzos.Fragments.Fragment_Ganadores;
 import com.advante.golazzos.Fragments.Golazzos_Fragment;
 import com.advante.golazzos.Fragments.Jugadas_Fragment;
 import com.advante.golazzos.Fragments.Nivel_Fragmet;
-import com.advante.golazzos.Fragments.PartidosEnVivo_Fragment;
-import com.advante.golazzos.Fragments.PartidosFinalizado_Fragment;
+import com.advante.golazzos.Fragments.PartidosPorJugar_Fragment;
 import com.advante.golazzos.Fragments.Perfil_Fragment;
 import com.advante.golazzos.Fragments.RankingFragment;
 import com.advante.golazzos.Fragments.Trofeos_Fragment;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
-import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.LeftMenu_Item;
-import com.advante.golazzos.Fragments.Fanaticada_Fragment;
-import com.advante.golazzos.Fragments.Favoritos1_Fragment;
-import com.advante.golazzos.Fragments.PartidosPorJugar_Fragment;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -741,12 +735,13 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                 textEquipos.setTextColor(Color.rgb(255, 255, 255));
                 textRanking.setTextColor(Color.rgb(255, 255, 255));
                 textAmigos.setTextColor(Color.rgb(255, 255, 255));
-
-                pintarMenu(1);
+/*
+                pintarMenu(0);
 
                 textTitle.setText("FANATICADA");
                 showFragment(0);
-
+*/
+                onClickBottomMenu(findViewById(R.id.menuFanaticada));
                 bottomMenu1.setVisibility(View.VISIBLE);
                 bottomMenu2.setVisibility(View.GONE);
                 _menu.findItem(R.id.menuSalir).setVisible(false);

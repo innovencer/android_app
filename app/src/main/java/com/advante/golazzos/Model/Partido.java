@@ -1,7 +1,5 @@
 package com.advante.golazzos.Model;
 
-import com.advante.golazzos.Helpers.General;
-
 /**
  * Created by Ruben Flores on 4/22/2016.
  */

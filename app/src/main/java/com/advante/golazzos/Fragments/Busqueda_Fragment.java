@@ -4,18 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.advante.golazzos.Adapters.List_Ranking;
 import com.advante.golazzos.Adapters.List_Users;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.Model.SoulTeam;
-import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserBusqueda;
 import com.advante.golazzos.Model.UserLevel;
 import com.advante.golazzos.R;
@@ -24,11 +20,9 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

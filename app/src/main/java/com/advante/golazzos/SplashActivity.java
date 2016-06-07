@@ -7,8 +7,6 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,8 +18,6 @@ import com.advante.golazzos.Interface.IChangelistener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created by Ruben Flores on 5/2/2016.

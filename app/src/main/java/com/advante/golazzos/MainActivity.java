@@ -4,16 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
-import com.advante.golazzos.Helpers.MyFirebaseInstanceIDService;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.SoulTeam;
@@ -149,21 +145,21 @@ public class MainActivity extends GeneralActivity {
                                     total_bets,
                                     won_bets
                             ));
-                            /*
+
                             user1.setUserSettings(new UserSettings(
                                     data.getJSONObject("settings").getBoolean("won_notification"),
                                     data.getJSONObject("settings").getBoolean("lose_notification"),
                                     data.getJSONObject("settings").getBoolean("new_bet_notification"),
                                     false,
                                     data.getJSONObject("settings").getBoolean("closed_match_notification")));
-                            */
+/*
                             user1.setUserSettings(new UserSettings(
                                     false,
                                     false,
                                     false,
                                     false,
                                     false));
-
+*/
                             gnr.setLoggedUser(user1);
 
                             dialog.dismiss();

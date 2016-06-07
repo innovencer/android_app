@@ -10,21 +10,16 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.advante.golazzos.Adapters.List_Partidos;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Counters;
-import com.advante.golazzos.Model.Equipo;
-import com.advante.golazzos.Model.Liga;
-import com.advante.golazzos.Model.Partido;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
@@ -36,13 +31,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

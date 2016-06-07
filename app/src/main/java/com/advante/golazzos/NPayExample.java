@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
-import com.advante.golazzos.Helpers.GeneralActivity;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class NPayExample extends Activity {
         linearSerTitular2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CancelSubscription().CancelSubscription("dcc65262bcd170c684d98cf084fc9a4e", General.KEYWORD, General.MEDIA);
+                npay.CancelSubscription().CancelSubscription("dcc65262bcd170c684d98cf084fc9a4e", General.KEYWORD);
             }
         });
 
@@ -87,6 +86,11 @@ public class NPayExample extends Activity {
                 Toast toast = Toast.makeText(getApplicationContext(), "Toast del lado de la app - Object is empty", Toast.LENGTH_LONG);
                 toast.show();
             }
+        }
+
+        @Override
+        public void onCancel() {
+
         }
     };
     OnSubscriptionCancelledListener onCancelListener = new OnSubscriptionCancelledListener() {

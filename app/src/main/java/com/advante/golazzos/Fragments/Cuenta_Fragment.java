@@ -13,16 +13,14 @@ import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.R;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by Ruben Flores on 5/25/2016.
  */
 public class Cuenta_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
-    TextView textInfo,textNotificaciones,textCuenta, textNombre;
-    ImageView imageProfile;
-    LinearLayout linear1, linear2, linear3;
+    TextView textInfo,textNotificaciones,textCuenta, textNombre, textTipoUsuario;
+    ImageView imageTipoUsua;
+    LinearLayout linear1, linear2, linear3, linearTitular, linearSuplente;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,10 +30,15 @@ public class Cuenta_Fragment extends GeneralFragment {
         textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
         textCuenta = (TextView) view.findViewById(R.id.textCuenta);
         textNombre = (TextView) view.findViewById(R.id.textNombre);
+        textTipoUsuario = (TextView) view.findViewById(R.id.textTipoUsuario);
+
+        imageTipoUsua = (ImageView) view.findViewById(R.id.imageTipoUsuario);
 
         linear1 = (LinearLayout) view.findViewById(R.id.linear1);
         linear2 = (LinearLayout) view.findViewById(R.id.linear2);
         linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+        linearTitular = (LinearLayout) view.findViewById(R.id.linearTitular);
+        linearSuplente = (LinearLayout) view.findViewById(R.id.linearSuplente);
 
         String nombre = "";
         String name[] = gnr.getLoggedUser().getName().split(" ");

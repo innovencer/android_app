@@ -1,14 +1,28 @@
 package com.advante.golazzos.Helpers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
+import com.advante.golazzos.Interface.IBuscarLigas;
+import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 /**
  * Created by Ruben Flores on 3/31/2016.
@@ -52,6 +66,12 @@ public class General {
     private static String token;
     private static User loggedUser;
 
+    private ProgressDialog dialog;
+
+    JsonObjectRequest jsArrayRequest;
+
+    ArrayList<Liga> ligas = null;
+    IBuscarLigas iBuscarLigas;
 
     public General(Context context) {
         General.context = context;
@@ -75,6 +95,9 @@ public class General {
         endpoint_followers = url_base + context.getString(R.string.followers_endpoint);
         endpoint_weekly_awards = url_base + context.getString(R.string.weekly_awards_endpoint);
 
+        dialog = new ProgressDialog(context);
+        dialog.setTitle("");
+        dialog.setMessage("Conectando...");
         checkDirImages();
     }
 
@@ -114,4 +137,60 @@ public class General {
                 height, filter);
         return newBitmap;
     }
+
+    public void buscarLigas(IBuscarLigas buscarligas){
+        this.iBuscarLigas = buscarligas;
+        dialog.show();
+        ligas = null;
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                General.endpoint_tournaments,
+                "",
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        try {
+                            JSONArray data = response.getJSONArray("response");
+                            ligas = new ArrayList<>();
+                            Liga liga;
+                            for (int i = 0; i < data.length(); i++) {
+                                liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
+                                        data.getJSONObject(i).getInt("id"),
+                                        data.getJSONObject(i).getString("name"));
+                                ligas.add(liga);
+                            }
+                            dialog.dismiss();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        iBuscarLigas.onComplete(ligas);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejo de errores
+                        String body = "";
+                        //get status code here
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if (error.networkResponse.data != null) {
+                            try {
+                                body = new String(error.networkResponse.data, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        dialog.dismiss();
+                        iBuscarLigas.onComplete(ligas);
+                    }
+                });
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).addToRequestQueue(jsArrayRequest);
+    }
+
 }

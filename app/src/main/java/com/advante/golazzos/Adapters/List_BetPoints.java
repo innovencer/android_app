@@ -1,18 +1,14 @@
 package com.advante.golazzos.Adapters;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.advante.golazzos.Model.Comentario;
 import com.advante.golazzos.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

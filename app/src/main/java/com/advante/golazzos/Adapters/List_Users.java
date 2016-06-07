@@ -17,11 +17,7 @@ import android.widget.Toast;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.Model.Ranking_Item;
-import com.advante.golazzos.Model.SoulTeam;
-import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserBusqueda;
-import com.advante.golazzos.Model.UserLevel;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -32,7 +28,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -196,6 +191,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
         try {
             user_id.put("user_id", id);
             friend.put("friend", user_id);
+            System.out.println(friend.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

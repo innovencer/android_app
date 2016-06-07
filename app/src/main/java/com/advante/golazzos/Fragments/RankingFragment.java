@@ -1,26 +1,18 @@
 package com.advante.golazzos.Fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.advante.golazzos.Adapters.List_Posts;
 import com.advante.golazzos.Adapters.List_Ranking;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.Model.Equipo;
-import com.advante.golazzos.Model.Like;
-import com.advante.golazzos.Model.Owner;
-import com.advante.golazzos.Model.Post;
 import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
@@ -29,7 +21,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +37,7 @@ public class RankingFragment extends GeneralFragment {
     JsonArrayRequest jsArrayRequest;
     ListView listView;
     LinearLayout linear1, linear2, linear3, linear4;
+    ImageView image1, image2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +48,9 @@ public class RankingFragment extends GeneralFragment {
         linear2 = (LinearLayout) view.findViewById(R.id.linear2);
         linear3 = (LinearLayout) view.findViewById(R.id.linear3);
         linear4 = (LinearLayout) view.findViewById(R.id.linear4);
+
+        image1 = (ImageView) view.findViewById(R.id.image1);
+        image2 = (ImageView) view.findViewById(R.id.image2);
 
         linear1.setOnClickListener(clickTab);
         linear2.setOnClickListener(clickTab);
@@ -70,12 +65,12 @@ public class RankingFragment extends GeneralFragment {
         @Override
         public void onClick(View view) {
             if(view.getTag().equals("1")){
-                linear3.setVisibility(View.VISIBLE);
-                linear4.setVisibility(View.INVISIBLE);
+                image1.setVisibility(View.VISIBLE);
+                image2.setVisibility(View.INVISIBLE);
                 getRanking("");
             }else{
-                linear3.setVisibility(View.INVISIBLE);
-                linear4.setVisibility(View.VISIBLE);
+                image1.setVisibility(View.INVISIBLE);
+                image2.setVisibility(View.VISIBLE);
                 getRanking("?weekly=true");
             }
         }

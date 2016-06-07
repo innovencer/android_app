@@ -4,8 +4,6 @@ package com.advante.golazzos.Helpers;
  * Created by Ruben Flores on 2/9/2016.
  */
 
-import android.util.Log;
-
 import com.advante.golazzos.Interface.IChangelistener;
 
 import java.io.BufferedOutputStream;

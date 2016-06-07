@@ -134,7 +134,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="12dp"
                         android:textColor="@color/blueSky"
-                        android:text="Suplente"/>
+                        android:text="Suplente"
+                        android:id="@+id/textTipoUsuario" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -161,28 +162,71 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@color/white"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:textSize="11dp"
-                android:textColor="@color/white"
-                android:text="¿Qué estás esperando?"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="11dp"
-                android:textColor="@color/white"
-                android:text="Suscribete y no te quedes en la banca."/>
-            <ImageView
+            <LinearLayout
+                android:id="@+id/linearSuplente"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/bg_titular"
-                android:scaleType="centerInside"/>
+                android:padding="5dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:textColor="@color/white"
+                    android:text="¿Qué estás esperando?"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:textColor="@color/white"
+                    android:text="Suscribete y no te quedes en la banca."/>
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="305dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/bg_titular"
+                    android:scaleType="fitCenter"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearTitular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:textColor="@color/white"
+                    android:text="Disfrutas de estos beneficios"/>
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/visual_cuenta"
+                    android:scaleType="fitStart"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="10dp"
+                        android:textColor="@color/white10"
+                        android:text="CANCELAR SUSCRIPCIÓN"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

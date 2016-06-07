@@ -8,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.Equipo;
-import com.advante.golazzos.Model.Post;
-import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.R;
 
 import java.io.File;

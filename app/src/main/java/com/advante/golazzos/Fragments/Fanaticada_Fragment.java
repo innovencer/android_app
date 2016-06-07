@@ -8,19 +8,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.advante.golazzos.Adapters.List_Partidos;
 import com.advante.golazzos.Adapters.List_Posts;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Equipo;
-import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.Like;
 import com.advante.golazzos.Model.Owner;
-import com.advante.golazzos.Model.Partido;
 import com.advante.golazzos.Model.Post;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
@@ -91,7 +87,7 @@ public class Fanaticada_Fragment extends GeneralFragment {
                             for(int i=0;i<data.length();i++){
                                 post = new Post();
                                 post.setId(data.getJSONObject(i).getInt("id"));
-                                post.setLabel(data.getJSONObject(i).getString("label"));
+                                post.setLabel(data.getJSONObject(i).getString("mobile_label").replace("<team>","<font color='#0E5A80'>").replace("</team>","</font>"));
                                 post.setTime_ago(data.getJSONObject(i).getString("time_ago"));
                                 if(data.getJSONObject(i).has("image_url"))
                                     post.setImage_url(data.getJSONObject(i).getString("image_url"));
@@ -103,13 +99,14 @@ public class Fanaticada_Fragment extends GeneralFragment {
                                 owner.setProfile_pic_url(data.getJSONObject(i).getJSONObject("owner").getString("profile_pic_url"));
 
                                 equipo = new Equipo();
-                                equipo.setId(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getInt("id"));
-                                equipo.setData_factory_id(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getInt("data_factory_id"));
-                                equipo.setName(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("name"));
-                                equipo.setInitials(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("initials"));
-                                equipo.setImage_path(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("image_path"));
-                                equipo.setCountry_name(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("country_name"));
-
+                                if(data.getJSONObject(i).getJSONObject("owner").has("soul_team") && !data.getJSONObject(i).getJSONObject("owner").isNull("soul_team")) {
+                                    equipo.setId(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getInt("id"));
+                                    equipo.setData_factory_id(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getInt("data_factory_id"));
+                                    equipo.setName(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("name"));
+                                    equipo.setInitials(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("initials"));
+                                    equipo.setImage_path(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("image_path"));
+                                    equipo.setCountry_name(data.getJSONObject(i).getJSONObject("owner").getJSONObject("soul_team").getString("country_name"));
+                                }
                                 JSONArray likes = data.getJSONObject(i).getJSONArray("likes");
                                 Like like;
                                 ArrayList<Like> likes1= new ArrayList<>();
