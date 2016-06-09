@@ -71,6 +71,7 @@ public class MainActivity extends GeneralActivity {
         });
 
         //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
+        showLog(preferences.getString("token",""));
         if(!preferences.getString("token","").equals("")){
             General.setToken(preferences.getString("token",""));
             getUser();
@@ -145,21 +146,18 @@ public class MainActivity extends GeneralActivity {
                                     total_bets,
                                     won_bets
                             ));
-
+                            boolean friendship_notification = false;
+                            if(!data.getJSONObject("settings").has("friendship_notification")){
+                                friendship_notification = true;
+                            }else{
+                                friendship_notification = data.getJSONObject("settings").getBoolean("friendship_notification");
+                            }
                             user1.setUserSettings(new UserSettings(
                                     data.getJSONObject("settings").getBoolean("won_notification"),
                                     data.getJSONObject("settings").getBoolean("lose_notification"),
                                     data.getJSONObject("settings").getBoolean("new_bet_notification"),
-                                    false,
+                                    friendship_notification,
                                     data.getJSONObject("settings").getBoolean("closed_match_notification")));
-/*
-                            user1.setUserSettings(new UserSettings(
-                                    false,
-                                    false,
-                                    false,
-                                    false,
-                                    false));
-*/
                             gnr.setLoggedUser(user1);
 
                             dialog.dismiss();

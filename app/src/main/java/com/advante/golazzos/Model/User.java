@@ -14,6 +14,7 @@ public class User extends Model {
     UserLevel level;
     SoulTeam soul_team;
     Counters counters;
+    Boolean is_friend;
     UserSettings userSettings;
 
     public User() {
@@ -105,6 +106,14 @@ public class User extends Model {
 
     public UserSettings getUserSettings() {
         return userSettings;
+    }
+
+    public Boolean getIs_friend() {
+        return is_friend;
+    }
+
+    public void setIs_friend(Boolean is_friend) {
+        this.is_friend = is_friend;
     }
 
     public void setUserSettings(UserSettings userSettings) {

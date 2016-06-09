@@ -118,7 +118,7 @@ public class Notificaciones_Fragment extends GeneralFragment {
             values.put("lose_notification", toggle4.isChecked());
             values.put("new_bet_notification", toggle1.isChecked());
             values.put("closed_match_notification", toggle2.isChecked());
-            //values.put("friendship_notification", toggle5.isChecked());
+            values.put("friendship_notification", toggle5.isChecked());
             user.put("user",values);
         } catch (JSONException e) {
             e.printStackTrace();

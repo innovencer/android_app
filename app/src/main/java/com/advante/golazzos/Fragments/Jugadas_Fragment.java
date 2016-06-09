@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IBuscarLigas;
 import com.advante.golazzos.Interface.OnItemClickListener;
+import com.advante.golazzos.JugadasResultActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.Liga;
@@ -166,10 +168,24 @@ public class Jugadas_Fragment extends GeneralFragment {
                             for(int i = 0;i < data.length(); i++){
                                 jugada = new Jugada();
                                 jugada.setId(data.getJSONObject(i).getInt("id"));
-                                jugada.setTextTime_ago("Waiting");
+                                jugada.setTextTime_ago(data.getJSONObject(i).getString("created"));
+                                jugada.setAmount(data.getJSONObject(i).getInt("amount"));
+                                jugada.setAmount_to_deposit(data.getJSONObject(i).getInt("amount_to_deposit"));
+                                jugada.setOption(data.getJSONObject(i).getString("option"));
                                 jugada.setTrackable_type(data.getJSONObject(i).getJSONObject("match").getString("trackable_type"));
                                 if(data.getJSONObject(i).getJSONObject("match").has("html_center_url"))
                                     jugada.setHtml_center_url(data.getJSONObject(i).getJSONObject("match").getString("html_center_url"));
+
+                                int local_score = data.getJSONObject(i).getJSONObject("match").getInt("local_score");
+                                int visitant_score = data.getJSONObject(i).getJSONObject("match").getInt("visitant_score");
+
+                                if(local_score > visitant_score){
+                                    jugada.setWhich_image(1);
+                                }else if(visitant_score> local_score){
+                                    jugada.setWhich_image(2);
+                                }else{
+                                    jugada.setWhich_image(3);
+                                }
 
                                 equipo = new Equipo();
                                 equipo.setData_factory_id(data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getInt("data_factory_id"));
@@ -192,6 +208,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                                                 "<font color='#0E5A80'>"+data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + "</font> vs <font color='#0E5A80'>"+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name")+"</font>"+
                                                 " resultado "+ data.getJSONObject(i).getString("option");
                                         jugada.setType(1);
+                                        jugada.setStatus("not_started");
                                         break;
                                     case "?status=being_played":
                                         label = "Estás jugando "+
@@ -200,6 +217,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                                                 "<font color='#0E5A80'>"+data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + "</font> vs <font color='#0E5A80'>"+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name")+"</font>"+
                                                 " resultado "+ data.getJSONObject(i).getString("option");
                                         jugada.setType(1);
+                                        jugada.setStatus("being_played");
                                         break;
                                     case "?status=finished":
                                         if(data.getJSONObject(i).getString("won") != "null"){
@@ -208,11 +226,13 @@ public class Jugadas_Fragment extends GeneralFragment {
                                                         data.getJSONObject(i).getString("option") + " en " +
                                                         data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + " vs " + data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name");
                                                 jugada.setType(2);
+                                                jugada.setStatus("finished_won");
                                             }else{
                                                 label = "Perdiste jugando "+ data.getJSONObject(i).getInt("amount")+ " puntos a que "+
                                                         data.getJSONObject(i).getString("option") +" en "+
                                                         data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + " vs "+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name");
                                                 jugada.setType(1);
+                                                jugada.setStatus("finished_lose");
                                             }
                                         }else{
                                             label = "Error de Data.";
@@ -227,26 +247,53 @@ public class Jugadas_Fragment extends GeneralFragment {
                             List_Jugadas adapter = new List_Jugadas(getActivity(), jugadas, new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(Jugada item) {
-                                    FanaticadaDetalle_Fragment fragment = new FanaticadaDetalle_Fragment();
-                                    Bundle bundle = new Bundle();
+                                    if(!item.getStatus().contains("finished") && !item.getStatus().isEmpty()) {
+                                        FanaticadaDetalle_Fragment fragment = new FanaticadaDetalle_Fragment();
+                                        Bundle bundle = new Bundle();
 
-                                    bundle.putString("time_ago", item.getTextTime_ago());
-                                    bundle.putString("label", item.getLabel());
-                                    bundle.putInt("idImage", gnr.getLoggedUser().getId());
-                                    bundle.putString("profile_pic_url", gnr.getLoggedUser().getProfile_pic_url());
-                                    bundle.putString("html_center_url", item.getHtml_center_url());
-                                    bundle.putString("trackable_type", item.getTrackable_type());
+                                        bundle.putString("time_ago", item.getTextTime_ago());
+                                        bundle.putString("label", item.getLabel());
+                                        bundle.putInt("idImage", gnr.getLoggedUser().getId());
+                                        bundle.putString("profile_pic_url", gnr.getLoggedUser().getProfile_pic_url());
+                                        bundle.putString("html_center_url", item.getHtml_center_url());
+                                        bundle.putString("trackable_type", item.getTrackable_type());
                                     /*
                                     bundle.putString("imageAttached",post1.getImage_url());
                                     bundle.putInt("like",post1.getLikedByMe());
                                     bundle.putInt("id",post1.getId());
                                     */
 
-                                    fragment.setArguments(bundle);
-                                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                    ft.replace(R.id.flContent, fragment, "");
-                                    ft.addToBackStack(null);
-                                    ft.commit();
+                                        fragment.setArguments(bundle);
+                                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                        ft.replace(R.id.flContent, fragment, "");
+                                        ft.addToBackStack(null);
+                                        ft.commit();
+                                    }else{
+                                        Intent intent = new Intent(getContext(), JugadasResultActivity.class);
+                                        intent.putExtra("textTime_ago",item.getTextTime_ago());
+                                        intent.putExtra("textLabel", item.getLabel());
+                                        intent.putExtra("textTitulo", item.getOption());
+                                        switch (item.getWhich_image()){
+                                            case 1:
+                                                intent.putExtra("image",item.getEquipo1().getData_factory_id());
+                                                break;
+                                            case 2:
+                                                intent.putExtra("image",item.getEquipo2().getData_factory_id());
+                                                break;
+                                            case 3:
+                                                intent.putExtra("image",-1);
+                                                break;
+                                        }
+                                        showLog(item.getAmount_to_deposit() +" "+ item.getAmount());
+                                        intent.putExtra("amount_to_deposit", item.getAmount_to_deposit());
+                                        intent.putExtra("amount", item.getAmount());
+                                        if(item.getStatus().contains("won")){
+                                            intent.putExtra("result", true);
+                                        }else{
+                                            intent.putExtra("result", false);
+                                        }
+                                        startActivity(intent);
+                                    }
                                 }
                             });
                             recycler.setAdapter(adapter);

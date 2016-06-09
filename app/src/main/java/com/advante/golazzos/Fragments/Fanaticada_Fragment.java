@@ -87,7 +87,6 @@ public class Fanaticada_Fragment extends GeneralFragment {
                             for(int i=0;i<data.length();i++){
                                 post = new Post();
                                 post.setId(data.getJSONObject(i).getInt("id"));
-                                post.setLabel(data.getJSONObject(i).getString("mobile_label").replace("<team>","<font color='#0E5A80'>").replace("</team>","</font>"));
                                 post.setTime_ago(data.getJSONObject(i).getString("time_ago"));
                                 if(data.getJSONObject(i).has("image_url"))
                                     post.setImage_url(data.getJSONObject(i).getString("image_url"));
@@ -95,6 +94,11 @@ public class Fanaticada_Fragment extends GeneralFragment {
                                 owner = new Owner();
                                 owner.setId(data.getJSONObject(i).getJSONObject("owner").getInt("id"));
                                 owner.setName(data.getJSONObject(i).getJSONObject("owner").getString("name"));
+                                /*
+                                if(owner.getId() == gnr.getLoggedUser().getId())
+                                    post.setLabel(data.getJSONObject(i).getString("mobile_label").replace("<team>","<font color='#0E5A80'>").replace("</team>","</font>"));
+                                else*/
+                                post.setLabel("<font color='#0E5A80'>"+ owner.getName()+"</font> "+data.getJSONObject(i).getString("mobile_label").replace("<team>","<font color='#0E5A80'>").replace("</team>","</font>"));
                                 owner.setEmail(data.getJSONObject(i).getJSONObject("owner").getString("email"));
                                 owner.setProfile_pic_url(data.getJSONObject(i).getJSONObject("owner").getString("profile_pic_url"));
 

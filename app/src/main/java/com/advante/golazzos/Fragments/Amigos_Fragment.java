@@ -154,6 +154,7 @@ public class Amigos_Fragment extends GeneralFragment {
                                 userBusqueda.setPaid_subscription(datos.getJSONObject(i).getBoolean("paid_subscription"));
                                 userBusqueda.setPoints(datos.getJSONObject(i).getDouble("points"));
                                 userBusqueda.setProfile_pic_url(datos.getJSONObject(i).getString("profile_pic_url"));
+                                userBusqueda.setIs_friend(datos.getJSONObject(i).getBoolean("is_friend"));
 
                                 if(datos.getJSONObject(i).has("soul_team")){
                                     soulTeam = new SoulTeam(datos.getJSONObject(i).getJSONObject("soul_team").getString("image_path"),

@@ -296,20 +296,18 @@ public class LoginActivity extends GeneralActivity {
                                     won_bets
                                     ));
 
+                            boolean friendship_notification;
+                            if(!data.getJSONObject("settings").has("friendship_notification")){
+                                friendship_notification = true;
+                            }else{
+                                friendship_notification = data.getJSONObject("settings").getBoolean("friendship_notification");
+                            }
                             user1.setUserSettings(new UserSettings(
                                     data.getJSONObject("settings").getBoolean("won_notification"),
                                     data.getJSONObject("settings").getBoolean("lose_notification"),
                                     data.getJSONObject("settings").getBoolean("new_bet_notification"),
-                                    false,
+                                    friendship_notification,
                                     data.getJSONObject("settings").getBoolean("closed_match_notification")));
-/*
-                            user1.setUserSettings(new UserSettings(
-                                    false,
-                                    false,
-                                    false,
-                                    false,
-                                    false));
-                                    */
                             gnr.setLoggedUser(user1);
                             dialog.dismiss();
 

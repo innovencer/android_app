@@ -158,6 +158,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                         .into(target);
             }
         }
+        linearImageAttached.setVisibility(View.GONE);
         shareDialog = new ShareDialog(this);
         shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
@@ -424,7 +425,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                                 comentario = new Comentario();
                                 comentario.setId(datos.getJSONObject(i).getInt("id"));
                                 comentario.setText(datos.getJSONObject(i).getString("text"));
-                                comentario.setTime_ago("waiting ...");
+                                comentario.setTime_ago(datos.getJSONObject(i).getString("created"));
 
                                 user = new User();
                                 user.setProfile_pic_url(datos.getJSONObject(i).getJSONObject("user").getString("profile_pic_url"));

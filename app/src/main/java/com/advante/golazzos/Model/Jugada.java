@@ -11,6 +11,11 @@ public class Jugada extends Model {
     String label;
     String html_center_url;
     String trackable_type;
+    String status;
+    String option;
+    int amount;
+    int amount_to_deposit;
+    int which_image;
     int type = 1;
 
     public Jugada() {
@@ -78,5 +83,45 @@ public class Jugada extends Model {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
+
+    public int getWhich_image() {
+        return which_image;
+    }
+
+    public void setWhich_image(int which_image) {
+        this.which_image = which_image;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public int getAmount_to_deposit() {
+        return amount_to_deposit;
+    }
+
+    public void setAmount_to_deposit(int amount_to_deposit) {
+        this.amount_to_deposit = amount_to_deposit;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

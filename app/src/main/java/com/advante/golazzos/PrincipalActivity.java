@@ -178,6 +178,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
                         textTitle.setText("JUGADAS");
                         bottomMenu1.setVisibility(View.GONE);
                         bottomMenu2.setVisibility(View.GONE);
+                        no_menu = true;
                         break;
                     case 4:
                         showFragment(8);

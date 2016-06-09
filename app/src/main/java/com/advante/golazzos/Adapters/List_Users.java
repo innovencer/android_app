@@ -96,6 +96,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
             holder.textEquipoAlma = (TextView) convertView.findViewById(R.id.textEquipoAlma);
             holder.linearAdd = (LinearLayout) convertView.findViewById(R.id.linearAdd);
             holder.linearInfo = (LinearLayout) convertView.findViewById(R.id.linearInfo);
+            holder.ic_add = (ImageView) convertView.findViewById(R.id.ic_add);
 
             convertView.setTag(holder);
         }else{
@@ -104,6 +105,9 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
 
 
         holder.textName.setText(item.getName());
+        if(item.getIs_friend()){
+            holder.ic_add.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_added));
+        }
         if(item.getSouldTeamName() != null) {
             holder.textEquipoAlma.setText(item.getSouldTeamName());
         }
@@ -234,6 +238,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
         TextView textEquipoAlma;
         ImageView imageProfile;
         ImageView imageEquipo1;
+        ImageView ic_add;
         LinearLayout linearAdd;
         LinearLayout linearInfo;
     }

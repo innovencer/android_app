@@ -87,7 +87,9 @@
         <activity android:name=".ServiceDetailActivity"
             android:screenOrientation="portrait">
         </activity>
-
+        <activity android:name=".JugadasResultActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <receiver android:name="io.npay.hub_pin.HubDialogUserData$NPayPinSMSReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
