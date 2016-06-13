@@ -67,17 +67,18 @@ public class Amigos_Fragment extends GeneralFragment {
         linear3.setOnClickListener(clickTab);
         linear4.setOnClickListener(clickTab);
 
+        final String appLinkUrl;
+
+        appLinkUrl = "https://fb.me/819597421505804";
+
+        final AppInviteContent content = new AppInviteContent.Builder()
+                .setApplinkUrl(appLinkUrl)
+                .build();
+
         imgInvitar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String appLinkUrl;
-
-                appLinkUrl = "https://fb.me/819597421505804";
-
                 if (AppInviteDialog.canShow()) {
-                    AppInviteContent content = new AppInviteContent.Builder()
-                            .setApplinkUrl(appLinkUrl)
-                            .build();
                     AppInviteDialog.show(getActivity(), content);
                 }
             }
@@ -105,7 +106,6 @@ public class Amigos_Fragment extends GeneralFragment {
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
                 .setContentTitle("Hello")
                 .setContentDescription("How are you? here's a link")
-                .setImageUrl(Uri.parse("https://pbs.twimg.com/profile_images/596777148435705856/tsE4inUQ.jpg"))
                 .setContentUrl(Uri.parse("https://pbs.twimg.com/profile_images/596777148435705856/tsE4inUQ.jpg"))
                 .build();
 

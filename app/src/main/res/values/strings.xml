@@ -33,6 +33,9 @@
     <string name="ranking_endpoint">ranking</string>
     <string name="friends_endpoint">friends</string>
     <string name="followers_endpoint">followers</string>
+    <string name="subscription_endpoint">subscription</string>
+    <string name="npay_co">41b3a332ede867ef21284c74886463ee</string>
+    <string name="npay_mx">dcc65262bcd170c684d98cf084fc9a4e</string>
     <string name="users_search">users/search?query=</string>
     <string name="delete_favorite_team_url">https://www.golazzos.com/api/v2/favorite_teams/%1$s</string>
     <string name="favorites_teams_by_user_url">https://www.golazzos.com/api/v2/favorite_teams</string>

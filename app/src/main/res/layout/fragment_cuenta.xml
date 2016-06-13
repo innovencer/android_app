@@ -147,7 +147,7 @@
                 <ImageView
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:src="@drawable/suplente_icono"
+                    android:src="@drawable/button_titular"
                     android:id="@+id/imageTipoUsuario" />
             </LinearLayout>
         </LinearLayout>
@@ -215,6 +215,7 @@
                     android:src="@drawable/visual_cuenta"
                     android:scaleType="fitStart"/>
                 <LinearLayout
+                    android:id="@+id/linearButton1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center">

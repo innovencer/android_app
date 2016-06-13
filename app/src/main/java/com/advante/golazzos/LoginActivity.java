@@ -261,6 +261,7 @@ public class LoginActivity extends GeneralActivity {
                             user1.setId(data.getInt("id"));
                             user1.setName(data.optString("name"));
                             user1.setPaid_subscription(data.getBoolean("paid_subscription"));
+                            user1.setSubscription_id(data.getString("subscription_id"));
                             user1.setPoints(data.getDouble("points"));
                             user1.setProfile_pic_url(data.getString("profile_pic_url"));
 

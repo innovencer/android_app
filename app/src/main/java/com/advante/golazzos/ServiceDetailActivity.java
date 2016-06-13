@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
+import com.android.volley.toolbox.JsonArrayRequest;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -28,7 +29,7 @@ import io.npay.hub_subscriptions.SubscriptionResponse;
  * Created by Naranya on 31/01/2016.
  */
 public class ServiceDetailActivity extends Activity implements OnServiceDetailReceivedListener {
-
+    JsonArrayRequest jsArrayRequest;
     private Toolbar toolbar;
     private NPay npay;
     private String id_service;

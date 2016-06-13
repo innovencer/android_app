@@ -9,6 +9,7 @@ public class User extends Model {
     String name;
     String email;
     Boolean paid_subscription;
+    String subscription_id = "";
     Double points;
     String profile_pic_url;
     UserLevel level;
@@ -114,6 +115,14 @@ public class User extends Model {
 
     public void setIs_friend(Boolean is_friend) {
         this.is_friend = is_friend;
+    }
+
+    public String getSubscription_id() {
+        return subscription_id;
+    }
+
+    public void setSubscription_id(String subscription_id) {
+        this.subscription_id = subscription_id;
     }
 
     public void setUserSettings(UserSettings userSettings) {

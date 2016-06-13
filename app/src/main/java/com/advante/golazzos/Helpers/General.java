@@ -50,6 +50,7 @@ public class General {
     public static String endpoint_friends;
     public static String endpoint_followers;
     public static String endpoint_weekly_awards;
+    public static String endpoint_subscription;
 
     public static final String KEYWORD = "TESTSERVICE6";
     public static final String KEYWORD_UNS= "TESTSERVICE6BAJA";
@@ -94,7 +95,7 @@ public class General {
         endpoint_friends = url_base + context.getString(R.string.friends_endpoint);
         endpoint_followers = url_base + context.getString(R.string.followers_endpoint);
         endpoint_weekly_awards = url_base + context.getString(R.string.weekly_awards_endpoint);
-
+        endpoint_subscription = url_base + context.getString(R.string.subscription_endpoint);
         dialog = new ProgressDialog(context);
         dialog.setTitle("");
         dialog.setMessage("Conectando...");
