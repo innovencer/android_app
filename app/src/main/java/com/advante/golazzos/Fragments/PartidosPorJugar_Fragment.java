@@ -54,7 +54,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
     private float lastX;
 
     TextView buttonLigas,buttonEquipos;
-    String equipo = "";
+    String equipo = "",idPartido="";
     int idLiga = -1,idEquipo = -1,idLiga_Temp = -1;
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
@@ -70,6 +70,10 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_partidos_1, container, false);
+        Bundle bundle = this.getArguments();
+        if (bundle != null && bundle.containsKey("idPartido"))
+            idPartido = bundle.getString("idPartido", "");
+
         listView = (ListView) view.findViewById(R.id.listview);
         viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
         buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
@@ -127,9 +131,14 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
         String url = General.endpoint_maches;
         if(idLiga > 0){
             url = url +"?tournament_id="+idLiga;
+            idPartido = "";
         }
         if(idEquipo > 0){
             url = url +"&team_name="+equipo.replace(" ","%20");
+            idPartido = "";
+        }
+        if(!idPartido.isEmpty()){
+            url = General.endpoint_maches+"/" +idPartido;
         }
         dialog.show();
             jsArrayRequest = new JsonObjectRequest(
@@ -141,7 +150,12 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                         public void onResponse(JSONObject response) {
                             // Manejo de la respuesta
                             try {
-                                JSONArray data = response.getJSONArray("response");
+                                JSONArray data;
+                                if(idPartido.isEmpty()) {
+                                    data = response.getJSONArray("response");
+                                }else{
+                                    data = new JSONArray("["+response.getJSONObject("response").toString()+"]");
+                                }
                                 ArrayList<Partido> partidos = new ArrayList<>();
                                 Partido partido;
                                 for(int i=0;i< data.length();i++){
@@ -161,8 +175,10 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                                     partidos.add(partido);
 
                                 }
-                                List_Partidos list_partidos = new List_Partidos(getContext(),partidos,resourse);
-                                listView.setAdapter(list_partidos);
+                                if(partidos.size()>0) {
+                                    List_Partidos list_partidos = new List_Partidos(getContext(), partidos, resourse);
+                                    listView.setAdapter(list_partidos);
+                                }
                                 dialog.dismiss();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -221,18 +237,6 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // Manejo de errores
-                            String body = "";
-                            //get status code here
-                            String statusCode = String.valueOf(error.networkResponse.statusCode);
-                            //get response body and parse with appropriate encoding
-                            if (error.networkResponse.data != null) {
-                                try {
-                                    body = new String(error.networkResponse.data, "UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
                             dialog.dismiss();
                         }
                     });
@@ -332,8 +336,8 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                 idEquipo = -1;
                 equipo = "";
                 String name = arrayList.get(i).getName();
-                if (name.length() > 18) {
-                    buttonLigas.setText(name.substring(0, 18));
+                if (name.length() > 23) {
+                    buttonLigas.setText(name.substring(0, 22));
                 } else {
                     buttonLigas.setText(name);
                 }

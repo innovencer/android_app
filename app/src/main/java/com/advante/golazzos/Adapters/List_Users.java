@@ -1,10 +1,12 @@
 package com.advante.golazzos.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +79,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final UserBusqueda item = getItem(position);
         final ViewHolder holder;
         if (convertView == null) {
@@ -182,14 +184,15 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
         holder.linearAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addFriend(item.getId());
+                holder.ic_add.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_added));
+                addFriend(item.getId(), position);
             }
         });
 
         return convertView;
     }
 
-    private void addFriend(int id){
+    private void addFriend(final int id, final int index){
         JSONObject friend = new JSONObject();
         JSONObject user_id = new JSONObject();
         try {
@@ -215,7 +218,57 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Ya es un amigo.", Toast.LENGTH_SHORT).show();
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        deleteFriend(id, index);
+                                        break;
+                                }
+                            }
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Deseas dejar de seguir a este amigo?").setPositiveButton("Si", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+    }
+
+    private void deleteFriend(int id, final int index){
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.DELETE,
+                General.endpoint_friends+"/"+id,
+                "",
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        _items.remove(index);
+                        notifyDataSetChanged();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(getContext(), "Ya es un amigo.", Toast.LENGTH_SHORT).show();
+                        _items.remove(index);
+                        notifyDataSetChanged();
                     }
                 }){
             @Override

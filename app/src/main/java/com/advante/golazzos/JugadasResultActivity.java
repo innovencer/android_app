@@ -46,8 +46,13 @@ public class JugadasResultActivity extends GeneralActivity {
         textTime_ago.setText(extras.getString("textTime_ago"));
         textTitulo.setText(extras.getString("option"));
         textPuntosJuegas.setText(""+extras.getInt("amount"));
-        textPuntosGanas.setText(""+extras.getInt("amount_to_deposit"));
+        if(extras.getBoolean("result")) {
+            textPuntosGanas.setText("" + extras.getInt("amount_to_deposit"));
+        }else{
+            textPuntosGanas.setText("" + extras.getInt("amount"));
+        }
 
+        showLog(""+extras.getInt("image"));
         File file;
         Bitmap bm;
         GraphicsUtil graphicUtil = new GraphicsUtil();

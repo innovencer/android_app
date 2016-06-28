@@ -168,7 +168,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                             for(int i = 0;i < data.length(); i++){
                                 jugada = new Jugada();
                                 jugada.setId(data.getJSONObject(i).getInt("id"));
-                                jugada.setTextTime_ago(data.getJSONObject(i).getString("created"));
+                                jugada.setTextTime_ago("Hace "+ data.getJSONObject(i).getString("created"));
                                 jugada.setAmount(data.getJSONObject(i).getInt("amount"));
                                 jugada.setAmount_to_deposit(data.getJSONObject(i).getInt("amount_to_deposit"));
                                 jugada.setOption(data.getJSONObject(i).getString("option"));
@@ -176,9 +176,12 @@ public class Jugadas_Fragment extends GeneralFragment {
                                 if(data.getJSONObject(i).getJSONObject("match").has("html_center_url"))
                                     jugada.setHtml_center_url(data.getJSONObject(i).getJSONObject("match").getString("html_center_url"));
 
-                                int local_score = data.getJSONObject(i).getJSONObject("match").getInt("local_score");
-                                int visitant_score = data.getJSONObject(i).getJSONObject("match").getInt("visitant_score");
-
+                                int local_score = 0;
+                                if(!data.getJSONObject(i).getJSONObject("match").isNull("local_score"))
+                                    local_score = data.getJSONObject(i).getJSONObject("match").getInt("local_score");
+                                int visitant_score = 0;
+                                if(!data.getJSONObject(i).getJSONObject("match").isNull("visitant_score"))
+                                    visitant_score = data.getJSONObject(i).getJSONObject("match").getInt("visitant_score");
                                 if(local_score > visitant_score){
                                     jugada.setWhich_image(1);
                                 }else if(visitant_score> local_score){
@@ -448,8 +451,8 @@ public class Jugadas_Fragment extends GeneralFragment {
                 idEquipo = -1;
                 equipo = "";
                 String name = arrayList.get(i).getName();
-                if (name.length() > 18) {
-                    buttonLigas.setText(name.substring(0, 18));
+                if (name.length() > 23) {
+                    buttonLigas.setText(name.substring(0, 22));
                 } else {
                     buttonLigas.setText(name);
                 }

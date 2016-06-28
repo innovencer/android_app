@@ -1,6 +1,8 @@
 package com.advante.golazzos.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.advante.golazzos.Helpers.General;
+import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.R;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -51,11 +56,8 @@ public class List_Ligas extends ArrayAdapter<Liga> {
             holder = (ViewHolder)convertView.getTag();
         }
         holder.textName.setText(item.getName());
-        /*
-        String imagePath = item.getImage_path();
-        imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
-        File file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
 
+        File file = new File(General.local_dir_images + "ligas/" + item.getId() + ".png");
         if (file.exists()) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -73,8 +75,8 @@ public class List_Ligas extends ArrayAdapter<Liga> {
             holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
                     bm, 16));
         }
-        */
-        holder.imageEquipo1.setVisibility(View.INVISIBLE);
+
+        holder.imageEquipo1.setVisibility(View.VISIBLE);
 
         return convertView;
     }

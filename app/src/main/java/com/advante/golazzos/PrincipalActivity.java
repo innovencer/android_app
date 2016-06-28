@@ -82,10 +82,10 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     NavigationView navigationView;
     ListView LeftMenu;
     FragmentManager fragmentManager;
-    ImageView imageFanaticada,imagePartidos,imageEquipos,imageRanking,imageAmigos,imageProfile;
+    ImageView imageFanaticada,imagePartidos,imageEquipos,imageRanking,imageAmigos,imageProfile,imgTypeProfile;
     ImageView imageFanaticada1,imagePartidos1,imageEquipos1,imageRanking1,imageAmigos1;
     TextView textFanaticada,textPartidos,textEquipos,textRanking,textAmigos,textName,textPuntos,textNivel;
-    TextView textFanaticada1,textPartidos1,textEquipos1,textRanking1,textAmigos1,textPuntosGlobal;
+    TextView textFanaticada1,textPartidos1,textEquipos1,textRanking1,textAmigos1,textPuntosGlobal,textTypeProfile;
     LeftMenuAdapter leftMenuAdapter;
     LinearLayout bottomMenu1, bottomMenu2,linearPuntos, linearTitular;
     TextView textTitle;
@@ -129,11 +129,19 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         linearTitular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PrincipalActivity.this, ServiceDetailActivity.class);
-                startActivity(intent);
+                showFragment(8);
+                pintarMenu(3);
+                textTitle.setText("PERFIL");
+                bottomMenu1.setVisibility(View.GONE);
+                bottomMenu2.setVisibility(View.GONE);
+                no_menu = true;
             }
         });
         gnr = new General(this);
+
+        if(gnr.getLoggedUser() == null){
+            gnr.getUser();
+        }
 
         setTitle("");
         showFragment(1);
@@ -219,6 +227,8 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         imageRanking1 = (ImageView) findViewById(R.id.imageRanking1);
         imageAmigos1 = (ImageView) findViewById(R.id.imageAmigos1);
 
+        imgTypeProfile = (ImageView) findViewById(R.id.imgTypeProfile);
+
         textFanaticada = (TextView) findViewById(R.id.textFanaticada);
         textPartidos = (TextView) findViewById(R.id.textPartidos);
         textEquipos = (TextView) findViewById(R.id.textEquipos);
@@ -229,6 +239,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         textPuntos =  (TextView) findViewById(R.id.textPuntos);
         textNivel =  (TextView) findViewById(R.id.textNivel);
         textPuntosGlobal = (TextView) findViewById(R.id.textPuntosGlobal);
+        textTypeProfile = (TextView) findViewById(R.id.textTypeProfile);
 
         textFanaticada1 = (TextView) findViewById(R.id.textFanaticada1);
         textPartidos1 = (TextView) findViewById(R.id.textPartidos1);
@@ -551,6 +562,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.principal, menu);
+        no_menu = true;
         _menu = menu;
         // Associate searchable configuration with the SearchView
         // SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -797,6 +809,13 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
             String s = String.format("%,d", Math.round(gnr.getLoggedUser().getPoints()));
             textPuntos.setText(s);
             textPuntosGlobal.setText(s + " pts");
+
+            if(gnr.getLoggedUser().getPaid_subscription()){
+                textTypeProfile.setText("Titular");
+            }else{
+                textTypeProfile.setText("Suplente");
+            }
+
             textNivel.setText("" + gnr.getLoggedUser().getLevel().getOrder());
             if (gnr.getLoggedUser().getProfile_pic_url().contains("facebook.com")) {
                 pic_name = "" + gnr.getLoggedUser().getId();
@@ -836,6 +855,12 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     }
 
     @Override
+    public void onAttachFragment(Fragment f) {
+        super.onAttachFragment(f);
+        gnr.setLastFragment(f);
+    }
+
+    @Override
     protected void onDestroy() {
         android.os.Process.killProcess(android.os.Process.myPid());
         super.onDestroy();
@@ -860,4 +885,35 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         toggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        if(gnr.getLastFragment() != null){
+            if(gnr.getLastFragment() instanceof Fanaticada_Fragment){
+                onClickBottomMenu(findViewById(R.id.menuFanaticada));
+
+            }else if(gnr.getLastFragment() instanceof PartidosPorJugar_Fragment){
+                onClickBottomMenu(findViewById(R.id.menuPartidos));
+            }else if(gnr.getLastFragment() instanceof Favoritos1_Fragment){
+                onClickBottomMenu(findViewById(R.id.menuEquipos));
+            }else if(gnr.getLastFragment() instanceof RankingFragment){
+                onClickBottomMenu(findViewById(R.id.menuRanking));
+            }else if (gnr.getLastFragment() instanceof Amigos_Fragment){
+                onClickBottomMenu(findViewById(R.id.menuRanking));
+            }else if (gnr.getLastFragment() instanceof Nivel_Fragmet){
+                onClickBottomMenu(findViewById(R.id.menuPartidos1));
+            }else if(gnr.getLastFragment() instanceof Trofeos_Fragment){
+                onClickBottomMenu(findViewById(R.id.menuEquipos1));
+            }else if(gnr.getLastFragment() instanceof Aciertos_Fragment){
+                onClickBottomMenu(findViewById(R.id.menuRanking2));
+            }else if(gnr.getLastFragment() instanceof Fragment_Ganadores){
+                onClickBottomMenu(findViewById(R.id.menuAmigos1));
+            }else{
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+            gnr.clearHistoryFragment();
+        }else{
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
 }

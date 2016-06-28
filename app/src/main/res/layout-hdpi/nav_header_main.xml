@@ -45,7 +45,7 @@
                     android:layout_width="34dp"
                     android:layout_height="35dp"
                     android:src="@drawable/ic_cono"
-                    />
+                    android:id="@+id/imgTypeProfile" />
                 <TextView
                     android:id="@+id/textTypeProfile"
                     android:layout_width="wrap_content"

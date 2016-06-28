@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -71,7 +72,7 @@ public class MainActivity extends GeneralActivity {
         });
 
         //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
-        showLog(preferences.getString("token",""));
+        //showLog(preferences.getString("token",""));
         if(!preferences.getString("token","").equals("")){
             General.setToken(preferences.getString("token",""));
             getUser();
@@ -120,13 +121,22 @@ public class MainActivity extends GeneralActivity {
                                 JSONObject soul_team = data.getJSONObject("soul_team");
                                 user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
                             }
+                            if(!data.getJSONObject("ranking").isNull("score"))
+                                user1.setScore(data.getJSONObject("ranking").getInt("score"));
+                            else
+                                user1.setScore(0);
+                            if(!data.getJSONObject("ranking").isNull("rank"))
+                                user1.setRank(data.getJSONObject("ranking").getInt("rank"));
+                            else
+                                user1.setRank(0);
 
                             JSONObject level = data.getJSONObject("level");
                             user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
                                     level.getString("name"), level.getInt("order"),level.getInt("points")));
 
                             int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
-                                    total_bets = 0, won_bets = 0;
+                                    total_bets = 0, won_bets = 0, diferenciaGoleTotal_bets = 0, diferenciaGolesWon_bets =0,
+                                    primerGolTotal_bets = 0, primerGolWon_bets = 0, numeroGolesTotal_bets = 0, numeroGolesWon_bets = 0;
                             if(data.getJSONObject("counters").has("Marcador"))
                                 marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
                             if(data.getJSONObject("counters").has("Marcador"))
@@ -139,11 +149,29 @@ public class MainActivity extends GeneralActivity {
                                 total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
                             if(data.getJSONObject("counters").has("Total"))
                                 won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Diferencia de goles")){
+                                diferenciaGoleTotal_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("total_bets");
+                                diferenciaGolesWon_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("won_bets");
+                            }
+                            if(data.getJSONObject("counters").has("Primer Gol")){
+                                primerGolTotal_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("total_bets");
+                                primerGolWon_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("won_bets");
+                            }
+                            if(data.getJSONObject("counters").has("No. de Goles")){
+                                numeroGolesTotal_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("total_bets");
+                                numeroGolesWon_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("won_bets");
+                            }
                             user1.setCounters(new Counters(
                                     marcadorTotal_bets,
                                     marcadorWon_bets,
                                     ganaPierdeTotal_bets,
                                     ganaPierdeWon_bets,
+                                    diferenciaGoleTotal_bets,
+                                    diferenciaGolesWon_bets,
+                                    primerGolTotal_bets,
+                                    primerGolWon_bets,
+                                    numeroGolesTotal_bets,
+                                    numeroGolesWon_bets,
                                     total_bets,
                                     won_bets
                             ));

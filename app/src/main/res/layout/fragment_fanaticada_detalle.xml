@@ -48,7 +48,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/image_circle_gray"
-                android:src="@drawable/venezuela"
+                android:src="@drawable/no_profile"
                 />
         </LinearLayout>
         <LinearLayout
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:textSize="11dp"
                     android:layout_marginTop="5dp"
                     android:id="@+id/textLabel" />
@@ -310,23 +310,10 @@
         android:layout_margin="5dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/linearJugar">
-            <ListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:dividerHeight="0dp"
-                android:divider="@null">
-            </ListView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/linearJugar"
-            android:layout_marginBottom="5dp"
-            android:layout_above="@+id/linear1">
+            android:layout_marginBottom="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -347,6 +334,19 @@
                     android:textStyle="bold"/>
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearJugar">
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dividerHeight="0dp"
+                android:divider="@null">
+            </ListView>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linear1"
             android:layout_width="wrap_content"

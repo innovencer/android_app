@@ -1,11 +1,16 @@
 package com.advante.golazzos;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
@@ -265,6 +270,15 @@ public class LoginActivity extends GeneralActivity {
                             user1.setPoints(data.getDouble("points"));
                             user1.setProfile_pic_url(data.getString("profile_pic_url"));
 
+                            if(!data.getJSONObject("ranking").isNull("score"))
+                                user1.setScore(data.getJSONObject("ranking").getInt("score"));
+                            else
+                                user1.setScore(0);
+                            if(!data.getJSONObject("ranking").isNull("rank"))
+                                user1.setRank(data.getJSONObject("ranking").getInt("rank"));
+                            else
+                                user1.setRank(0);
+
                             if(!data.isNull("soul_team")){
                                 JSONObject soul_team = data.getJSONObject("soul_team");
                                 user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
@@ -275,7 +289,8 @@ public class LoginActivity extends GeneralActivity {
                                     level.getString("name"), level.getInt("order"),level.getInt("points")));
 
                             int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
-                            total_bets = 0, won_bets = 0;
+                                    total_bets = 0, won_bets = 0, diferenciaGoleTotal_bets = 0, diferenciaGolesWon_bets =0,
+                                    primerGolTotal_bets = 0, primerGolWon_bets = 0, numeroGolesTotal_bets = 0, numeroGolesWon_bets = 0;
                             if(data.getJSONObject("counters").has("Marcador"))
                                 marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
                             if(data.getJSONObject("counters").has("Marcador"))
@@ -288,15 +303,32 @@ public class LoginActivity extends GeneralActivity {
                                 total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
                             if(data.getJSONObject("counters").has("Total"))
                                 won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
+                            if(data.getJSONObject("counters").has("Diferencia de goles")){
+                                diferenciaGoleTotal_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("total_bets");
+                                diferenciaGolesWon_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("won_bets");
+                            }
+                            if(data.getJSONObject("counters").has("Primer Gol")){
+                                primerGolTotal_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("total_bets");
+                                primerGolWon_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("won_bets");
+                            }
+                            if(data.getJSONObject("counters").has("No. de Goles")){
+                                numeroGolesTotal_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("total_bets");
+                                numeroGolesWon_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("won_bets");
+                            }
                             user1.setCounters(new Counters(
                                     marcadorTotal_bets,
                                     marcadorWon_bets,
                                     ganaPierdeTotal_bets,
                                     ganaPierdeWon_bets,
+                                    diferenciaGoleTotal_bets,
+                                    diferenciaGolesWon_bets,
+                                    primerGolTotal_bets,
+                                    primerGolWon_bets,
+                                    numeroGolesTotal_bets,
+                                    numeroGolesWon_bets,
                                     total_bets,
                                     won_bets
-                                    ));
-
+                            ));
                             boolean friendship_notification;
                             if(!data.getJSONObject("settings").has("friendship_notification")){
                                 friendship_notification = true;
@@ -370,5 +402,150 @@ public class LoginActivity extends GeneralActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+ public void recordarPass(View v){
+     final Dialog dialog1 = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+     dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+     dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+     dialog1.setContentView(R.layout.dialog_password_1);
+     final EditText email = (EditText) dialog1.findViewById(R.id.editEmail);
+     LinearLayout btnAceptar = (LinearLayout) dialog1.findViewById(R.id.btnAceptar);
+     LinearLayout btnCancelar = (LinearLayout) dialog1.findViewById(R.id.btnCancelar);
+
+     btnCancelar.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             dialog1.dismiss();
+         }
+     });
+     btnAceptar.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             if(email.getText().toString().length()>0){
+                 dialog.show();
+                 JSONObject password = new JSONObject();
+                 JSONObject email_json = new JSONObject();
+
+                 try {
+                     email_json.put("email", email.getText().toString());
+                     password.put("password", email_json);
+
+                 } catch (JSONException e) {
+                     e.printStackTrace();
+                 }
+                 showLog(password.toString());
+                 jsArrayRequest = new JsonObjectRequest(
+                         Request.Method.POST,
+                         General.endpoint_password,
+                         password,
+                         new Response.Listener<JSONObject>() {
+                             @Override
+                             public void onResponse(JSONObject response) {
+                                 dialog1.dismiss();
+                                 dialog.dismiss();
+                                 setPassowrd();
+                             }
+                         },
+                         new Response.ErrorListener() {
+                             @Override
+                             public void onErrorResponse(VolleyError error) {
+                                 // Manejo de errores
+                                 dialog1.dismiss();
+                                 dialog.dismiss();
+                                 Toast.makeText(LoginActivity.this,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
+                             }
+                         }){
+
+                     @Override
+                     public Map<String, String> getHeaders() throws AuthFailureError {
+                         Map<String, String>  params = new HashMap<String, String>();
+                         params.put("Authorization", "Token "+ General.getToken());
+                         params.put("Content-Type", "application/json");
+                         return params;
+                     }
+                 };
+                 jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                         7000,
+                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                 VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(jsArrayRequest);
+             }
+         }
+     });
+     dialog1.show();
+ }
+
+    private void setPassowrd(){
+        final Dialog dialog1 = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+        dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setContentView(R.layout.dialog_password_2);
+        final EditText password1 = (EditText) dialog1.findViewById(R.id.editPassword);
+        final EditText password2 = (EditText) dialog1.findViewById(R.id.editPassword2);
+        final EditText token = (EditText) dialog1.findViewById(R.id.editToken);
+        LinearLayout btnAceptar = (LinearLayout) dialog1.findViewById(R.id.btnAceptar);
+        LinearLayout btnCancelar = (LinearLayout) dialog1.findViewById(R.id.btnCancelar);
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(password1.getText().toString().length()>0){
+                    dialog.show();
+                    JSONObject password = new JSONObject();
+                    JSONObject data = new JSONObject();
+
+                    try {
+                        data.put("reset_password_token", token.getText().toString());
+                        data.put("password", password1.getText().toString());
+                        data.put("password_confirmation", password2.getText().toString());
+                        password.put("password", data);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    showLog(password.toString());
+                    jsArrayRequest = new JsonObjectRequest(
+                            Request.Method.PUT,
+                            General.endpoint_password,
+                            password,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    dialog.dismiss();
+                                    showShortToast("Su clave se ha cambiado exitosamente.");
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    dialog.dismiss();
+                                    Toast.makeText(LoginActivity.this,"Token incorrecto.",Toast.LENGTH_SHORT).show();
+                                }
+                            }){
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String>  params = new HashMap<String, String>();
+                            params.put("Authorization", "Token "+ General.getToken());
+                            params.put("Content-Type", "application/json");
+                            return params;
+                        }
+                    };
+                    jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                            7000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(jsArrayRequest);
+                }
+            }
+        });
+        dialog1.show();
     }
 }

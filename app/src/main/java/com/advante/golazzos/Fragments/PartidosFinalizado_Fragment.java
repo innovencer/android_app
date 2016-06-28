@@ -218,8 +218,8 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                 idEquipo = -1;
                 equipo = "";
                 String name = arrayList.get(i).getName();
-                if (name.length() > 18) {
-                    buttonLigas.setText(name.substring(0, 18));
+                if (name.length() > 23) {
+                    buttonLigas.setText(name.substring(0, 22));
                 } else {
                     buttonLigas.setText(name);
                 }

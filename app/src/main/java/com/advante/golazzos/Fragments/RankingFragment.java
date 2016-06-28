@@ -1,5 +1,8 @@
 package com.advante.golazzos.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Ranking;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
+import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.R;
@@ -21,11 +26,17 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +48,9 @@ public class RankingFragment extends GeneralFragment {
     JsonArrayRequest jsArrayRequest;
     ListView listView;
     LinearLayout linear1, linear2, linear3, linear4;
-    ImageView image1, image2;
+    TextView textPosicion, textName, textEquipoAlma, textNivel, textAciertos;
+    ImageView image1, image2, imageProfile, imageEquipo1;
+    String pic_name;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,15 +64,111 @@ public class RankingFragment extends GeneralFragment {
 
         image1 = (ImageView) view.findViewById(R.id.image1);
         image2 = (ImageView) view.findViewById(R.id.image2);
+        imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
+        imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
 
         linear1.setOnClickListener(clickTab);
         linear2.setOnClickListener(clickTab);
         linear3.setOnClickListener(clickTab);
         linear4.setOnClickListener(clickTab);
 
+        textName = (TextView) view.findViewById(R.id.textName);
+        textAciertos = (TextView) view.findViewById(R.id.textAciertos);
+        textPosicion = (TextView) view.findViewById(R.id.textPosicion);
+        textEquipoAlma = (TextView) view.findViewById(R.id.textEquipoAlma);
+        textNivel = (TextView) view.findViewById(R.id.textNivel);
+
+        textName.setText(gnr.getLoggedUser().getName());
+        textAciertos.setText(""+gnr.getLoggedUser().getScore());
+        textPosicion.setText(""+gnr.getLoggedUser().getRank());
+        textEquipoAlma.setText(gnr.getLoggedUser().getSoul_team().getName());
+        textNivel.setText(""+gnr.getLoggedUser().getLevel().getOrder());
+
+        File file = new File(General.local_dir_images + "profile/no_profile.png");
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        GraphicsUtil graphicUtil = new GraphicsUtil();
+        imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                bm, 16));
+
+        if (gnr.getLoggedUser().getProfile_pic_url().contains("facebook.com")) {
+            pic_name = "" + gnr.getLoggedUser().getId();
+
+            file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
+            if (file.exists()) {
+                options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                graphicUtil = new GraphicsUtil();
+                imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                        bm, 16));
+            } else {
+                Picasso.with(getContext())
+                        .load(gnr.getLoggedUser().getProfile_pic_url())
+                        .into(target);
+            }
+
+        } else {
+            pic_name = gnr.getLoggedUser().getProfile_pic_url().substring(
+                    gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("/"),
+                    gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("."));
+            if (file.exists()) {
+                options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                graphicUtil = new GraphicsUtil();
+                imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                        bm, 16));
+            } else {
+                Picasso.with(getContext())
+                        .load(gnr.getLoggedUser().getProfile_pic_url())
+                        .into(target);
+            }
+        }
+        String imagePath = gnr.getLoggedUser().getSoul_team().getImage_path();
+        int idImage = Integer.parseInt(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-")));
+
+        file = new File(General.local_dir_images + "equipos/" + idImage + ".gif");
+        if(file.exists()) {
+            bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
+                    bm, 16));
+        }
+
         getRanking("");
         return view;
     }
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            Bitmap bm = bitmap;
+            GraphicsUtil graphicUtil = new GraphicsUtil();
+            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                    bm, 16));
+            FileOutputStream stream = null;
+            File file;
+            try {
+                file = new File(General.local_dir_images + "profile/");
+                if(!file.exists()){
+                    file.mkdir();
+                }
+                stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
+                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                stream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {}
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {}
+    };
 
     View.OnClickListener clickTab = new View.OnClickListener() {
         @Override

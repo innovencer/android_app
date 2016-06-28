@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.BarLose;
@@ -23,8 +24,11 @@ import java.io.File;
  */
 public class Aciertos_Fragment extends GeneralFragment {
     TextView textTotalJugados, textAciertos, textPerdidos, textPorcentajeGanados, textPorcentajePerdidos,
-             textJugados1, textAciertos1, textEfectividad1, textJugados2, textAciertos2, textEfectividad2;
+             textJugados1, textAciertos1, textEfectividad1, textJugados2, textAciertos2, textEfectividad2,
+             textJugados3, textAciertos3, textEfectividad3, textJugados4, textAciertos4, textEfectividad4,
+             textJugados5, textAciertos5, textEfectividad5;
     ImageView imageProfile;
+    LinearLayout linearDiferenciaGoles, linearPrimerGol, linearNumeroGoles;
     BarWin barWin1;
     BarLose barLose;
     @Override
@@ -43,6 +47,20 @@ public class Aciertos_Fragment extends GeneralFragment {
         textJugados2 = (TextView) view.findViewById(R.id.textJugados2);
         textAciertos2 = (TextView) view.findViewById(R.id.textAciertos2);
         textEfectividad2 = (TextView) view.findViewById(R.id.textEfectividad2);
+        textJugados3 = (TextView) view.findViewById(R.id.textJugados3);
+        textAciertos3 = (TextView) view.findViewById(R.id.textAciertos3);
+        textEfectividad3 = (TextView) view.findViewById(R.id.textEfectividad3);
+        textJugados4 = (TextView) view.findViewById(R.id.textJugados4);
+        textAciertos4 = (TextView) view.findViewById(R.id.textAciertos4);
+        textEfectividad4 = (TextView) view.findViewById(R.id.textEfectividad4);
+        textJugados5 = (TextView) view.findViewById(R.id.textJugados5);
+        textAciertos5 = (TextView) view.findViewById(R.id.textAciertos5);
+        textEfectividad5 = (TextView) view.findViewById(R.id.textEfectividad5);
+
+        linearDiferenciaGoles = (LinearLayout) view.findViewById(R.id.linearDiferenciaGoles);
+        linearPrimerGol = (LinearLayout) view.findViewById(R.id.linearPrimerGol);
+        linearNumeroGoles = (LinearLayout) view.findViewById(R.id.linearNumeroGoles);
+
         imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
         barWin1 = (BarWin) view.findViewById(R.id.barWin1);
         barLose = (BarLose) view.findViewById(R.id.barLose);
@@ -82,6 +100,39 @@ public class Aciertos_Fragment extends GeneralFragment {
             porcentajeGanados2 = Math.round(((float)gnr.getLoggedUser().getCounters().getGanaPierdeWonBets() / (float)gnr.getLoggedUser().getCounters().getGanaPierdeTotalBets()) * 100);
         }
         textEfectividad2.setText(porcentajeGanados2+"%");
+
+        if(gnr.getLoggedUser().getCounters().getDiferenciaGolesTotalBets()>0){
+            linearDiferenciaGoles.setVisibility(View.VISIBLE);
+            textJugados3.setText(""+gnr.getLoggedUser().getCounters().getDiferenciaGolesTotalBets());
+            textAciertos3.setText(""+gnr.getLoggedUser().getCounters().getDiferenciaGolesWonBets());
+            int porcentajeGanados3 = 0;
+            if(gnr.getLoggedUser().getCounters().getDiferenciaGolesWonBets()>0){
+                porcentajeGanados3 = Math.round(((float)gnr.getLoggedUser().getCounters().getDiferenciaGolesWonBets() / (float)gnr.getLoggedUser().getCounters().getDiferenciaGolesTotalBets()) * 100);
+            }
+            textEfectividad3.setText(porcentajeGanados3+"%");
+        }
+
+        if(gnr.getLoggedUser().getCounters().getPrimerGolTotalBets()>0){
+            linearPrimerGol.setVisibility(View.VISIBLE);
+            textJugados4.setText(""+gnr.getLoggedUser().getCounters().getPrimerGolTotalBets());
+            textAciertos4.setText(""+gnr.getLoggedUser().getCounters().getPrimerGolWonBets());
+            int porcentajeGanados4 = 0;
+            if(gnr.getLoggedUser().getCounters().getPrimerGolWonBets()>0){
+                porcentajeGanados4 = Math.round(((float)gnr.getLoggedUser().getCounters().getPrimerGolWonBets() / (float)gnr.getLoggedUser().getCounters().getPrimerGolTotalBets()) * 100);
+            }
+            textEfectividad4.setText(porcentajeGanados4+"%");
+        }
+
+        if(gnr.getLoggedUser().getCounters().getNumeroGolesTotalBets()>0){
+            linearNumeroGoles.setVisibility(View.VISIBLE);
+            textJugados5.setText(""+gnr.getLoggedUser().getCounters().getNumeroGolesTotalBets());
+            textAciertos5.setText(""+gnr.getLoggedUser().getCounters().getNumeroGolesWonBets());
+            int porcentajeGanados5 = 0;
+            if(gnr.getLoggedUser().getCounters().getNumeroGolesWonBets()>0){
+                porcentajeGanados5 = Math.round(((float)gnr.getLoggedUser().getCounters().getNumeroGolesWonBets() / (float)gnr.getLoggedUser().getCounters().getNumeroGolesTotalBets()) * 100);
+            }
+            textEfectividad5.setText(porcentajeGanados5+"%");
+        }
 
         File noImage = new File(General.local_dir_images + "profile/no_profile.png");
         File file = new File(General.local_dir_images + "profile/"+ gnr.getLoggedUser().getId() +".png");

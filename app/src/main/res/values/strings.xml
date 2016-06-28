@@ -34,6 +34,7 @@
     <string name="friends_endpoint">friends</string>
     <string name="followers_endpoint">followers</string>
     <string name="subscription_endpoint">subscription</string>
+    <string name="password_endpoint">passwords</string>
     <string name="npay_co">41b3a332ede867ef21284c74886463ee</string>
     <string name="npay_mx">dcc65262bcd170c684d98cf084fc9a4e</string>
     <string name="users_search">users/search?query=</string>

@@ -67,7 +67,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.5"
+            android:layout_weight="1.25"
             android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
@@ -75,6 +75,20 @@
                 android:textSize="8dp"
                 android:textColor="@color/black"
                 android:text="PREMIOS"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.25"
+            android:layout_marginRight="3dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8dp"
+                android:textColor="@color/black"
+                android:text="ACIERTOS"/>
 
         </LinearLayout>
     </LinearLayout>

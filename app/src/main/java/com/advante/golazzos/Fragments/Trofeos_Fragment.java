@@ -101,6 +101,7 @@ public class Trofeos_Fragment extends GeneralFragment {
         textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
 
         nivel = gnr.getLoggedUser().getLevel().getOrder();
+        textTituloNivel.setText(gnr.getLoggedUser().getLevel().getName().toUpperCase());
 
         tintLevel(nivel);
 

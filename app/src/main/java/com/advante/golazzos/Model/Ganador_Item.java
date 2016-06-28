@@ -13,6 +13,7 @@ public class Ganador_Item extends  Model{
     int idProfile;
     int type = 1;
     int rank;
+    int score;
 
     public Ganador_Item() {
     }
@@ -87,5 +88,13 @@ public class Ganador_Item extends  Model{
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

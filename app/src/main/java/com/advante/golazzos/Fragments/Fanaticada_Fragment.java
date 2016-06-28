@@ -136,6 +136,8 @@ public class Fanaticada_Fragment extends GeneralFragment {
                                         if(data.getJSONObject(i).getJSONObject("trackable").getJSONObject("match").has("html_center_url"))
                                             post.setHtml_center_url(data.getJSONObject(i).getJSONObject("trackable").getJSONObject("match").getString("html_center_url"));
                                     }
+                                    if(data.getJSONObject(i).getJSONObject("trackable").has("match"))
+                                        post.setIdPartido(data.getJSONObject(i).getJSONObject("trackable").getJSONObject("match").getInt("id"));
                                 }
 
                                 posts.add(post);
@@ -155,6 +157,7 @@ public class Fanaticada_Fragment extends GeneralFragment {
                                     bundle.putString("html_center_url", post1.getHtml_center_url());
                                     bundle.putString("trackable_type", post1.getTrackable_type());
                                     bundle.putString("imageAttached",post1.getImage_url());
+                                    bundle.putString("idPartido",""+post1.getIdPartido());
                                     bundle.putInt("idImage", post1.getOwner().getId());
                                     bundle.putInt("like",post1.getLikedByMe());
                                     bundle.putInt("id",post1.getId());

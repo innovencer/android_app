@@ -92,6 +92,7 @@ public class List_Ganadores extends ArrayAdapter<Ganador_Item> {
             holder.textName = (TextView) convertView.findViewById(R.id.textName);
             holder.textEquipoAlma = (TextView) convertView.findViewById(R.id.textEquipoAlma);
             holder.textPremios = (TextView) convertView.findViewById(R.id.textPremios);
+            holder.textAciertos = (TextView) convertView.findViewById(R.id.textAciertos);
 
             convertView.setTag(holder);
         }else{
@@ -102,7 +103,8 @@ public class List_Ganadores extends ArrayAdapter<Ganador_Item> {
         holder.textName.setText(item.getName());
         int pos = position+1;
         holder.textPosicion.setText(""+pos);
-        holder.textPremios.setText(""+item.getPremios() +" puntos");
+        holder.textPremios.setText(""+item.getPremios() +" pts");
+        holder.textAciertos.setText(""+item.getScore());
         holder.textEquipoAlma.setText(item.getSouldTeamName());
 
         File file = new File(General.local_dir_images + "profile/no_profile.png");
@@ -188,6 +190,7 @@ public class List_Ganadores extends ArrayAdapter<Ganador_Item> {
         TextView textName;
         TextView textEquipoAlma;
         TextView textPremios;
+        TextView textAciertos;
         ImageView imageProfile;
         ImageView imageEquipo1;
     }

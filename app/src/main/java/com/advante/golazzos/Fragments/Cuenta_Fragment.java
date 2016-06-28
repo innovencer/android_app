@@ -48,6 +48,8 @@ public class Cuenta_Fragment extends GeneralFragment {
     private OnSubscriptionCancelledListener listenCancel;
     private NPay npay;
 
+    String idService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,17 +113,29 @@ public class Cuenta_Fragment extends GeneralFragment {
             imageTipoUsua.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.titular_icono));
         }
 
+        switch (gnr.locale){
+            case "COL":
+                idService = getString(R.string.npay_co);
+                break;
+            case "MEX":
+                idService = getString(R.string.npay_mx);
+                break;
+            default:
+                idService = getString(R.string.npay_co);
+                break;
+        }
+
         linearButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CancelSubscription().CancelSubscription(gnr.getLoggedUser().getSubscription_id(), getString(R.string.npay_mx));
+                npay.CancelSubscription().CancelSubscription(gnr.getLoggedUser().getSubscription_id(), idService);
             }
         });
 
         linearSuplente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CreateSubscription(getString(R.string.npay_mx), General.KEYWORD, General.MEDIA);
+                npay.CreateSubscription(idService, General.KEYWORD, General.MEDIA);
             }
         });
 

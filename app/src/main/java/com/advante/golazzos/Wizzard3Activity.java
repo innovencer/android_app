@@ -76,8 +76,10 @@ public class Wizzard3Activity extends GeneralActivity {
             public void onClick(View view) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto","", null));
+                emailIntent.setType("text/html");
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Te invito a Jugar a Golazzos");
-                startActivity(Intent.createChooser(emailIntent, "Golazzos la primera app de apuestas en colombia.."));
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/apps/testing/com.advante.golazzos)");
+                startActivity(Intent.createChooser(emailIntent, "Golazzos"));
             }
         });
         buttonSiguiente.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +95,7 @@ public class Wizzard3Activity extends GeneralActivity {
 
     private void publishTwitterFeed(){
         TweetComposer.Builder builder = new TweetComposer.Builder(this)
-                .text("Tweet de prueba");
+                .text("Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/apps/testing/com.advante.golazzos)");
         builder.show();
     }
 

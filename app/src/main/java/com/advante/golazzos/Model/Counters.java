@@ -8,17 +8,29 @@ public class Counters extends Model {
     int marcadorWonBets;
     int ganaPierdeTotalBets;
     int ganaPierdeWonBets;
+    int diferenciaGolesTotalBets;
+    int diferenciaGolesWonBets;
+    int primerGolTotalBets;
+    int primerGolWonBets;
+    int numeroGolesTotalBets;
+    int numeroGolesWonBets;
     int totalBets;
     int totalWonBets;
 
     public Counters() {
     }
 
-    public Counters(int marcadorTotalBets, int marcadorWonBets, int ganaPierdeTotalBets, int ganaPierdeWonBets, int totalBets, int totalWonBets) {
+    public Counters(int marcadorTotalBets, int marcadorWonBets, int ganaPierdeTotalBets, int ganaPierdeWonBets, int diferenciaGolesTotalBets, int diferenciaGolesWonBets, int primerGolTotalBets, int primerGolWonBets, int numeroGolesTotalBets, int numeroGolesWonBets, int totalBets, int totalWonBets) {
         this.marcadorTotalBets = marcadorTotalBets;
         this.marcadorWonBets = marcadorWonBets;
         this.ganaPierdeTotalBets = ganaPierdeTotalBets;
         this.ganaPierdeWonBets = ganaPierdeWonBets;
+        this.diferenciaGolesTotalBets = diferenciaGolesTotalBets;
+        this.diferenciaGolesWonBets = diferenciaGolesWonBets;
+        this.primerGolTotalBets = primerGolTotalBets;
+        this.primerGolWonBets = primerGolWonBets;
+        this.numeroGolesTotalBets = numeroGolesTotalBets;
+        this.numeroGolesWonBets = numeroGolesWonBets;
         this.totalBets = totalBets;
         this.totalWonBets = totalWonBets;
     }
@@ -81,5 +93,53 @@ public class Counters extends Model {
 
     public void setTotalWonBets(int totalWonBets) {
         this.totalWonBets = totalWonBets;
+    }
+
+    public int getDiferenciaGolesTotalBets() {
+        return diferenciaGolesTotalBets;
+    }
+
+    public void setDiferenciaGolesTotalBets(int diferenciaGolesTotalBets) {
+        this.diferenciaGolesTotalBets = diferenciaGolesTotalBets;
+    }
+
+    public int getDiferenciaGolesWonBets() {
+        return diferenciaGolesWonBets;
+    }
+
+    public void setDiferenciaGolesWonBets(int diferenciaGolesWonBets) {
+        this.diferenciaGolesWonBets = diferenciaGolesWonBets;
+    }
+
+    public int getPrimerGolTotalBets() {
+        return primerGolTotalBets;
+    }
+
+    public void setPrimerGolTotalBets(int primerGolTotalBets) {
+        this.primerGolTotalBets = primerGolTotalBets;
+    }
+
+    public int getPrimerGolWonBets() {
+        return primerGolWonBets;
+    }
+
+    public void setPrimerGolWonBets(int primerGolWonBets) {
+        this.primerGolWonBets = primerGolWonBets;
+    }
+
+    public int getNumeroGolesTotalBets() {
+        return numeroGolesTotalBets;
+    }
+
+    public void setNumeroGolesTotalBets(int numeroGolesTotalBets) {
+        this.numeroGolesTotalBets = numeroGolesTotalBets;
+    }
+
+    public int getNumeroGolesWonBets() {
+        return numeroGolesWonBets;
+    }
+
+    public void setNumeroGolesWonBets(int numeroGolesWonBets) {
+        this.numeroGolesWonBets = numeroGolesWonBets;
     }
 }

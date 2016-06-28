@@ -90,7 +90,13 @@ public class Perfil_Fragment extends GeneralFragment {
         linear3.setOnClickListener(onClickCuenta);
 
         String nombre = "", apellido = "";
-        String name[] = gnr.getLoggedUser().getName().split(" ");
+
+        String name[];
+        if(gnr.getLoggedUser().getName() != null){
+            name = gnr.getLoggedUser().getName().split(" ");
+        }else{
+            name = "Error Error".split(" ");
+        }
         switch (name.length){
             case 1:
                 nombre = name[0];

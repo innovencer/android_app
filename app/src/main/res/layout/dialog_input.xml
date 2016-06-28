@@ -18,7 +18,7 @@
             android:textSize="10dp"
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
-            android:text="SELECCIONAR"
+            android:text="SELECCIONAR SEMANA"
             android:id="@+id/textTitulo" />
     </LinearLayout>
     <ListView

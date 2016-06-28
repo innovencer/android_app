@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.AppInviteContent;
 import com.facebook.share.model.ShareLinkContent;
@@ -52,9 +53,9 @@ public class Amigos_Fragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getContext());
         View view = inflater.inflate(R.layout.fragment_amigos, container, false);
         listView = (ListView) view.findViewById(R.id.listview);
-
         linear1 = (LinearLayout) view.findViewById(R.id.linear1);
         linear2 = (LinearLayout) view.findViewById(R.id.linear2);
         linear3 = (LinearLayout) view.findViewById(R.id.linear3);
@@ -104,9 +105,10 @@ public class Amigos_Fragment extends GeneralFragment {
                 });
 
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle("Hello")
-                .setContentDescription("How are you? here's a link")
-                .setContentUrl(Uri.parse("https://pbs.twimg.com/profile_images/596777148435705856/tsE4inUQ.jpg"))
+                .setContentTitle("Juega Conmigo Golazzos!")
+                .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
+                .setImageUrl(Uri.parse("http://principal-desarrollo.com/golazzos/img/ic_main.png"))
+                .setContentUrl(Uri.parse(appLinkUrl))
                 .build();
 
         sendButton.setShareContent(linkContent);
@@ -154,7 +156,10 @@ public class Amigos_Fragment extends GeneralFragment {
                                 userBusqueda.setPaid_subscription(datos.getJSONObject(i).getBoolean("paid_subscription"));
                                 userBusqueda.setPoints(datos.getJSONObject(i).getDouble("points"));
                                 userBusqueda.setProfile_pic_url(datos.getJSONObject(i).getString("profile_pic_url"));
-                                userBusqueda.setIs_friend(datos.getJSONObject(i).getBoolean("is_friend"));
+                                if(datos.getJSONObject(i).has("is_friend"))
+                                    userBusqueda.setIs_friend(datos.getJSONObject(i).getBoolean("is_friend"));
+                                else
+                                    userBusqueda.setIs_friend(false);
 
                                 if(datos.getJSONObject(i).has("soul_team")){
                                     soulTeam = new SoulTeam(datos.getJSONObject(i).getJSONObject("soul_team").getString("image_path"),

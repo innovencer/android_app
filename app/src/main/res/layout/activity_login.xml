@@ -157,6 +157,7 @@
         android:gravity="center"
         android:layout_below="@id/linearButton1"
         android:layout_marginTop="20dp"
+        android:onClick="recordarPass"
         android:layout_centerHorizontal="true">
         <TextView
             android:layout_width="wrap_content"

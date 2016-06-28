@@ -182,7 +182,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -254,144 +257,368 @@
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/black"/>
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:layout_height="match_parent">
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.3">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="MARCADOR"
-                        android:textSize="10dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:id="@+id/textTipoJugada1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.2">
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="MARCADOR"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textTipoJugada1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="26"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textJugados1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textAciertos1" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="54 %"
+                                android:textSize="10dp"
+                                android:textColor="@color/greenApple"
+                                android:textStyle="bold"
+                                android:id="@+id/textEfectividad1" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="26"
-                        android:textSize="10dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:id="@+id/textJugados1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.2">
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GANA PIERDE"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textTipoJugada2" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textJugados2" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textAciertos2" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="43 %"
+                                android:textSize="10dp"
+                                android:textColor="@color/greenApple"
+                                android:textStyle="bold"
+                                android:id="@+id/textEfectividad2" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearDiferenciaGoles"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="14"
-                        android:textSize="10dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:id="@+id/textAciertos1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.3">
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="5dp">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="DIFERENCIA DE GOLES"
+                                android:textSize="8dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textTipoJugada3" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textJugados3" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textAciertos3" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="43 %"
+                                android:textSize="10dp"
+                                android:textColor="@color/greenApple"
+                                android:textStyle="bold"
+                                android:id="@+id/textEfectividad3" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearPrimerGol"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="54 %"
-                        android:textSize="10dp"
-                        android:textColor="@color/greenApple"
-                        android:textStyle="bold"
-                        android:id="@+id/textEfectividad1" />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.3">
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="5dp">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PRIMER GOL"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textTipoJugada4" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textJugados4" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textAciertos4" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="43 %"
+                                android:textSize="10dp"
+                                android:textColor="@color/greenApple"
+                                android:textStyle="bold"
+                                android:id="@+id/textEfectividad4" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearNumeroGoles"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="GANA PIERDE"
-                        android:textSize="10dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:id="@+id/textTipoJugada2" />
+                        android:visibility="gone"
+                        android:layout_marginTop="5dp">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No. DE GOLES"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textTipoJugada5" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textJugados5" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.2">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6"
+                                android:textSize="10dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/textAciertos5" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_weight="0.3">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="43 %"
+                                android:textSize="10dp"
+                                android:textColor="@color/greenApple"
+                                android:textStyle="bold"
+                                android:id="@+id/textEfectividad5" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.2">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14"
-                        android:textSize="10dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:id="@+id/textJugados2" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.2">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="6"
-                        android:textSize="10dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:id="@+id/textAciertos2" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center"
-                    android:layout_weight="0.3">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="43 %"
-                        android:textSize="10dp"
-                        android:textColor="@color/greenApple"
-                        android:textStyle="bold"
-                        android:id="@+id/textEfectividad2" />
-                </LinearLayout>
-            </LinearLayout>
+            </ScrollView>
+
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

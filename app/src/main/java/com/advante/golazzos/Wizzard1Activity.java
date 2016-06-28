@@ -370,4 +370,76 @@ public class Wizzard1Activity extends GeneralActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
     }
+
+    private void postWizzard(){
+        dialog.show();
+        JSONObject post = new JSONObject();
+        JSONObject parametros = new JSONObject();
+        try {
+            parametros.put("team_id", idEquipo);
+            post.put("soul_team",parametros);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        jsArrayRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                General.endpoint_soul_team,
+                post,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        dialog.dismiss();
+                        try {
+                            JSONObject data = response.getJSONObject("response");
+                            gnr.getLoggedUser().setSoul_team(new SoulTeam(data.getJSONObject("team").getString("image_path"),data.getJSONObject("team").getString("name"),data.getJSONObject("team").getInt("id")));
+                            Intent intent = new Intent(Wizzard1Activity.this,Wizzard2Activity.class);
+                            startActivity(intent);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String body = "";
+                        //get status code here
+
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if(statusCode != null && statusCode.equals("422")){
+                            if(error.networkResponse.data!=null) {
+                                try {
+                                    body = new String(error.networkResponse.data,"UTF-8");
+                                    showLog(body);
+                                    showShortToast("Correo o Clave incorrectas");
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }else{
+                            showShortToast("Error en la comunicacion, por favor intente mas tarde.");
+                        }
+                        dialog.dismiss();
+
+                    }
+                }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Token "+ General.getToken());
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
+    }
 }

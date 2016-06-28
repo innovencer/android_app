@@ -83,6 +83,7 @@ public class Fragment_Ganadores extends GeneralFragment {
                                     acierto_item = new Ganador_Item();
                                     acierto_item.setRank(datos.getJSONObject(i).getJSONArray("ranking_entries").getJSONObject(j).getInt("rank"));
                                     acierto_item.setPremios(datos.getJSONObject(i).getJSONArray("ranking_entries").getJSONObject(j).getInt("prize"));
+                                    acierto_item.setScore(datos.getJSONObject(i).getJSONArray("ranking_entries").getJSONObject(j).getInt("score"));
                                     acierto_item.setIdProfile(datos.getJSONObject(i).getJSONArray("ranking_entries").getJSONObject(j).getJSONObject("winner").getInt("id"));
                                     acierto_item.setName(datos.getJSONObject(i).getJSONArray("ranking_entries").getJSONObject(j).getJSONObject("winner").getString("name"));
                                     acierto_item.setPatchProfileImage(datos.getJSONObject(i).getJSONArray("ranking_entries").getJSONObject(j).getJSONObject("winner").getString("profile_pic_url"));

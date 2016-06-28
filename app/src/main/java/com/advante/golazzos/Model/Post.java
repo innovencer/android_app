@@ -12,6 +12,7 @@ public class Post extends  Model {
     Owner owner;
     ArrayList<Like> likes;
     int likedByMe = -1;
+    int idPartido;
     String html_center_url = "";
     String trackable_type = "";
     String image_url = "";
@@ -97,5 +98,13 @@ public class Post extends  Model {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    public int getIdPartido() {
+        return idPartido;
+    }
+
+    public void setIdPartido(int idPartido) {
+        this.idPartido = idPartido;
     }
 }

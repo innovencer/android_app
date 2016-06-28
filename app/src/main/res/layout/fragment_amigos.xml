@@ -106,12 +106,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/bannerinvitaramigos"
+            android:visibility="gone"
             android:id="@+id/imgInvitar" />
         <com.facebook.share.widget.SendButton
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Share with my friends"
-            android:textSize="20dp"
+            android:text="Invita a tus amigos y gana 300 puntos"
+            android:textSize="15dp"
             android:id="@+id/button_facebook"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />

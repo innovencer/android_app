@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -72,7 +74,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     ShareDialog shareDialog;
     CallbackManager callbackManager;
     String label,html_center_url,trackable_type, imageAttached;
-    String pic_name;
+    String pic_name,idPartido;
     int id,idImage, idLike = -1, normalHeight = 0;
     InputMethodManager imm;
     ListView listView;
@@ -113,6 +115,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         html_center_url = bundle.getString("html_center_url", "");
         trackable_type = bundle.getString("trackable_type","");
         imageAttached = bundle.getString("imageAttached","");
+        idPartido = bundle.getString("idPartido","");
         id = bundle.getInt("id", 0);
         idImage = bundle.getInt("idImage",0);
         idLike = bundle.getInt("like", -1);
@@ -246,6 +249,20 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             }
         });
 
+        linearJugar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment f = new PartidosPorJugar_Fragment();
+                Bundle b = new Bundle();
+                b.putString("idPartido", ""+idPartido);
+                f.setArguments(b);
+                ft.replace(R.id.flContent, f, "");
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
         final Resources r = getResources();
         final int dp50 = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -303,7 +320,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        params.putString("message", label);
+        params.putString("message", label.replace("<font color='#0E5A80'>","").replace("</font>",""));
         params.putString("link", getResources().getString(R.string.shareContentUrl));
         params.putString("privacy", value.toString());
         new GraphRequest(

@@ -15,6 +15,8 @@ public class User extends Model {
     UserLevel level;
     SoulTeam soul_team;
     Counters counters;
+    int rank;
+    int score;
     Boolean is_friend;
     UserSettings userSettings;
 
@@ -123,6 +125,22 @@ public class User extends Model {
 
     public void setSubscription_id(String subscription_id) {
         this.subscription_id = subscription_id;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void setUserSettings(UserSettings userSettings) {
