@@ -26,7 +26,7 @@ import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.Interface.IBuscarLigas;
+import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.Interface.OnItemClickListener;
 import com.advante.golazzos.JugadasResultActivity;
 import com.advante.golazzos.Model.Equipo;
@@ -121,7 +121,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                 }
                 //dialog.show();
                 //buscarLigas();
-                gnr.buscarLigas(new IBuscarLigas() {
+                gnr.buscarLigas(new IBuscarLigas_Listener() {
                     @Override
                     public void onComplete(ArrayList<Liga> items) {
                         ligas = items;

@@ -22,7 +22,7 @@ import com.advante.golazzos.Adapters.List_Partidos;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
-import com.advante.golazzos.Interface.IBuscarLigas;
+import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.Partido;
@@ -105,7 +105,7 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                     idEquipo = -1;
                     buttonEquipos.setText("Seleccionar Equipo");
                 }
-                gnr.buscarLigas(new IBuscarLigas() {
+                gnr.buscarLigas(new IBuscarLigas_Listener() {
                     @Override
                     public void onComplete(ArrayList<Liga> items) {
                         ligas = items;

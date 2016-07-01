@@ -5,8 +5,8 @@ import com.advante.golazzos.Model.Liga;
 import java.util.ArrayList;
 
 /**
- * Created by Ruben Flores on 6/7/2016.
+ * Created by Ruben Flores on 6/28/2016.
  */
-public interface IBuscarLigas {
-    void onComplete(ArrayList<Liga> ligas);
+public interface IGetUser_Listener {
+    void onComplete(Boolean complete);
 }

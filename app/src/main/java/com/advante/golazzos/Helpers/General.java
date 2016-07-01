@@ -2,22 +2,21 @@ package com.advante.golazzos.Helpers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.advante.golazzos.Interface.IBuscarLigas;
-import com.advante.golazzos.MainActivity;
+import com.advante.golazzos.Interface.IBuscarLigas_Listener;
+import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
 import com.advante.golazzos.Model.UserSettings;
-import com.advante.golazzos.PrincipalActivity;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -84,6 +83,8 @@ public class General {
     private static String token;
     private static User loggedUser;
 
+    public SharedPreferences preferences;
+
     public static String locale;
 
     private static List<Fragment> lastFragment = new ArrayList<>();
@@ -93,7 +94,7 @@ public class General {
     JsonObjectRequest jsArrayRequest;
 
     ArrayList<Liga> ligas = null;
-    IBuscarLigas iBuscarLigas;
+    IBuscarLigas_Listener iBuscarLigas;
 
     public General(Context context) {
         General.context = context;
@@ -122,6 +123,10 @@ public class General {
         dialog = new ProgressDialog(context);
         dialog.setTitle("");
         dialog.setMessage("Conectando...");
+
+        preferences = context.getSharedPreferences(
+                General.packetname, Context.MODE_PRIVATE);
+
         checkDirImages();
     }
 
@@ -162,7 +167,7 @@ public class General {
         return newBitmap;
     }
 
-    public void buscarLigas(IBuscarLigas buscarligas){
+    public void buscarLigas(IBuscarLigas_Listener buscarligas){
         this.iBuscarLigas = buscarligas;
         dialog.show();
         ligas = null;
@@ -233,7 +238,7 @@ public class General {
         General.lastFragment.clear();
     }
 
-    public void getUser(){
+    public void getUser(final IGetUser_Listener iGetUser_listener){
         dialog.show();
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -252,14 +257,21 @@ public class General {
                             user1.setSubscription_id(data.getString("subscription_id"));
                             user1.setPoints(data.getDouble("points"));
                             user1.setProfile_pic_url(data.getString("profile_pic_url"));
+                            user1.setWizzard(data.getString("wizard_status"));
 
                             if(!data.isNull("soul_team")){
                                 JSONObject soul_team = data.getJSONObject("soul_team");
                                 user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
                             }
 
-                            user1.setScore(data.getJSONObject("ranking").getInt("score"));
-                            user1.setRank(data.getJSONObject("ranking").getInt("rank"));
+                            if(!data.getJSONObject("ranking").isNull("score"))
+                                user1.setScore(data.getJSONObject("ranking").getInt("score"));
+                            else
+                                user1.setScore(0);
+                            if(!data.getJSONObject("ranking").isNull("rank"))
+                                user1.setRank(data.getJSONObject("ranking").getInt("rank"));
+                            else
+                                user1.setRank(0);
 
                             JSONObject level = data.getJSONObject("level");
                             user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
@@ -320,7 +332,12 @@ public class General {
                                     data.getJSONObject("settings").getBoolean("closed_match_notification")));
                             setLoggedUser(user1);
 
+                            preferences.edit().putString("token",General.getToken()).apply();
                             dialog.dismiss();
+
+                            iGetUser_listener.onComplete(true);
+
+
                             try{
                                 File myFile = new File(local_dir+"tests.txt");
                                 myFile.createNewFile();
@@ -334,6 +351,7 @@ public class General {
                                 e.printStackTrace();
                             }
                         } catch (JSONException e) {
+                            iGetUser_listener.onComplete(false);
                             e.printStackTrace();
                             Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
@@ -343,20 +361,7 @@ public class General {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Manejo de errores
-                        /*
-                        String body = "";
-                        //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        if (error.networkResponse.data != null) {
-                            try {
-                                body = new String(error.networkResponse.data, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        */
+                        iGetUser_listener.onComplete(false);
                         dialog.dismiss();
                         Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
                     }

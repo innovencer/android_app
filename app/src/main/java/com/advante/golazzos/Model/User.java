@@ -19,6 +19,7 @@ public class User extends Model {
     int score;
     Boolean is_friend;
     UserSettings userSettings;
+    String wizzard;
 
     public User() {
     }
@@ -145,5 +146,13 @@ public class User extends Model {
 
     public void setUserSettings(UserSettings userSettings) {
         this.userSettings = userSettings;
+    }
+
+    public String getWizzard() {
+        return wizzard;
+    }
+
+    public void setWizzard(String wizzard) {
+        this.wizzard = wizzard;
     }
 }

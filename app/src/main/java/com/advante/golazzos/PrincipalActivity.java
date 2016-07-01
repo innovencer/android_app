@@ -60,6 +60,7 @@ import com.advante.golazzos.Fragments.RankingFragment;
 import com.advante.golazzos.Fragments.Trofeos_Fragment;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.LeftMenu_Item;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -140,7 +141,12 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         gnr = new General(this);
 
         if(gnr.getLoggedUser() == null){
-            gnr.getUser();
+            gnr.getUser(new IGetUser_Listener() {
+                @Override
+                public void onComplete(Boolean complete) {
+
+                }
+            });
         }
 
         setTitle("");
@@ -869,7 +875,15 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
     @Override
     public void onResume(){
         super.onResume();
-        loadProfile();
+        gnr.getUser(new IGetUser_Listener() {
+            @Override
+            public void onComplete(Boolean complete) {
+                if(complete){
+                    loadProfile();
+                }
+            }
+        });
+
     }
 
     @Override

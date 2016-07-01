@@ -242,8 +242,8 @@ public class Wizzard1Activity extends GeneralActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 idLiga = arrayList.get(i).getId();
                 String name = arrayList.get(i).getName();
-                if (name.length() > 18) {
-                    buttonLigas.setText(name.substring(0, 18));
+                if (name.length() > 23) {
+                    buttonLigas.setText(name.substring(0, 22));
                 } else {
                     buttonLigas.setText(name);
                 }

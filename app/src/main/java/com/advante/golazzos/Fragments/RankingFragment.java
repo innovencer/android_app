@@ -18,6 +18,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
@@ -84,6 +85,64 @@ public class RankingFragment extends GeneralFragment {
         textEquipoAlma.setText(gnr.getLoggedUser().getSoul_team().getName());
         textNivel.setText(""+gnr.getLoggedUser().getLevel().getOrder());
 
+        gnr.getUser(new IGetUser_Listener() {
+            @Override
+            public void onComplete(Boolean complete) {
+                if(complete){
+                    init();
+                }
+            }
+        });
+        getRanking("");
+        return view;
+    }
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            Bitmap bm = bitmap;
+            GraphicsUtil graphicUtil = new GraphicsUtil();
+            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
+                    bm, 16));
+            FileOutputStream stream = null;
+            File file;
+            try {
+                file = new File(General.local_dir_images + "profile/");
+                if(!file.exists()){
+                    file.mkdir();
+                }
+                stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
+                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                stream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {}
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {}
+    };
+
+    View.OnClickListener clickTab = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(view.getTag().equals("1")){
+                image1.setVisibility(View.VISIBLE);
+                image2.setVisibility(View.INVISIBLE);
+                getRanking("");
+            }else{
+                image1.setVisibility(View.INVISIBLE);
+                image2.setVisibility(View.VISIBLE);
+                getRanking("?weekly=true");
+            }
+        }
+    };
+
+    private void init(){
         File file = new File(General.local_dir_images + "profile/no_profile.png");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -135,55 +194,7 @@ public class RankingFragment extends GeneralFragment {
             imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
                     bm, 16));
         }
-
-        getRanking("");
-        return view;
     }
-    Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Bitmap bm = bitmap;
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-            FileOutputStream stream = null;
-            File file;
-            try {
-                file = new File(General.local_dir_images + "profile/");
-                if(!file.exists()){
-                    file.mkdir();
-                }
-                stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                stream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {}
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
-    };
-
-    View.OnClickListener clickTab = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(view.getTag().equals("1")){
-                image1.setVisibility(View.VISIBLE);
-                image2.setVisibility(View.INVISIBLE);
-                getRanking("");
-            }else{
-                image1.setVisibility(View.INVISIBLE);
-                image2.setVisibility(View.VISIBLE);
-                getRanking("?weekly=true");
-            }
-        }
-    };
 
     private void getRanking(String type){
         dialog.show();
