@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.Counters;
@@ -18,7 +19,6 @@ import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
 import com.advante.golazzos.Model.UserSettings;
 import com.advante.golazzos.R;
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,9 +35,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Ruben Flores on 3/31/2016.
@@ -240,145 +238,129 @@ public class General {
 
     public void getUser(final IGetUser_Listener iGetUser_listener){
         dialog.show();
-        jsArrayRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                General.endpoint_users +"/me",
-                "",
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        User user1 = new User();
-                        try {
-                            JSONObject data = response.getJSONObject("response");
-                            user1.setEmail(data.getString("email"));
-                            user1.setId(data.getInt("id"));
-                            user1.setName(data.optString("name"));
-                            user1.setPaid_subscription(data.getBoolean("paid_subscription"));
-                            user1.setSubscription_id(data.getString("subscription_id"));
-                            user1.setPoints(data.getDouble("points"));
-                            user1.setProfile_pic_url(data.getString("profile_pic_url"));
-                            user1.setWizzard(data.getString("wizard_status"));
+        API.getInstance(context).authenticateObjectRequest(Request.Method.GET, General.endpoint_users + "/me", null, new API_Listener() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+                User user1 = new User();
+                try {
+                    JSONObject data = response.getJSONObject("response");
+                    user1.setEmail(data.getString("email"));
+                    user1.setId(data.getInt("id"));
+                    user1.setName(data.optString("name"));
+                    user1.setPaid_subscription(data.getBoolean("paid_subscription"));
+                    user1.setSubscription_id(data.getString("subscription_id"));
+                    user1.setPoints(data.getDouble("points"));
+                    user1.setProfile_pic_url(data.getString("profile_pic_url"));
+                    user1.setWizzard(data.getString("wizard_status"));
 
-                            if(!data.isNull("soul_team")){
-                                JSONObject soul_team = data.getJSONObject("soul_team");
-                                user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
-                            }
-
-                            if(!data.getJSONObject("ranking").isNull("score"))
-                                user1.setScore(data.getJSONObject("ranking").getInt("score"));
-                            else
-                                user1.setScore(0);
-                            if(!data.getJSONObject("ranking").isNull("rank"))
-                                user1.setRank(data.getJSONObject("ranking").getInt("rank"));
-                            else
-                                user1.setRank(0);
-
-                            JSONObject level = data.getJSONObject("level");
-                            user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
-                                    level.getString("name"), level.getInt("order"),level.getInt("points")));
-
-                            int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
-                                    total_bets = 0, won_bets = 0, diferenciaGoleTotal_bets = 0, diferenciaGolesWon_bets =0,
-                                    primerGolTotal_bets = 0, primerGolWon_bets = 0, numeroGolesTotal_bets = 0, numeroGolesWon_bets = 0;
-                            if(data.getJSONObject("counters").has("Marcador"))
-                                marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
-                            if(data.getJSONObject("counters").has("Marcador"))
-                                marcadorWon_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets");
-                            if(data.getJSONObject("counters").has("Gana/Pierde"))
-                                ganaPierdeTotal_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets");
-                            if(data.getJSONObject("counters").has("Gana/Pierde"))
-                                ganaPierdeWon_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets");
-                            if(data.getJSONObject("counters").has("Total"))
-                                total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
-                            if(data.getJSONObject("counters").has("Total"))
-                                won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
-                            if(data.getJSONObject("counters").has("Diferencia de goles")){
-                                diferenciaGoleTotal_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("total_bets");
-                                diferenciaGolesWon_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("won_bets");
-                            }
-                            if(data.getJSONObject("counters").has("Primer Gol")){
-                                primerGolTotal_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("total_bets");
-                                primerGolWon_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("won_bets");
-                            }
-                            if(data.getJSONObject("counters").has("No. de Goles")){
-                                numeroGolesTotal_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("total_bets");
-                                numeroGolesWon_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("won_bets");
-                            }
-                            user1.setCounters(new Counters(
-                                    marcadorTotal_bets,
-                                    marcadorWon_bets,
-                                    ganaPierdeTotal_bets,
-                                    ganaPierdeWon_bets,
-                                    diferenciaGoleTotal_bets,
-                                    diferenciaGolesWon_bets,
-                                    primerGolTotal_bets,
-                                    primerGolWon_bets,
-                                    numeroGolesTotal_bets,
-                                    numeroGolesWon_bets,
-                                    total_bets,
-                                    won_bets
-                            ));
-                            boolean friendship_notification = false;
-                            if(!data.getJSONObject("settings").has("friendship_notification")){
-                                friendship_notification = true;
-                            }else{
-                                friendship_notification = data.getJSONObject("settings").getBoolean("friendship_notification");
-                            }
-                            user1.setUserSettings(new UserSettings(
-                                    data.getJSONObject("settings").getBoolean("won_notification"),
-                                    data.getJSONObject("settings").getBoolean("lose_notification"),
-                                    data.getJSONObject("settings").getBoolean("new_bet_notification"),
-                                    friendship_notification,
-                                    data.getJSONObject("settings").getBoolean("closed_match_notification")));
-                            setLoggedUser(user1);
-
-                            preferences.edit().putString("token",General.getToken()).apply();
-                            dialog.dismiss();
-
-                            iGetUser_listener.onComplete(true);
-
-
-                            try{
-                                File myFile = new File(local_dir+"tests.txt");
-                                myFile.createNewFile();
-                                FileOutputStream fOut = new FileOutputStream(myFile);
-                                OutputStreamWriter myOutWriter =
-                                        new OutputStreamWriter(fOut);
-                                myOutWriter.append(General.getToken());
-                                myOutWriter.close();
-                                fOut.close();
-                            }catch (IOException e){
-                                e.printStackTrace();
-                            }
-                        } catch (JSONException e) {
-                            iGetUser_listener.onComplete(false);
-                            e.printStackTrace();
-                            Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
+                    if(!data.isNull("soul_team")){
+                        JSONObject soul_team = data.getJSONObject("soul_team");
+                        user1.setSoul_team(new SoulTeam(soul_team.getString("image_path"), soul_team.getString("name"), soul_team.getInt("id")));
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        iGetUser_listener.onComplete(false);
-                        dialog.dismiss();
-                        Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
+
+                    if(!data.getJSONObject("ranking").isNull("score"))
+                        user1.setScore(data.getJSONObject("ranking").getInt("score"));
+                    else
+                        user1.setScore(0);
+                    if(!data.getJSONObject("ranking").isNull("rank"))
+                        user1.setRank(data.getJSONObject("ranking").getInt("rank"));
+                    else
+                        user1.setRank(0);
+
+                    JSONObject level = data.getJSONObject("level");
+                    user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
+                            level.getString("name"), level.getInt("order"),level.getInt("points")));
+
+                    int marcadorTotal_bets = 0, marcadorWon_bets = 0, ganaPierdeWon_bets = 0, ganaPierdeTotal_bets = 0,
+                            total_bets = 0, won_bets = 0, diferenciaGoleTotal_bets = 0, diferenciaGolesWon_bets =0,
+                            primerGolTotal_bets = 0, primerGolWon_bets = 0, numeroGolesTotal_bets = 0, numeroGolesWon_bets = 0;
+                    if(data.getJSONObject("counters").has("Marcador"))
+                        marcadorTotal_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("total_bets");
+                    if(data.getJSONObject("counters").has("Marcador"))
+                        marcadorWon_bets = data.getJSONObject("counters").getJSONObject("Marcador").getInt("won_bets");
+                    if(data.getJSONObject("counters").has("Gana/Pierde"))
+                        ganaPierdeTotal_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("total_bets");
+                    if(data.getJSONObject("counters").has("Gana/Pierde"))
+                        ganaPierdeWon_bets = data.getJSONObject("counters").getJSONObject("Gana/Pierde").getInt("won_bets");
+                    if(data.getJSONObject("counters").has("Total"))
+                        total_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("total_bets");
+                    if(data.getJSONObject("counters").has("Total"))
+                        won_bets = data.getJSONObject("counters").getJSONObject("Total").getInt("won_bets");
+                    if(data.getJSONObject("counters").has("Diferencia de goles")){
+                        diferenciaGoleTotal_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("total_bets");
+                        diferenciaGolesWon_bets = data.getJSONObject("counters").getJSONObject("Diferencia de goles").getInt("won_bets");
                     }
-                }){
+                    if(data.getJSONObject("counters").has("Primer Gol")){
+                        primerGolTotal_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("total_bets");
+                        primerGolWon_bets = data.getJSONObject("counters").getJSONObject("Primer Gol").getInt("won_bets");
+                    }
+                    if(data.getJSONObject("counters").has("No. de Goles")){
+                        numeroGolesTotal_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("total_bets");
+                        numeroGolesWon_bets = data.getJSONObject("counters").getJSONObject("No. de Goles").getInt("won_bets");
+                    }
+                    user1.setCounters(new Counters(
+                            marcadorTotal_bets,
+                            marcadorWon_bets,
+                            ganaPierdeTotal_bets,
+                            ganaPierdeWon_bets,
+                            diferenciaGoleTotal_bets,
+                            diferenciaGolesWon_bets,
+                            primerGolTotal_bets,
+                            primerGolWon_bets,
+                            numeroGolesTotal_bets,
+                            numeroGolesWon_bets,
+                            total_bets,
+                            won_bets
+                    ));
+                    boolean friendship_notification = false;
+                    if(!data.getJSONObject("settings").has("friendship_notification")){
+                        friendship_notification = true;
+                    }else{
+                        friendship_notification = data.getJSONObject("settings").getBoolean("friendship_notification");
+                    }
+                    user1.setUserSettings(new UserSettings(
+                            data.getJSONObject("settings").getBoolean("won_notification"),
+                            data.getJSONObject("settings").getBoolean("lose_notification"),
+                            data.getJSONObject("settings").getBoolean("new_bet_notification"),
+                            friendship_notification,
+                            data.getJSONObject("settings").getBoolean("closed_match_notification")));
+                    setLoggedUser(user1);
+
+                    preferences.edit().putString("token",General.getToken()).apply();
+                    dialog.dismiss();
+
+                    iGetUser_listener.onComplete(true);
+
+
+                    try{
+                        File myFile = new File(local_dir+"tests.txt");
+                        myFile.createNewFile();
+                        FileOutputStream fOut = new FileOutputStream(myFile);
+                        OutputStreamWriter myOutWriter =
+                                new OutputStreamWriter(fOut);
+                        myOutWriter.append(General.getToken());
+                        myOutWriter.close();
+                        fOut.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
+                    iGetUser_listener.onComplete(false);
+                    e.printStackTrace();
+                    Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Token "+ General.getToken());
-                params.put("Content-Type", "application/json");
-                return params;
+            public void OnSuccess(JSONArray result) {
+
             }
-        };
-        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                7000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(context).addToRequestQueue(jsArrayRequest);
+
+            @Override
+            public void OnError(VolleyError error) {
+
+            }
+        });
     }
 }

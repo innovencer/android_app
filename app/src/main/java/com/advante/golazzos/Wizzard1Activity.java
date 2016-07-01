@@ -442,4 +442,9 @@ public class Wizzard1Activity extends GeneralActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

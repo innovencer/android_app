@@ -10,18 +10,12 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
-import com.advante.golazzos.Model.Counters;
-import com.advante.golazzos.Model.SoulTeam;
-import com.advante.golazzos.Model.User;
-import com.advante.golazzos.Model.UserLevel;
-import com.advante.golazzos.Model.UserSettings;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -262,7 +256,7 @@ public class LoginActivity extends GeneralActivity {
         @Override
         public void onComplete(Boolean complete) {
             if(complete) {
-                if (gnr.getLoggedUser().getWizzard().isEmpty()) {
+                if (!gnr.getLoggedUser().getWizzard().equals("complete")) {
                     Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(intent);
                     finish();

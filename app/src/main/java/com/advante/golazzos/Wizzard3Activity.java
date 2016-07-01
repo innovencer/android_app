@@ -8,9 +8,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
+import com.advante.golazzos.Interface.JSONBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -25,6 +28,7 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,10 +89,25 @@ public class Wizzard3Activity extends GeneralActivity {
         buttonSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                preferences.edit().putBoolean("wizzardComplete", true).apply();
-                Intent intent = new Intent(Wizzard3Activity.this,PrincipalActivity.class);
-                startActivity(intent);
-                finish();
+
+                API.getInstance(Wizzard3Activity.this).authenticateObjectRequest(Request.Method.PUT, gnr.endpoint_users + "/me", JSONBuilder.UpdateWizard(), new API_Listener() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        Intent intent = new Intent(Wizzard3Activity.this,PrincipalActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    @Override
+                    public void OnSuccess(JSONArray response) {
+
+                    }
+
+                    @Override
+                    public void OnError(VolleyError error) {
+
+                    }
+                });
+
             }
         });
     }
@@ -210,5 +229,10 @@ public class Wizzard3Activity extends GeneralActivity {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

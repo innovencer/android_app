@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -13,11 +12,6 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
-import com.advante.golazzos.Model.Counters;
-import com.advante.golazzos.Model.SoulTeam;
-import com.advante.golazzos.Model.User;
-import com.advante.golazzos.Model.UserLevel;
-import com.advante.golazzos.Model.UserSettings;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -32,10 +26,6 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,7 +70,7 @@ public class MainActivity extends GeneralActivity {
                 @Override
                 public void onComplete(Boolean complete) {
                     if(complete){
-                        if (gnr.getLoggedUser().getWizzard().isEmpty()) {
+                        if (gnr.getLoggedUser().getWizzard().equals("complete")) {
                             Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
                             startActivity(intent);
                             finish();
