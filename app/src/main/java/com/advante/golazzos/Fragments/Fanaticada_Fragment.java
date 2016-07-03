@@ -52,6 +52,9 @@ public class Fanaticada_Fragment extends GeneralFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fanaticada, container, false);
         listView = (ListView) view.findViewById(R.id.listview);
+        View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_post,null);
+        ((ViewGroup)listView.getParent()).addView(emptyView);
+        listView.setEmptyView(emptyView);
         linearComentar = (LinearLayout) view.findViewById(R.id.linearComentar);
 
         linearComentar.setOnClickListener(new View.OnClickListener() {

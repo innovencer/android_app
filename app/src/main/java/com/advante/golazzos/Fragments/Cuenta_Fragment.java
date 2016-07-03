@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -72,58 +74,15 @@ public class Cuenta_Fragment extends GeneralFragment {
         linearSuplente = (LinearLayout) view.findViewById(R.id.linearSuplente);
         linearButton1 = (LinearLayout) view.findViewById(R.id.linearButton1);
 
-        String nombre = "";
-        String name[] = gnr.getLoggedUser().getName().split(" ");
-        switch (name.length){
-            case 1:
-                nombre = name[0];
-                break;
-            case 2:
-                nombre = name[0];
-                break;
-            case 3:
-                nombre = name[0]+ " "+name[1];
-                break;
-            case 4:
-                nombre = name[0] +" "+ name[1];
-                break;
-            default:
-                if (name.length>4){
-                    nombre = name[0] +" "+ name[1];
+
+        gnr.getUser(new IGetUser_Listener() {
+            @Override
+            public void onComplete(Boolean complete, User user) {
+                if(complete){
+                    init();
                 }
-                break;
-        }
-
-        textNombre.setText(nombre+",");
-        textInfo.setOnClickListener(onClickInfo);
-        linear1.setOnClickListener(onClickInfo);
-
-        textNotificaciones.setOnClickListener(onClickNotificaciones);
-        linear2.setOnClickListener(onClickNotificaciones);
-
-        if(!gnr.getLoggedUser().getPaid_subscription()){
-            linearSuplente.setVisibility(View.VISIBLE);
-            linearTitular.setVisibility(View.GONE);
-            textTipoUsuario.setText("Suplente");
-            imageTipoUsua.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.suplente_icono));
-        }else{
-            linearTitular.setVisibility(View.VISIBLE);
-            linearSuplente.setVisibility(View.GONE);
-            textTipoUsuario.setText("Titular");
-            imageTipoUsua.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.titular_icono));
-        }
-
-        switch (gnr.locale){
-            case "COL":
-                idService = getString(R.string.npay_co);
-                break;
-            case "MEX":
-                idService = getString(R.string.npay_mx);
-                break;
-            default:
-                idService = getString(R.string.npay_co);
-                break;
-        }
+            }
+        });
 
         linearButton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +157,62 @@ public class Cuenta_Fragment extends GeneralFragment {
         //linear3.setOnClickListener(onClickCuenta);
 
         return view;
+    }
+
+    private void init(){
+        String nombre = "";
+        String name[] = gnr.getLoggedUser().getName().split(" ");
+        switch (name.length){
+            case 1:
+                nombre = name[0];
+                break;
+            case 2:
+                nombre = name[0];
+                break;
+            case 3:
+                nombre = name[0]+ " "+name[1];
+                break;
+            case 4:
+                nombre = name[0] +" "+ name[1];
+                break;
+            default:
+                if (name.length>4){
+                    nombre = name[0] +" "+ name[1];
+                }
+                break;
+        }
+
+        textNombre.setText(nombre+",");
+        textInfo.setOnClickListener(onClickInfo);
+        linear1.setOnClickListener(onClickInfo);
+
+        textNotificaciones.setOnClickListener(onClickNotificaciones);
+        linear2.setOnClickListener(onClickNotificaciones);
+
+        if(!gnr.getLoggedUser().getPaid_subscription()){
+            linearSuplente.setVisibility(View.VISIBLE);
+            linearTitular.setVisibility(View.GONE);
+            textTipoUsuario.setText("Suplente");
+            imageTipoUsua.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.suplente_icono));
+        }else{
+            linearTitular.setVisibility(View.VISIBLE);
+            linearSuplente.setVisibility(View.GONE);
+            textTipoUsuario.setText("Titular");
+            imageTipoUsua.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.titular_icono));
+        }
+
+        switch (gnr.locale){
+            case "COL":
+                idService = getString(R.string.npay_co);
+                break;
+            case "MEX":
+                idService = getString(R.string.npay_mx);
+                break;
+            default:
+                idService = getString(R.string.npay_co);
+                break;
+        }
+
     }
 
     View.OnClickListener onClickInfo = new View.OnClickListener() {

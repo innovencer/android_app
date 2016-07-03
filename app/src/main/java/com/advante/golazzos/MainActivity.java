@@ -12,6 +12,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.Model.User;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -68,9 +69,9 @@ public class MainActivity extends GeneralActivity {
             General.setToken(preferences.getString("token",""));
             gnr.getUser(new IGetUser_Listener() {
                 @Override
-                public void onComplete(Boolean complete) {
+                public void onComplete(Boolean complete, User user) {
                     if(complete){
-                        if (gnr.getLoggedUser().getWizzard().equals("complete")) {
+                        if (user.getWizzard().equals("complete")) {
                             Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
                             startActivity(intent);
                             finish();

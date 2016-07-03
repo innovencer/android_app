@@ -82,7 +82,7 @@ public class Wizzard3Activity extends GeneralActivity {
                         "mailto","", null));
                 emailIntent.setType("text/html");
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Te invito a Jugar a Golazzos");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/apps/testing/com.advante.golazzos)");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getId()+")");
                 startActivity(Intent.createChooser(emailIntent, "Golazzos"));
             }
         });
@@ -114,7 +114,7 @@ public class Wizzard3Activity extends GeneralActivity {
 
     private void publishTwitterFeed(){
         TweetComposer.Builder builder = new TweetComposer.Builder(this)
-                .text("Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/apps/testing/com.advante.golazzos)");
+                .text("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getId()+")");
         builder.show();
     }
 

@@ -91,8 +91,34 @@
         android:layout_weight="1"
         android:layout_below="@+id/line1"
         android:layout_above="@+id/line2"
+        android:visibility="gone"
         android:clickable="false">
     </ListView>
+    <ImageView
+        android:id="@+id/imgNoAmigos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line1"
+        android:layout_above="@+id/line2"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:visibility="visible"
+        android:src="@drawable/app_notienesamigos"/>
+    <TextView
+        android:id="@+id/textNoAmigos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text=""
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:textStyle="italic|bold"
+        android:textSize="20dp"
+        android:visibility="gone"
+        android:layout_below="@+id/line1" />
+
     <LinearLayout
         android:id="@+id/line2"
         android:layout_width="match_parent"

@@ -71,6 +71,10 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_partidos_2, container, false);
         listView = (ListView) view.findViewById(R.id.listview);
+        View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match,null);
+        ((ViewGroup)listView.getParent()).addView(emptyView);
+        listView.setEmptyView(emptyView);
+
         viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
 
         buttonPorJugar = (TextView) view.findViewById(R.id.buttonPorJugar);

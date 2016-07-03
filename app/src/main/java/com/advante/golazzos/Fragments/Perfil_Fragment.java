@@ -18,7 +18,9 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.MainActivity;
+import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -76,6 +78,8 @@ public class Perfil_Fragment extends GeneralFragment {
         textNotificaciones.setOnClickListener(onClickNotificaciones);
         linear2.setOnClickListener(onClickNotificaciones);
 
+        textCuenta.setOnClickListener(onClickCuenta);
+        linear3.setOnClickListener(onClickCuenta);
         textCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,9 +90,17 @@ public class Perfil_Fragment extends GeneralFragment {
                 startActivity(intent);
             }
         });
-        textCuenta.setOnClickListener(onClickCuenta);
-        linear3.setOnClickListener(onClickCuenta);
 
+        gnr.getUser(new IGetUser_Listener() {
+            @Override
+            public void onComplete(Boolean complete, User user) {
+                init();
+            }
+        });
+        return view;
+    }
+
+    private void init(){
         String nombre = "", apellido = "";
 
         String name[];
@@ -140,7 +152,6 @@ public class Perfil_Fragment extends GeneralFragment {
         }
         imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
                 bm, 16));
-        return view;
     }
 
     View.OnClickListener onClickInfo = new View.OnClickListener() {

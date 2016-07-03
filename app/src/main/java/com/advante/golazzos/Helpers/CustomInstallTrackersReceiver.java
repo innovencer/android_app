@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -21,26 +22,28 @@ public class CustomInstallTrackersReceiver extends BroadcastReceiver {
         HashMap<String, String> values = new HashMap<String, String>();
         try {
             if (intent.hasExtra("referrer")) {
-                String referrers[] = intent.getStringExtra("referrer").split("&");
+                Log.d("Golazzos", "referrer: " + URLDecoder.decode(intent.getStringExtra("referrer")));
+                String referrers[] = URLDecoder.decode(intent.getStringExtra("referrer")).split("&");
                 for (String referrerValue : referrers) {
                     String keyValue[] = referrerValue.split("=");
                     values.put(URLDecoder.decode(keyValue[0]), URLDecoder.decode(keyValue[1]));
                 }
+                Log.d("Golazzos", "referrer: " + values);
+                try{
+                    File myFile = new File(General.local_dir+"referrer.txt");
+                    myFile.createNewFile();
+                    FileOutputStream fOut = new FileOutputStream(myFile);
+                    OutputStreamWriter myOutWriter =
+                            new OutputStreamWriter(fOut);
+                    myOutWriter.append("referrer "+values);
+                    myOutWriter.close();
+                    fOut.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
         }
-        try{
-            File myFile = new File(General.local_dir+"referrer.txt");
-            myFile.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(myFile);
-            OutputStreamWriter myOutWriter =
-                    new OutputStreamWriter(fOut);
-            myOutWriter.append(General.getToken());
-            myOutWriter.close();
-            fOut.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        Log.d("Golazzos", "referrer: " + values);
+
     }
 }

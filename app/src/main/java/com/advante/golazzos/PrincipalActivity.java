@@ -62,6 +62,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.LeftMenu_Item;
+import com.advante.golazzos.Model.User;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -143,7 +144,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         if(gnr.getLoggedUser() == null){
             gnr.getUser(new IGetUser_Listener() {
                 @Override
-                public void onComplete(Boolean complete) {
+                public void onComplete(Boolean complete, User user) {
 
                 }
             });
@@ -877,7 +878,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         super.onResume();
         gnr.getUser(new IGetUser_Listener() {
             @Override
-            public void onComplete(Boolean complete) {
+            public void onComplete(Boolean complete, User user) {
                 if(complete){
                     loadProfile();
                 }

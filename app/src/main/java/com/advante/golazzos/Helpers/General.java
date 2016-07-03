@@ -96,7 +96,7 @@ public class General {
 
     public General(Context context) {
         General.context = context;
-        url_base = context.getString(R.string.url_base_build);
+        url_base = context.getString(R.string.url_base);
         endpoint_users = url_base + context.getString(R.string.users_endpoint);
         endpoint_tokens = url_base + context.getString(R.string.tokens_endpoint);
         endpoint_teams = url_base + context.getString(R.string.teams_endpoint);
@@ -329,7 +329,7 @@ public class General {
                     preferences.edit().putString("token",General.getToken()).apply();
                     dialog.dismiss();
 
-                    iGetUser_listener.onComplete(true);
+                    iGetUser_listener.onComplete(true, user1);
 
 
                     try{
@@ -345,7 +345,7 @@ public class General {
                         e.printStackTrace();
                     }
                 } catch (JSONException e) {
-                    iGetUser_listener.onComplete(false);
+                    iGetUser_listener.onComplete(false, null);
                     e.printStackTrace();
                     Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
                     dialog.dismiss();

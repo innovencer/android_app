@@ -279,7 +279,7 @@ public class CrearCuentaActivity extends GeneralActivity {
                             General.setToken(data.getString("jwt"));
                             gnr.getUser(new IGetUser_Listener() {
                                 @Override
-                                public void onComplete(Boolean complete) {
+                                public void onComplete(Boolean complete, User user) {
                                     if(complete){
                                         Intent intent = new Intent(CrearCuentaActivity.this,Wizzard1Activity.class);
                                         startActivity(intent);

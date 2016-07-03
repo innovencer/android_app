@@ -20,6 +20,7 @@ import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.Ranking_Item;
+import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -87,13 +88,13 @@ public class RankingFragment extends GeneralFragment {
 
         gnr.getUser(new IGetUser_Listener() {
             @Override
-            public void onComplete(Boolean complete) {
+            public void onComplete(Boolean complete, User user) {
                 if(complete){
                     init();
                 }
             }
         });
-        getRanking("");
+        getRanking("?weekly=true");
         return view;
     }
     Target target = new Target() {
@@ -133,11 +134,11 @@ public class RankingFragment extends GeneralFragment {
             if(view.getTag().equals("1")){
                 image1.setVisibility(View.VISIBLE);
                 image2.setVisibility(View.INVISIBLE);
-                getRanking("");
+                getRanking("?weekly=true");
             }else{
                 image1.setVisibility(View.INVISIBLE);
                 image2.setVisibility(View.VISIBLE);
-                getRanking("?weekly=true");
+                getRanking("");
             }
         }
     };

@@ -41,7 +41,11 @@
     <string name="delete_favorite_team_url">https://www.golazzos.com/api/v2/favorite_teams/%1$s</string>
     <string name="favorites_teams_by_user_url">https://www.golazzos.com/api/v2/favorite_teams</string>
     <string name="dataSize">421</string>
-
+    <string name="noAmigos">Aún no sigues a nadie, invita mas amigos para demostrarles que eres un 10 en la cancha</string>
+    <string name="noSeguidores">Nadie sigue tus jugadas aun. Invita a mas amigos y muestrales quien sabe mas de futbol</string>
+    <string name="noPartidos">No hay Partidos en Vivo en este Momento</string>
+    <string name="noPost">No tiene ningún mensaje en el estadio</string>
+    <string name="noJugadas">No se encontraron jugadas.</string>
     <string name="menuPerfil">PERFÍL</string>
     <string name="menuEstadio">ESTADIO</string>
     <string name="menuPartidos">PARTIDOS</string>

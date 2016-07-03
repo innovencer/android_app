@@ -2,12 +2,15 @@ package com.advante.golazzos.Fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Users;
@@ -48,13 +51,15 @@ public class Amigos_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     ListView listView;
     LinearLayout linear1, linear2, linear3, linear4;
-    ImageView imgInvitar;
+    TextView textNoAmigos;
+    ImageView imgInvitar, imgNoAmigos;
+    int normalHeight = 0;
     private CallbackManager callbackManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getContext());
-        View view = inflater.inflate(R.layout.fragment_amigos, container, false);
+        final View view = inflater.inflate(R.layout.fragment_amigos, container, false);
         listView = (ListView) view.findViewById(R.id.listview);
         linear1 = (LinearLayout) view.findViewById(R.id.linear1);
         linear2 = (LinearLayout) view.findViewById(R.id.linear2);
@@ -62,6 +67,9 @@ public class Amigos_Fragment extends GeneralFragment {
         linear4 = (LinearLayout) view.findViewById(R.id.linear4);
 
         imgInvitar = (ImageView) view.findViewById(R.id.imgInvitar);
+        imgNoAmigos = (ImageView) view.findViewById(R.id.imgNoAmigos);
+
+        textNoAmigos = (TextView) view.findViewById(R.id.textNoAmigos);
 
         linear1.setOnClickListener(clickTab);
         linear2.setOnClickListener(clickTab);
@@ -70,7 +78,7 @@ public class Amigos_Fragment extends GeneralFragment {
 
         final String appLinkUrl;
 
-        appLinkUrl = "https://fb.me/819597421505804";
+        appLinkUrl = "https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getId();
 
         final AppInviteContent content = new AppInviteContent.Builder()
                 .setApplinkUrl(appLinkUrl)
@@ -114,7 +122,36 @@ public class Amigos_Fragment extends GeneralFragment {
         sendButton.setShareContent(linkContent);
 
         getData(General.endpoint_friends);
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
+            public void onGlobalLayout(){
+                if(normalHeight == 0){
+                    normalHeight = view.getHeight();
+                }
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT
+                        ,LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                if(view.getHeight()< normalHeight){
+                    imgNoAmigos.setVisibility(View.GONE);
+                    textNoAmigos.setVisibility(View.GONE);
+                }else if(view.getHeight() == normalHeight){
+                    checkItems();
+                }
+
+            }
+        });
+
         return view;
+    }
+
+    private void checkItems(){
+        if(listView.getAdapter()!= null && listView.getAdapter().getCount() > 0){
+            imgNoAmigos.setVisibility(View.GONE);
+            textNoAmigos.setVisibility(View.GONE);
+        }else{
+            imgNoAmigos.setVisibility(View.VISIBLE);
+            textNoAmigos.setVisibility(View.VISIBLE);
+        }
     }
 
     View.OnClickListener clickTab = new View.OnClickListener() {
@@ -134,6 +171,11 @@ public class Amigos_Fragment extends GeneralFragment {
 
     private void getData(String endpoint){
         dialog.show();
+        if(endpoint.equals(gnr.endpoint_friends)){
+            textNoAmigos.setText(getString(R.string.noAmigos));
+        }else if (endpoint.equals(gnr.endpoint_followers)){
+            textNoAmigos.setText(getString(R.string.noSeguidores));
+        }
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 endpoint,
@@ -190,6 +232,13 @@ public class Amigos_Fragment extends GeneralFragment {
                             }
                             List_Users adapter = new List_Users(getContext(),userBusquedas);
                             listView.setAdapter(adapter);
+                            if(userBusquedas.size()>0) {
+                                listView.setVisibility(View.VISIBLE);
+                                imgNoAmigos.setVisibility(View.GONE);
+                            }else{
+                                listView.setVisibility(View.GONE);
+                                imgNoAmigos.setVisibility(View.VISIBLE);
+                            }
                             dialog.dismiss();
                         } catch (Exception e) {
                             e.printStackTrace();

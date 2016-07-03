@@ -15,6 +15,8 @@ import com.advante.golazzos.Helpers.BarWin;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 
 import java.io.File;
@@ -65,6 +67,19 @@ public class Aciertos_Fragment extends GeneralFragment {
         barWin1 = (BarWin) view.findViewById(R.id.barWin1);
         barLose = (BarLose) view.findViewById(R.id.barLose);
 
+        gnr.getUser(new IGetUser_Listener() {
+            @Override
+            public void onComplete(Boolean complete, User user) {
+                if(complete){
+                    init();
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void init(){
         textTotalJugados.setText(gnr.getLoggedUser().getCounters().getTotalBets() +" JUGADAS");
         textAciertos.setText(gnr.getLoggedUser().getCounters().getTotalWonBets()  +" GANADAS");
         textPerdidos.setText(gnr.getLoggedUser().getCounters().getTotalLoseBets() +" PERDIDAS");
@@ -150,11 +165,7 @@ public class Aciertos_Fragment extends GeneralFragment {
             imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
                     bm, 16));
         }
-
-
-        return view;
     }
-
 
 
 }

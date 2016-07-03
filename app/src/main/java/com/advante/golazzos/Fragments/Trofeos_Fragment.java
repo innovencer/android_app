@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.GeneralFragment;
+import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 
 import java.util.ArrayList;
@@ -100,10 +102,15 @@ public class Trofeos_Fragment extends GeneralFragment {
 
         textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
 
-        nivel = gnr.getLoggedUser().getLevel().getOrder();
-        textTituloNivel.setText(gnr.getLoggedUser().getLevel().getName().toUpperCase());
+        gnr.getUser(new IGetUser_Listener() {
+            @Override
+            public void onComplete(Boolean complete, User user) {
+                nivel = gnr.getLoggedUser().getLevel().getOrder();
+                textTituloNivel.setText(gnr.getLoggedUser().getLevel().getName().toUpperCase());
 
-        tintLevel(nivel);
+                tintLevel(nivel);
+            }
+        });
 
         return view;
     }
