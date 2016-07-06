@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +18,7 @@ import com.advante.golazzos.Adapters.List_Users;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.UserBusqueda;
 import com.advante.golazzos.Model.UserLevel;
@@ -55,92 +57,104 @@ public class Amigos_Fragment extends GeneralFragment {
     ImageView imgInvitar, imgNoAmigos;
     int normalHeight = 0;
     private CallbackManager callbackManager;
+    Boolean flag = true;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FacebookSdk.sdkInitialize(getContext());
         final View view = inflater.inflate(R.layout.fragment_amigos, container, false);
-        listView = (ListView) view.findViewById(R.id.listview);
-        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
-        linear2 = (LinearLayout) view.findViewById(R.id.linear2);
-        linear3 = (LinearLayout) view.findViewById(R.id.linear3);
-        linear4 = (LinearLayout) view.findViewById(R.id.linear4);
+        if(flag) {
+            FacebookSdk.sdkInitialize(getContext());
+            listView = (ListView) view.findViewById(R.id.listview);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            linear2 = (LinearLayout) view.findViewById(R.id.linear2);
+            linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            linear4 = (LinearLayout) view.findViewById(R.id.linear4);
 
-        imgInvitar = (ImageView) view.findViewById(R.id.imgInvitar);
-        imgNoAmigos = (ImageView) view.findViewById(R.id.imgNoAmigos);
+            imgInvitar = (ImageView) view.findViewById(R.id.imgInvitar);
+            imgNoAmigos = (ImageView) view.findViewById(R.id.imgNoAmigos);
 
-        textNoAmigos = (TextView) view.findViewById(R.id.textNoAmigos);
+            textNoAmigos = (TextView) view.findViewById(R.id.textNoAmigos);
 
-        linear1.setOnClickListener(clickTab);
-        linear2.setOnClickListener(clickTab);
-        linear3.setOnClickListener(clickTab);
-        linear4.setOnClickListener(clickTab);
+            linear1.setOnClickListener(clickTab);
+            linear2.setOnClickListener(clickTab);
+            linear3.setOnClickListener(clickTab);
+            linear4.setOnClickListener(clickTab);
 
-        final String appLinkUrl;
+            final String appLinkUrl;
 
-        appLinkUrl = "https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getId();
+            appLinkUrl = "https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A" + gnr.getLoggedUser().getId();
 
-        final AppInviteContent content = new AppInviteContent.Builder()
-                .setApplinkUrl(appLinkUrl)
-                .build();
+            final AppInviteContent content = new AppInviteContent.Builder()
+                    .setApplinkUrl(appLinkUrl)
+                    .build();
 
-        imgInvitar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (AppInviteDialog.canShow()) {
-                    AppInviteDialog.show(getActivity(), content);
+            imgInvitar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (AppInviteDialog.canShow()) {
+                        AppInviteDialog.show(getActivity(), content);
+                    }
                 }
-            }
-        });
+            });
 
-        callbackManager = CallbackManager.Factory.create();
-        SendButton sendButton = (SendButton) view.findViewById(R.id.button_facebook);
-        sendButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-                    @Override
-                    public void onSuccess(Sharer.Result result) {
-                        showLog(result.toString());
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        showLog("cancelled");
-                    }
-
-                    @Override
-                    public void onError(FacebookException error) {
-                        showLog(error.getMessage());
-                    }
-                });
-
-        ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle("Juega Conmigo Golazzos!")
-                .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
-                .setImageUrl(Uri.parse("http://principal-desarrollo.com/golazzos/img/ic_main.png"))
-                .setContentUrl(Uri.parse(appLinkUrl))
-                .build();
-
-        sendButton.setShareContent(linkContent);
-
-        getData(General.endpoint_friends);
-
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
-            public void onGlobalLayout(){
-                if(normalHeight == 0){
-                    normalHeight = view.getHeight();
-                }
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT
-                        ,LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                if(view.getHeight()< normalHeight){
-                    imgNoAmigos.setVisibility(View.GONE);
-                    textNoAmigos.setVisibility(View.GONE);
-                }else if(view.getHeight() == normalHeight){
-                    checkItems();
+            callbackManager = CallbackManager.Factory.create();
+            SendButton sendButton = (SendButton) view.findViewById(R.id.button_facebook);
+            sendButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+                @Override
+                public void onSuccess(Sharer.Result result) {
+                    showLog(result.toString());
                 }
 
-            }
-        });
+                @Override
+                public void onCancel() {
+                    showLog("cancelled");
+                }
 
+                @Override
+                public void onError(FacebookException error) {
+                    showLog(error.getMessage());
+                }
+            });
+
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Juega Conmigo Golazzos!")
+                    .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
+                    .setImageUrl(Uri.parse("http://principal-desarrollo.com/golazzos/img/ic_main.png"))
+                    .setContentUrl(Uri.parse(appLinkUrl))
+                    .build();
+
+            sendButton.setShareContent(linkContent);
+
+            getData(General.endpoint_friends);
+
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                public void onGlobalLayout() {
+                    if (normalHeight == 0) {
+                        normalHeight = view.getHeight();
+                    }
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT
+                            , LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                    if (view.getHeight() < normalHeight) {
+                        imgNoAmigos.setVisibility(View.GONE);
+                        textNoAmigos.setVisibility(View.GONE);
+                    } else if (view.getHeight() == normalHeight) {
+                        checkItems();
+                    }
+
+                }
+            });
+        }
         return view;
     }
 

@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.R;
@@ -59,129 +61,135 @@ public class Favoritos2_Fragment extends GeneralFragment {
     ArrayList<Equipo> equipos;
     String nameTemp = "";
     int equipos_s[] = new int[]{-1,-1,-1,-1,-1,-1,-1,-1};
-    
+    Boolean flag = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favoritos2, container, false);
+        if(flag) {
+            buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
+            buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
+            buttonAgregar = (TextView) view.findViewById(R.id.buttonAgregar);
+            buttonSiguiente = (TextView) view.findViewById(R.id.buttonSiguiente);
+            buttonFavoritos1 = (LinearLayout) view.findViewById(R.id.buttonFavoritos1);
+            linear3 = (LinearLayout) view.findViewById(R.id.linear3);
 
-        buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
-        buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
-        buttonAgregar = (TextView) view.findViewById(R.id.buttonAgregar);
-        buttonSiguiente = (TextView) view.findViewById(R.id.buttonSiguiente);
-        buttonFavoritos1 = (LinearLayout) view.findViewById(R.id.buttonFavoritos1);
-        linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            imageElimina1 = (ImageView) view.findViewById(R.id.imageElimina1);
+            imageElimina2 = (ImageView) view.findViewById(R.id.imageElimina2);
+            imageElimina3 = (ImageView) view.findViewById(R.id.imageElimina3);
+            imageElimina4 = (ImageView) view.findViewById(R.id.imageElimina4);
+            imageElimina5 = (ImageView) view.findViewById(R.id.imageElimina5);
+            imageElimina6 = (ImageView) view.findViewById(R.id.imageElimina6);
+            imageElimina7 = (ImageView) view.findViewById(R.id.imageElimina7);
+            imageElimina8 = (ImageView) view.findViewById(R.id.imageElimina8);
 
-        imageElimina1 = (ImageView) view.findViewById(R.id.imageElimina1);
-        imageElimina2 = (ImageView) view.findViewById(R.id.imageElimina2);
-        imageElimina3 = (ImageView) view.findViewById(R.id.imageElimina3);
-        imageElimina4 = (ImageView) view.findViewById(R.id.imageElimina4);
-        imageElimina5 = (ImageView) view.findViewById(R.id.imageElimina5);
-        imageElimina6 = (ImageView) view.findViewById(R.id.imageElimina6);
-        imageElimina7 = (ImageView) view.findViewById(R.id.imageElimina7);
-        imageElimina8 = (ImageView) view.findViewById(R.id.imageElimina8);
+            imageElimina1.setOnClickListener(onEliminarClick);
+            imageElimina2.setOnClickListener(onEliminarClick);
+            imageElimina3.setOnClickListener(onEliminarClick);
+            imageElimina4.setOnClickListener(onEliminarClick);
+            imageElimina5.setOnClickListener(onEliminarClick);
+            imageElimina6.setOnClickListener(onEliminarClick);
+            imageElimina7.setOnClickListener(onEliminarClick);
+            imageElimina8.setOnClickListener(onEliminarClick);
 
-        imageElimina1.setOnClickListener(onEliminarClick);
-        imageElimina2.setOnClickListener(onEliminarClick);
-        imageElimina3.setOnClickListener(onEliminarClick);
-        imageElimina4.setOnClickListener(onEliminarClick);
-        imageElimina5.setOnClickListener(onEliminarClick);
-        imageElimina6.setOnClickListener(onEliminarClick);
-        imageElimina7.setOnClickListener(onEliminarClick);
-        imageElimina8.setOnClickListener(onEliminarClick);
+            imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
+            imageEquipo2 = (ImageView) view.findViewById(R.id.imageEquipo2);
+            imageEquipo3 = (ImageView) view.findViewById(R.id.imageEquipo3);
+            imageEquipo4 = (ImageView) view.findViewById(R.id.imageEquipo4);
+            imageEquipo5 = (ImageView) view.findViewById(R.id.imageEquipo5);
+            imageEquipo6 = (ImageView) view.findViewById(R.id.imageEquipo6);
+            imageEquipo7 = (ImageView) view.findViewById(R.id.imageEquipo7);
+            imageEquipo8 = (ImageView) view.findViewById(R.id.imageEquipo8);
 
-        imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
-        imageEquipo2 = (ImageView) view.findViewById(R.id.imageEquipo2);
-        imageEquipo3 = (ImageView) view.findViewById(R.id.imageEquipo3);
-        imageEquipo4 = (ImageView) view.findViewById(R.id.imageEquipo4);
-        imageEquipo5 = (ImageView) view.findViewById(R.id.imageEquipo5);
-        imageEquipo6 = (ImageView) view.findViewById(R.id.imageEquipo6);
-        imageEquipo7 = (ImageView) view.findViewById(R.id.imageEquipo7);
-        imageEquipo8 = (ImageView) view.findViewById(R.id.imageEquipo8);
+            textEquipo1 = (TextView) view.findViewById(R.id.textEquipo1);
+            textEquipo2 = (TextView) view.findViewById(R.id.textEquipo2);
+            textEquipo3 = (TextView) view.findViewById(R.id.textEquipo3);
+            textEquipo4 = (TextView) view.findViewById(R.id.textEquipo4);
+            textEquipo5 = (TextView) view.findViewById(R.id.textEquipo5);
+            textEquipo6 = (TextView) view.findViewById(R.id.textEquipo6);
+            textEquipo7 = (TextView) view.findViewById(R.id.textEquipo7);
+            textEquipo8 = (TextView) view.findViewById(R.id.textEquipo8);
 
-        textEquipo1 = (TextView) view.findViewById(R.id.textEquipo1);
-        textEquipo2 = (TextView) view.findViewById(R.id.textEquipo2);
-        textEquipo3 = (TextView) view.findViewById(R.id.textEquipo3);
-        textEquipo4 = (TextView) view.findViewById(R.id.textEquipo4);
-        textEquipo5 = (TextView) view.findViewById(R.id.textEquipo5);
-        textEquipo6 = (TextView) view.findViewById(R.id.textEquipo6);
-        textEquipo7 = (TextView) view.findViewById(R.id.textEquipo7);
-        textEquipo8 = (TextView) view.findViewById(R.id.textEquipo8);
-
-        for(int i = 1; i <= 8; i++){
-            clearImage(i);
-        }
-
-        buttonLigas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(equipos != null){
-                    equipos = null;
-                    idEquipo = -1;
-                    buttonEquipos.setText("Equipo");
-                }
-                dialog.show();
-                buscarLigas();
+            for (int i = 1; i <= 8; i++) {
+                clearImage(i);
             }
-        });
-        buttonEquipos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(idLiga != -1) {
+
+            buttonLigas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (equipos != null) {
+                        equipos = null;
+                        idEquipo = -1;
+                        buttonEquipos.setText("Equipo");
+                    }
                     dialog.show();
-                    buscarEquipos();
-                }else{
-                    Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                    buscarLigas();
                 }
-            }
-        });
-        buttonSiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                JSONArray ids = new JSONArray();
-                for(int i=0;i<=7;i++){
-                    if(equipos_s[i] != -1){
-                        ids.put(equipos_s[i]);
+            });
+            buttonEquipos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idLiga != -1) {
+                        dialog.show();
+                        buscarEquipos();
+                    } else {
+                        Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
                     }
                 }
-                if(ids.length()>0){
-                    JSONObject post = new JSONObject();
-                    try {
-                        post.put("favorite_team_ids",ids);
-                        showLog(post.toString());
-                        postFavoritos(post);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        buttonAgregar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!agregado(idEquipo)) {
-                    for (int i = 0; i < 8; i++) {
-                        if (equipos_s[i] == -1) {
-                            equipos_s[i] = idEquipo;
-                            setImage(i + 1, idEquipoDataF, nameTemp);
-                            return;
+            });
+            buttonSiguiente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    JSONArray ids = new JSONArray();
+                    for (int i = 0; i <= 7; i++) {
+                        if (equipos_s[i] != -1) {
+                            ids.put(equipos_s[i]);
                         }
                     }
-                }else{
-                    Toast.makeText(getContext(),"Ya selecciono este equipo.",Toast.LENGTH_SHORT).show();
+                    if (ids.length() > 0) {
+                        JSONObject post = new JSONObject();
+                        try {
+                            post.put("favorite_team_ids", ids);
+                            showLog(post.toString());
+                            postFavoritos(post);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-            }
-        });
-        buttonFavoritos1.setOnClickListener(clickFavoritos1);
-        linear3.setOnClickListener(clickFavoritos1);
+            });
+            buttonAgregar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!agregado(idEquipo)) {
+                        for (int i = 0; i < 8; i++) {
+                            if (equipos_s[i] == -1) {
+                                equipos_s[i] = idEquipo;
+                                setImage(i + 1, idEquipoDataF, nameTemp);
+                                return;
+                            }
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Ya selecciono este equipo.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            buttonFavoritos1.setOnClickListener(clickFavoritos1);
+            linear3.setOnClickListener(clickFavoritos1);
 
-        buscaEquipos();
+            buscaEquipos();
+        }
         return view;
     }
 

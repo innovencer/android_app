@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -29,6 +30,7 @@ import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.Interface.OnItemClickListener;
 import com.advante.golazzos.JugadasResultActivity;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Jugada;
 import com.advante.golazzos.Model.Liga;
@@ -56,6 +58,7 @@ import java.util.Map;
 public class Jugadas_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     RecyclerView recycler;
+    RelativeLayout linearJugadas;
     TextView buttonFinalizado, buttonEnVivo, buttonPORJUGAR;
 
     private ViewFlipper viewFlipper;
@@ -69,84 +72,98 @@ public class Jugadas_Fragment extends GeneralFragment {
 
     String status = "?status=not_started",bet_type_id = "";
     int tab = 1;
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jugadas_realizadas_1, container, false);
+        if(flag) {
+            viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
+            recycler = (RecyclerView) view.findViewById(R.id.recycler);
 
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
-        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+            recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+            linearJugadas = (RelativeLayout) view.findViewById(R.id.linearJugadas);
 
-        buttonFinalizado = (TextView) view.findViewById(R.id.buttonFinalizado);
-        buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
-        buttonPORJUGAR = (TextView) view.findViewById(R.id.buttonPORJUGAR);
-        buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
-        buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
+            buttonFinalizado = (TextView) view.findViewById(R.id.buttonFinalizado);
+            buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
+            buttonPORJUGAR = (TextView) view.findViewById(R.id.buttonPORJUGAR);
+            buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
+            buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
 
-        buttonFinalizado.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuTint(3);
-                status = "?status=finished";
-                getData(status+bet_type_id);
-            }
-        });
-        buttonPORJUGAR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuTint(1);
-                status = "?status=not_started";
-                getData(status+bet_type_id);
-            }
-        });
-        buttonEnVivo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuTint(2);
-                status = "?status=being_played";
-                getData(status+bet_type_id);
-            }
-        });
-
-        buttonLigas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(equipos != null){
-                    equipos = null;
-                    idEquipo = -1;
-                    buttonEquipos.setText("Seleccionar Equipo");
+            buttonFinalizado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    menuTint(3);
+                    status = "?status=finished";
+                    getData(status + bet_type_id);
                 }
-                //dialog.show();
-                //buscarLigas();
-                gnr.buscarLigas(new IBuscarLigas_Listener() {
-                    @Override
-                    public void onComplete(ArrayList<Liga> items) {
-                        ligas = items;
-                        if(ligas != null){
-                            showDialogLigas(ligas);
-                        }
+            });
+            buttonPORJUGAR.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    menuTint(1);
+                    status = "?status=not_started";
+                    getData(status + bet_type_id);
+                }
+            });
+            buttonEnVivo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    menuTint(2);
+                    status = "?status=being_played";
+                    getData(status + bet_type_id);
+                }
+            });
+
+            buttonLigas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (equipos != null) {
+                        equipos = null;
+                        idEquipo = -1;
+                        buttonEquipos.setText("Seleccionar Equipo");
                     }
-                });
-            }
-        });
-        buttonEquipos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(idLiga != -1) {
-                    dialog.show();
-                    buscarEquipos();
-                }else{
-                    Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                    //dialog.show();
+                    //buscarLigas();
+                    gnr.buscarLigas(new IBuscarLigas_Listener() {
+                        @Override
+                        public void onComplete(ArrayList<Liga> items) {
+                            ligas = items;
+                            if (ligas != null) {
+                                showDialogLigas(ligas);
+                            }
+                        }
+                    });
                 }
-            }
-        });
+            });
+            buttonEquipos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idLiga != -1) {
+                        dialog.show();
+                        buscarEquipos();
+                    } else {
+                        Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
-        view.setOnTouchListener(touchListener);
-        getData(status+bet_type_id);
-
+            view.setOnTouchListener(touchListener);
+            getData(status + bet_type_id);
+        }
         return view;
     }
 
@@ -247,6 +264,11 @@ public class Jugadas_Fragment extends GeneralFragment {
                                 jugadas.add(jugada);
                             }
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            if(jugadas.size()>0){
+                                linearJugadas.setVisibility(View.GONE);
+                            }else{
+                                linearJugadas.setVisibility(View.VISIBLE);
+                            }
                             List_Jugadas adapter = new List_Jugadas(getActivity(), jugadas, new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(Jugada item) {

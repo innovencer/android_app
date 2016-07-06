@@ -2,6 +2,7 @@ package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +31,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -73,87 +75,94 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
     public static Uri path;
     int id, normalHeight = 0;
     InputMethodManager imm;
+    Boolean flag = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_fanaticada_escribir, container, false);
+        if(flag) {
+            imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            buttonPublicar = (LinearLayout) view.findViewById(R.id.buttonPublicar);
+            buttonCamera = (LinearLayout) view.findViewById(R.id.buttonCamera);
+            buttonBack = (LinearLayout) view.findViewById(R.id.buttonBack);
+            buttonClearImage = (LinearLayout) view.findViewById(R.id.buttonClearImage);
+            linearAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            editComentarios = (EditText) view.findViewById(R.id.editCometario);
+            imageAttached = (ImageView) view.findViewById(R.id.imageAttached);
+            imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
 
-        buttonPublicar = (LinearLayout) view.findViewById(R.id.buttonPublicar);
-        buttonCamera = (LinearLayout) view.findViewById(R.id.buttonCamera);
-        buttonBack = (LinearLayout) view.findViewById(R.id.buttonBack);
-        buttonClearImage = (LinearLayout) view.findViewById(R.id.buttonClearImage);
-        linearAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
-        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
-        editComentarios = (EditText) view.findViewById(R.id.editCometario);
-        imageAttached = (ImageView) view.findViewById(R.id.imageAttached);
-        imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
+            showLog(gnr.getLoggedUser().getProfile_pic_url());
+            loadProfilePic();
+            Bundle bundle = this.getArguments();
+            //id = bundle.getInt("id",0);
 
-        showLog(gnr.getLoggedUser().getProfile_pic_url());
-        loadProfilePic();
-        Bundle bundle = this.getArguments();
-        //id = bundle.getInt("id",0);
-
-        buttonPublicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                Comentar();
-            }
-        });
-        buttonCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectImage();
-            }
-        });
-        buttonClearImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageAttached.setImageBitmap(null);
-                bitmapAttached = null;
-                linearAttached.setVisibility(View.GONE);
-            }
-        });
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                getFragmentManager().popBackStack();
-            }
-        });
-
-        final Resources r = getResources();
-        final int dp50 = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                50,
-                r.getDisplayMetrics()
-        );
-
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
-            public void onGlobalLayout(){
-                if(normalHeight == 0){
-                    normalHeight = view.getHeight();
+            buttonPublicar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    Comentar();
                 }
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT
-                        ,LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                if(view.getHeight()< normalHeight){
-                    params.setMargins(0, 0, 0, 0);
-                    linear1.setLayoutParams(params);
-                }else if(view.getHeight() == normalHeight){
-                    params.setMargins(0, 0, 0, dp50);
-                    linear1.setLayoutParams(params);
+            });
+            buttonCamera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectImage();
                 }
+            });
+            buttonClearImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    imageAttached.setImageBitmap(null);
+                    bitmapAttached = null;
+                    linearAttached.setVisibility(View.GONE);
+                }
+            });
+            buttonBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    getFragmentManager().popBackStack();
+                }
+            });
 
-            }
-        });
+            final Resources r = getResources();
+            final int dp50 = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    50,
+                    r.getDisplayMetrics()
+            );
+
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                public void onGlobalLayout() {
+                    if (normalHeight == 0) {
+                        normalHeight = view.getHeight();
+                    }
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT
+                            , LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                    if (view.getHeight() < normalHeight) {
+                        params.setMargins(0, 0, 0, 0);
+                        linear1.setLayoutParams(params);
+                    } else if (view.getHeight() == normalHeight) {
+                        params.setMargins(0, 0, 0, dp50);
+                        linear1.setLayoutParams(params);
+                    }
+
+                }
+            });
+        }
         return view;
     }
 

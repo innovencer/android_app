@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.advante.golazzos.Adapters.List_Posts;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Like;
 import com.advante.golazzos.Model.Owner;
@@ -41,9 +43,16 @@ public class Fanaticada_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     ListView listView;
     LinearLayout buttonComentar, buttonCamera, linearComentar;
+    Boolean flag = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
     }
 
 
@@ -66,8 +75,9 @@ public class Fanaticada_Fragment extends GeneralFragment {
                 ft.commit();
             }
         });
-
-        buscarPosts();
+        if(flag) {
+            buscarPosts();
+        }
         return view;
     }
 

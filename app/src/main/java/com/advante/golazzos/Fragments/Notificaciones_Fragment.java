@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ToggleButton;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -37,48 +39,60 @@ public class Notificaciones_Fragment extends GeneralFragment {
     ImageView imageProfile;
     LinearLayout linear1, linear2, linear3, linearGuardar;
     ToggleButton toggle1, toggle2, toggle3, toggle4, toggle5;
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notificaciones, container, false);
+        if(flag) {
+            textInfo = (TextView) view.findViewById(R.id.textInfo);
+            textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
+            textCuenta = (TextView) view.findViewById(R.id.textCuenta);
 
-        textInfo = (TextView) view.findViewById(R.id.textInfo);
-        textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
-        textCuenta = (TextView) view.findViewById(R.id.textCuenta);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            linear2 = (LinearLayout) view.findViewById(R.id.linear2);
+            linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            linearGuardar = (LinearLayout) view.findViewById(R.id.linearGuardar);
 
-        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
-        linear2 = (LinearLayout) view.findViewById(R.id.linear2);
-        linear3 = (LinearLayout) view.findViewById(R.id.linear3);
-        linearGuardar = (LinearLayout) view.findViewById(R.id.linearGuardar);
+            toggle1 = (ToggleButton) view.findViewById(R.id.toggle1);
+            toggle2 = (ToggleButton) view.findViewById(R.id.toggle2);
+            toggle3 = (ToggleButton) view.findViewById(R.id.toggle3);
+            toggle4 = (ToggleButton) view.findViewById(R.id.toggle4);
+            toggle5 = (ToggleButton) view.findViewById(R.id.toggle5);
 
-        toggle1 = (ToggleButton) view.findViewById(R.id.toggle1);
-        toggle2 = (ToggleButton) view.findViewById(R.id.toggle2);
-        toggle3 = (ToggleButton) view.findViewById(R.id.toggle3);
-        toggle4 = (ToggleButton) view.findViewById(R.id.toggle4);
-        toggle5 = (ToggleButton) view.findViewById(R.id.toggle5);
-
-        toggle1.setChecked(gnr.getLoggedUser().getUserSettings().isNew_bet_notification());
-        toggle2.setChecked(gnr.getLoggedUser().getUserSettings().isClosed_match_notification());
-        toggle3.setChecked(gnr.getLoggedUser().getUserSettings().isWon_notification());
-        toggle4.setChecked(gnr.getLoggedUser().getUserSettings().isLose_notification());
-        toggle5.setChecked(gnr.getLoggedUser().getUserSettings().isFriendship_notification());
+            toggle1.setChecked(gnr.getLoggedUser().getUserSettings().isNew_bet_notification());
+            toggle2.setChecked(gnr.getLoggedUser().getUserSettings().isClosed_match_notification());
+            toggle3.setChecked(gnr.getLoggedUser().getUserSettings().isWon_notification());
+            toggle4.setChecked(gnr.getLoggedUser().getUserSettings().isLose_notification());
+            toggle5.setChecked(gnr.getLoggedUser().getUserSettings().isFriendship_notification());
 
 
-        textInfo.setOnClickListener(onClickInfo);
-        linear1.setOnClickListener(onClickInfo);
-        linearGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save();
-            }
-        });
+            textInfo.setOnClickListener(onClickInfo);
+            linear1.setOnClickListener(onClickInfo);
+            linearGuardar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    save();
+                }
+            });
 
-        //textNotificaciones.setOnClickListener(onClickNotificaciones);
-        //linear2.setOnClickListener(onClickNotificaciones);
+            //textNotificaciones.setOnClickListener(onClickNotificaciones);
+            //linear2.setOnClickListener(onClickNotificaciones);
 
-        textCuenta.setOnClickListener(onClickCuenta);
-        linear3.setOnClickListener(onClickCuenta);
-
+            textCuenta.setOnClickListener(onClickCuenta);
+            linear3.setOnClickListener(onClickCuenta);
+        }
         return view;
     }
 

@@ -46,57 +46,70 @@ public class Perfil_Fragment extends GeneralFragment {
     TextView textInfo,textNotificaciones,textCuenta, textCerrarSesion;
     ImageView imageProfile,imageTipoUsuario;
     LinearLayout linear1, linear2, linear3,linearGuardar;
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
+        if(flag) {
+            editNombre = (EditText) view.findViewById(R.id.editNombre);
+            editApellido = (EditText) view.findViewById(R.id.editApellido);
+            editEmail = (EditText) view.findViewById(R.id.editEmail);
+            editTelefono = (EditText) view.findViewById(R.id.editTelefono);
+            imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
 
-        editNombre = (EditText) view.findViewById(R.id.editNombre);
-        editApellido = (EditText) view.findViewById(R.id.editApellido);
-        editEmail = (EditText) view.findViewById(R.id.editEmail);
-        editTelefono = (EditText) view.findViewById(R.id.editTelefono);
-        imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
+            textInfo = (TextView) view.findViewById(R.id.textInfo);
+            textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
+            textCuenta = (TextView) view.findViewById(R.id.textCuenta);
+            textCerrarSesion = (TextView) view.findViewById(R.id.textCerrarSesion);
 
-        textInfo = (TextView) view.findViewById(R.id.textInfo);
-        textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
-        textCuenta = (TextView) view.findViewById(R.id.textCuenta);
-        textCerrarSesion = (TextView) view.findViewById(R.id.textCerrarSesion);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            linear2 = (LinearLayout) view.findViewById(R.id.linear2);
+            linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            linearGuardar = (LinearLayout) view.findViewById(R.id.linearGuardar);
 
-        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
-        linear2 = (LinearLayout) view.findViewById(R.id.linear2);
-        linear3 = (LinearLayout) view.findViewById(R.id.linear3);
-        linearGuardar = (LinearLayout) view.findViewById(R.id.linearGuardar);
+            //textInfo.setOnClickListener(onClickInfo);
+            //linear1.setOnClickListener(onClickInfo);
+            linearGuardar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    save();
+                }
+            });
+            textNotificaciones.setOnClickListener(onClickNotificaciones);
+            linear2.setOnClickListener(onClickNotificaciones);
 
-        //textInfo.setOnClickListener(onClickInfo);
-        //linear1.setOnClickListener(onClickInfo);
-        linearGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save();
-            }
-        });
-        textNotificaciones.setOnClickListener(onClickNotificaciones);
-        linear2.setOnClickListener(onClickNotificaciones);
+            textCuenta.setOnClickListener(onClickCuenta);
+            linear3.setOnClickListener(onClickCuenta);
+            textCerrarSesion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginManager.getInstance().logOut();
+                    preferences.edit().putString("token", "").apply();
+                    gnr.setLoggedUser(null);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
 
-        textCuenta.setOnClickListener(onClickCuenta);
-        linear3.setOnClickListener(onClickCuenta);
-        textCerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginManager.getInstance().logOut();
-                preferences.edit().putString("token","").apply();
-                gnr.setLoggedUser(null);
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        gnr.getUser(new IGetUser_Listener() {
-            @Override
-            public void onComplete(Boolean complete, User user) {
-                init();
-            }
-        });
+            gnr.getUser(new IGetUser_Listener() {
+                @Override
+                public void onComplete(Boolean complete, User user) {
+                    init();
+                }
+            });
+        }
         return view;
     }
 

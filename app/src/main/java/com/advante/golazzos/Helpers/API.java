@@ -1,6 +1,7 @@
 package com.advante.golazzos.Helpers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.advante.golazzos.Interface.API_Listener;
 import com.android.volley.AuthFailureError;
@@ -20,13 +21,15 @@ import java.util.Map;
  */
 public class API {
     private static API singleton;
+    private static String token;
+    private static Context context;
     JsonObjectRequest objectRequest;
     JsonArrayRequest arrayRequest;
 
-    private static Context context;
-
     private API(Context context) {
         API.context = context;
+        SharedPreferences preferences = context.getSharedPreferences(General.packetname, Context.MODE_PRIVATE);
+        API.token = preferences.getString("token","");
     }
 
     public static synchronized API getInstance(Context context) {
@@ -56,7 +59,7 @@ public class API {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + token);
                 params.put("Content-Type", "application/json");
                 return params;
             }
@@ -88,7 +91,7 @@ public class API {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + token);
                 params.put("Content-Type", "application/json");
                 return params;
             }

@@ -119,6 +119,7 @@ public class General {
         endpoint_password = url_base + context.getString(R.string.password_endpoint);;
         locale = context.getResources().getConfiguration().locale.getISO3Country();
         dialog = new ProgressDialog(context);
+        dialog.setCancelable(false);
         dialog.setTitle("");
         dialog.setMessage("Conectando...");
 

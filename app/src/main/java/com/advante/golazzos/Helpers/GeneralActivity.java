@@ -28,6 +28,7 @@ public class GeneralActivity extends Activity {
         gnr = new General(this);
         dialog = new ProgressDialog(this);
         dialog.setTitle("");
+        dialog.setCancelable(false);
         dialog.setMessage("Conectando...");
         initgetSocial();
     }

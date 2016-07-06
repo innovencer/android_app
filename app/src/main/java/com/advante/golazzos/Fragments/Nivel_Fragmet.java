@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.R;
 
 import java.io.File;
@@ -30,105 +32,117 @@ public class Nivel_Fragmet extends GeneralFragment {
     BitmapFactory.Options options;
     int nivel;
     List<ImageView> imageViews = new ArrayList<>();
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nivel, container, false);
+        if(flag) {
+            textAciertos = (TextView) view.findViewById(R.id.textAciertos);
+            textNivel = (TextView) view.findViewById(R.id.textNivel);
+            textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
+            textPuntos = (TextView) view.findViewById(R.id.textPuntos);
+            textTituloNivel1 = (TextView) view.findViewById(R.id.textTituloNivel1);
+            text1 = (TextView) view.findViewById(R.id.text1);
 
-        textAciertos = (TextView) view.findViewById(R.id.textAciertos);
-        textNivel = (TextView) view.findViewById(R.id.textNivel);
-        textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
-        textPuntos = (TextView) view.findViewById(R.id.textPuntos);
-        textTituloNivel1 = (TextView) view.findViewById(R.id.textTituloNivel1);
-        text1 = (TextView) view.findViewById(R.id.text1);
+            textNivel0 = (TextView) view.findViewById(R.id.textNivel0);
+            textNivel1 = (TextView) view.findViewById(R.id.textNivel1);
+            textNivel2 = (TextView) view.findViewById(R.id.textNivel2);
+            textNivel3 = (TextView) view.findViewById(R.id.textNivel3);
+            textNivel4 = (TextView) view.findViewById(R.id.textNivel4);
+            textNivel5 = (TextView) view.findViewById(R.id.textNivel5);
+            textNivel6 = (TextView) view.findViewById(R.id.textNivel6);
+            textNivel7 = (TextView) view.findViewById(R.id.textNivel7);
+            textNivel8 = (TextView) view.findViewById(R.id.textNivel8);
+            textNivel9 = (TextView) view.findViewById(R.id.textNivel9);
+            textNivel10 = (TextView) view.findViewById(R.id.textNivel10);
+            textNivel11 = (TextView) view.findViewById(R.id.textNivel11);
+            textNivel12 = (TextView) view.findViewById(R.id.textNivel12);
+            textNivel13 = (TextView) view.findViewById(R.id.textNivel13);
+            textNivel14 = (TextView) view.findViewById(R.id.textNivel14);
+            textNivel15 = (TextView) view.findViewById(R.id.textNivel15);
 
-        textNivel0 = (TextView) view.findViewById(R.id.textNivel0);
-        textNivel1 = (TextView) view.findViewById(R.id.textNivel1);
-        textNivel2 = (TextView) view.findViewById(R.id.textNivel2);
-        textNivel3 = (TextView) view.findViewById(R.id.textNivel3);
-        textNivel4 = (TextView) view.findViewById(R.id.textNivel4);
-        textNivel5 = (TextView) view.findViewById(R.id.textNivel5);
-        textNivel6 = (TextView) view.findViewById(R.id.textNivel6);
-        textNivel7 = (TextView) view.findViewById(R.id.textNivel7);
-        textNivel8 = (TextView) view.findViewById(R.id.textNivel8);
-        textNivel9 = (TextView) view.findViewById(R.id.textNivel9);
-        textNivel10 = (TextView) view.findViewById(R.id.textNivel10);
-        textNivel11 = (TextView) view.findViewById(R.id.textNivel11);
-        textNivel12 = (TextView) view.findViewById(R.id.textNivel12);
-        textNivel13 = (TextView) view.findViewById(R.id.textNivel13);
-        textNivel14 = (TextView) view.findViewById(R.id.textNivel14);
-        textNivel15 = (TextView) view.findViewById(R.id.textNivel15);
+            image0 = (ImageView) view.findViewById(R.id.image0);
+            image1 = (ImageView) view.findViewById(R.id.image1);
+            image2 = (ImageView) view.findViewById(R.id.image2);
+            image3 = (ImageView) view.findViewById(R.id.image3);
+            image4 = (ImageView) view.findViewById(R.id.image4);
+            image5 = (ImageView) view.findViewById(R.id.image5);
+            image6 = (ImageView) view.findViewById(R.id.image6);
+            image7 = (ImageView) view.findViewById(R.id.image7);
+            image8 = (ImageView) view.findViewById(R.id.image8);
+            image9 = (ImageView) view.findViewById(R.id.image9);
+            image10 = (ImageView) view.findViewById(R.id.image10);
+            image11 = (ImageView) view.findViewById(R.id.image11);
+            image12 = (ImageView) view.findViewById(R.id.image12);
+            image13 = (ImageView) view.findViewById(R.id.image13);
+            image14 = (ImageView) view.findViewById(R.id.image14);
+            image15 = (ImageView) view.findViewById(R.id.image15);
 
-        image0 = (ImageView) view.findViewById(R.id.image0);
-        image1 = (ImageView) view.findViewById(R.id.image1);
-        image2 = (ImageView) view.findViewById(R.id.image2);
-        image3 = (ImageView) view.findViewById(R.id.image3);
-        image4 = (ImageView) view.findViewById(R.id.image4);
-        image5 = (ImageView) view.findViewById(R.id.image5);
-        image6 = (ImageView) view.findViewById(R.id.image6);
-        image7 = (ImageView) view.findViewById(R.id.image7);
-        image8 = (ImageView) view.findViewById(R.id.image8);
-        image9 = (ImageView) view.findViewById(R.id.image9);
-        image10 = (ImageView) view.findViewById(R.id.image10);
-        image11 = (ImageView) view.findViewById(R.id.image11);
-        image12 = (ImageView) view.findViewById(R.id.image12);
-        image13 = (ImageView) view.findViewById(R.id.image13);
-        image14 = (ImageView) view.findViewById(R.id.image14);
-        image15 = (ImageView) view.findViewById(R.id.image15);
+            textNivel0.setOnClickListener(onClickLevel);
+            textNivel1.setOnClickListener(onClickLevel);
+            textNivel2.setOnClickListener(onClickLevel);
+            textNivel3.setOnClickListener(onClickLevel);
+            textNivel4.setOnClickListener(onClickLevel);
+            textNivel5.setOnClickListener(onClickLevel);
+            textNivel6.setOnClickListener(onClickLevel);
+            textNivel7.setOnClickListener(onClickLevel);
+            textNivel8.setOnClickListener(onClickLevel);
+            textNivel9.setOnClickListener(onClickLevel);
+            textNivel10.setOnClickListener(onClickLevel);
+            textNivel11.setOnClickListener(onClickLevel);
+            textNivel12.setOnClickListener(onClickLevel);
+            textNivel13.setOnClickListener(onClickLevel);
+            textNivel14.setOnClickListener(onClickLevel);
+            textNivel15.setOnClickListener(onClickLevel);
 
-        textNivel0.setOnClickListener(onClickLevel);
-        textNivel1.setOnClickListener(onClickLevel);
-        textNivel2.setOnClickListener(onClickLevel);
-        textNivel3.setOnClickListener(onClickLevel);
-        textNivel4.setOnClickListener(onClickLevel);
-        textNivel5.setOnClickListener(onClickLevel);
-        textNivel6.setOnClickListener(onClickLevel);
-        textNivel7.setOnClickListener(onClickLevel);
-        textNivel8.setOnClickListener(onClickLevel);
-        textNivel9.setOnClickListener(onClickLevel);
-        textNivel10.setOnClickListener(onClickLevel);
-        textNivel11.setOnClickListener(onClickLevel);
-        textNivel12.setOnClickListener(onClickLevel);
-        textNivel13.setOnClickListener(onClickLevel);
-        textNivel14.setOnClickListener(onClickLevel);
-        textNivel15.setOnClickListener(onClickLevel);
+            imageViews.add(image0);
+            imageViews.add(image1);
+            imageViews.add(image2);
+            imageViews.add(image3);
+            imageViews.add(image4);
+            imageViews.add(image5);
+            imageViews.add(image6);
+            imageViews.add(image7);
+            imageViews.add(image8);
+            imageViews.add(image9);
+            imageViews.add(image10);
+            imageViews.add(image11);
+            imageViews.add(image12);
+            imageViews.add(image13);
+            imageViews.add(image14);
+            imageViews.add(image15);
 
-        imageViews.add(image0);
-        imageViews.add(image1);
-        imageViews.add(image2);
-        imageViews.add(image3);
-        imageViews.add(image4);
-        imageViews.add(image5);
-        imageViews.add(image6);
-        imageViews.add(image7);
-        imageViews.add(image8);
-        imageViews.add(image9);
-        imageViews.add(image10);
-        imageViews.add(image11);
-        imageViews.add(image12);
-        imageViews.add(image13);
-        imageViews.add(image14);
-        imageViews.add(image15);
+            imageTrofeo = (ImageView) view.findViewById(R.id.imageTrofeo);
 
-        imageTrofeo = (ImageView) view.findViewById(R.id.imageTrofeo);
-
-        textAciertos.setText(""+gnr.getLoggedUser().getLevel().getHits_count());
-        textNivel.setText(""+ gnr.getLoggedUser().getLevel().getOrder());
-        textTituloNivel.setText(""+gnr.getLoggedUser().getLevel().getName());
-        textTituloNivel1.setText(""+gnr.getLoggedUser().getLevel().getName());
-        textPuntos.setText(""+gnr.getLoggedUser().getLevel().getPoints() +" puntos");
+            textAciertos.setText("" + gnr.getLoggedUser().getLevel().getHits_count());
+            textNivel.setText("" + gnr.getLoggedUser().getLevel().getOrder());
+            textTituloNivel.setText("" + gnr.getLoggedUser().getLevel().getName());
+            textTituloNivel1.setText("" + gnr.getLoggedUser().getLevel().getName());
+            textPuntos.setText("" + gnr.getLoggedUser().getLevel().getPoints() + " puntos");
 
 
+            nivel = gnr.getLoggedUser().getLevel().getOrder();
 
-        nivel = gnr.getLoggedUser().getLevel().getOrder();
-
-        tintLevel(nivel);
-        File file = new File(General.local_dir_images + "levels/trof_" + nivel + ".png");
-        if(file.exists()){
-            options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            imageTrofeo.setImageBitmap(bm);
+            tintLevel(nivel);
+            File file = new File(General.local_dir_images + "levels/trof_" + nivel + ".png");
+            if (file.exists()) {
+                options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                imageTrofeo.setImageBitmap(bm);
+            }
         }
         return view;
     }

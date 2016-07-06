@@ -2,11 +2,14 @@ package com.advante.golazzos.Helpers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.advante.golazzos.LoginActivity;
 
 
 /**
@@ -25,8 +28,10 @@ public class GeneralFragment  extends Fragment {
         gnr = new General(getContext());
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("");
+        dialog.setCancelable(false);
         dialog.setMessage("Conectando...");
     }
+
     public void showLog(String text){
         Log.d(TAG, text);
     }

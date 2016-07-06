@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 
@@ -27,91 +29,103 @@ public class Trofeos_Fragment extends GeneralFragment {
     TextView textTituloNivel;
     int nivel;
     List<ImageView> imageViews = new ArrayList<>();
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trofeos, container, false);
+        if(flag) {
+            imageTrofeo0 = (ImageView) view.findViewById(R.id.imageTrofeo0);
+            imageTrofeo1 = (ImageView) view.findViewById(R.id.imageTrofeo1);
+            imageTrofeo2 = (ImageView) view.findViewById(R.id.imageTrofeo2);
+            imageTrofeo3 = (ImageView) view.findViewById(R.id.imageTrofeo3);
+            imageTrofeo4 = (ImageView) view.findViewById(R.id.imageTrofeo4);
+            imageTrofeo5 = (ImageView) view.findViewById(R.id.imageTrofeo5);
+            imageTrofeo6 = (ImageView) view.findViewById(R.id.imageTrofeo6);
+            imageTrofeo7 = (ImageView) view.findViewById(R.id.imageTrofeo7);
+            imageTrofeo8 = (ImageView) view.findViewById(R.id.imageTrofeo8);
+            imageTrofeo9 = (ImageView) view.findViewById(R.id.imageTrofeo9);
+            imageTrofeo10 = (ImageView) view.findViewById(R.id.imageTrofeo10);
+            imageTrofeo11 = (ImageView) view.findViewById(R.id.imageTrofeo11);
+            imageTrofeo12 = (ImageView) view.findViewById(R.id.imageTrofeo12);
+            imageTrofeo13 = (ImageView) view.findViewById(R.id.imageTrofeo13);
+            imageTrofeo14 = (ImageView) view.findViewById(R.id.imageTrofeo14);
+            imageTrofeo15 = (ImageView) view.findViewById(R.id.imageTrofeo15);
 
-        imageTrofeo0 = (ImageView) view.findViewById(R.id.imageTrofeo0);
-        imageTrofeo1 = (ImageView) view.findViewById(R.id.imageTrofeo1);
-        imageTrofeo2 = (ImageView) view.findViewById(R.id.imageTrofeo2);
-        imageTrofeo3 = (ImageView) view.findViewById(R.id.imageTrofeo3);
-        imageTrofeo4 = (ImageView) view.findViewById(R.id.imageTrofeo4);
-        imageTrofeo5 = (ImageView) view.findViewById(R.id.imageTrofeo5);
-        imageTrofeo6 = (ImageView) view.findViewById(R.id.imageTrofeo6);
-        imageTrofeo7 = (ImageView) view.findViewById(R.id.imageTrofeo7);
-        imageTrofeo8 = (ImageView) view.findViewById(R.id.imageTrofeo8);
-        imageTrofeo9 = (ImageView) view.findViewById(R.id.imageTrofeo9);
-        imageTrofeo10 = (ImageView) view.findViewById(R.id.imageTrofeo10);
-        imageTrofeo11 = (ImageView) view.findViewById(R.id.imageTrofeo11);
-        imageTrofeo12 = (ImageView) view.findViewById(R.id.imageTrofeo12);
-        imageTrofeo13 = (ImageView) view.findViewById(R.id.imageTrofeo13);
-        imageTrofeo14 = (ImageView) view.findViewById(R.id.imageTrofeo14);
-        imageTrofeo15 = (ImageView) view.findViewById(R.id.imageTrofeo15);
+            image0 = (ImageView) view.findViewById(R.id.image0);
+            image1 = (ImageView) view.findViewById(R.id.image1);
+            image2 = (ImageView) view.findViewById(R.id.image2);
+            image3 = (ImageView) view.findViewById(R.id.image3);
+            image4 = (ImageView) view.findViewById(R.id.image4);
+            image5 = (ImageView) view.findViewById(R.id.image5);
+            image6 = (ImageView) view.findViewById(R.id.image6);
+            image7 = (ImageView) view.findViewById(R.id.image7);
+            image8 = (ImageView) view.findViewById(R.id.image8);
+            image9 = (ImageView) view.findViewById(R.id.image9);
+            image10 = (ImageView) view.findViewById(R.id.image10);
+            image11 = (ImageView) view.findViewById(R.id.image11);
+            image12 = (ImageView) view.findViewById(R.id.image12);
+            image13 = (ImageView) view.findViewById(R.id.image13);
+            image14 = (ImageView) view.findViewById(R.id.image14);
+            image15 = (ImageView) view.findViewById(R.id.image15);
 
-        image0 = (ImageView) view.findViewById(R.id.image0);
-        image1 = (ImageView) view.findViewById(R.id.image1);
-        image2 = (ImageView) view.findViewById(R.id.image2);
-        image3 = (ImageView) view.findViewById(R.id.image3);
-        image4 = (ImageView) view.findViewById(R.id.image4);
-        image5 = (ImageView) view.findViewById(R.id.image5);
-        image6 = (ImageView) view.findViewById(R.id.image6);
-        image7 = (ImageView) view.findViewById(R.id.image7);
-        image8 = (ImageView) view.findViewById(R.id.image8);
-        image9 = (ImageView) view.findViewById(R.id.image9);
-        image10 = (ImageView) view.findViewById(R.id.image10);
-        image11 = (ImageView) view.findViewById(R.id.image11);
-        image12 = (ImageView) view.findViewById(R.id.image12);
-        image13 = (ImageView) view.findViewById(R.id.image13);
-        image14 = (ImageView) view.findViewById(R.id.image14);
-        image15 = (ImageView) view.findViewById(R.id.image15);
+            imageTrofeo0.setOnClickListener(onClickTrofeo);
+            imageTrofeo1.setOnClickListener(onClickTrofeo);
+            imageTrofeo2.setOnClickListener(onClickTrofeo);
+            imageTrofeo3.setOnClickListener(onClickTrofeo);
+            imageTrofeo4.setOnClickListener(onClickTrofeo);
+            imageTrofeo5.setOnClickListener(onClickTrofeo);
+            imageTrofeo6.setOnClickListener(onClickTrofeo);
+            imageTrofeo7.setOnClickListener(onClickTrofeo);
+            imageTrofeo8.setOnClickListener(onClickTrofeo);
+            imageTrofeo9.setOnClickListener(onClickTrofeo);
+            imageTrofeo10.setOnClickListener(onClickTrofeo);
+            imageTrofeo11.setOnClickListener(onClickTrofeo);
+            imageTrofeo12.setOnClickListener(onClickTrofeo);
+            imageTrofeo13.setOnClickListener(onClickTrofeo);
+            imageTrofeo14.setOnClickListener(onClickTrofeo);
+            imageTrofeo15.setOnClickListener(onClickTrofeo);
 
-        imageTrofeo0.setOnClickListener(onClickTrofeo);
-        imageTrofeo1.setOnClickListener(onClickTrofeo);
-        imageTrofeo2.setOnClickListener(onClickTrofeo);
-        imageTrofeo3.setOnClickListener(onClickTrofeo);
-        imageTrofeo4.setOnClickListener(onClickTrofeo);
-        imageTrofeo5.setOnClickListener(onClickTrofeo);
-        imageTrofeo6.setOnClickListener(onClickTrofeo);
-        imageTrofeo7.setOnClickListener(onClickTrofeo);
-        imageTrofeo8.setOnClickListener(onClickTrofeo);
-        imageTrofeo9.setOnClickListener(onClickTrofeo);
-        imageTrofeo10.setOnClickListener(onClickTrofeo);
-        imageTrofeo11.setOnClickListener(onClickTrofeo);
-        imageTrofeo12.setOnClickListener(onClickTrofeo);
-        imageTrofeo13.setOnClickListener(onClickTrofeo);
-        imageTrofeo14.setOnClickListener(onClickTrofeo);
-        imageTrofeo15.setOnClickListener(onClickTrofeo);
+            imageViews.add(image0);
+            imageViews.add(image1);
+            imageViews.add(image2);
+            imageViews.add(image3);
+            imageViews.add(image4);
+            imageViews.add(image5);
+            imageViews.add(image6);
+            imageViews.add(image7);
+            imageViews.add(image8);
+            imageViews.add(image9);
+            imageViews.add(image10);
+            imageViews.add(image11);
+            imageViews.add(image12);
+            imageViews.add(image13);
+            imageViews.add(image14);
+            imageViews.add(image15);
 
-        imageViews.add(image0);
-        imageViews.add(image1);
-        imageViews.add(image2);
-        imageViews.add(image3);
-        imageViews.add(image4);
-        imageViews.add(image5);
-        imageViews.add(image6);
-        imageViews.add(image7);
-        imageViews.add(image8);
-        imageViews.add(image9);
-        imageViews.add(image10);
-        imageViews.add(image11);
-        imageViews.add(image12);
-        imageViews.add(image13);
-        imageViews.add(image14);
-        imageViews.add(image15);
+            textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
 
-        textTituloNivel = (TextView) view.findViewById(R.id.textTituloNivel);
+            gnr.getUser(new IGetUser_Listener() {
+                @Override
+                public void onComplete(Boolean complete, User user) {
+                    nivel = gnr.getLoggedUser().getLevel().getOrder();
+                    textTituloNivel.setText(gnr.getLoggedUser().getLevel().getName().toUpperCase());
 
-        gnr.getUser(new IGetUser_Listener() {
-            @Override
-            public void onComplete(Boolean complete, User user) {
-                nivel = gnr.getLoggedUser().getLevel().getOrder();
-                textTituloNivel.setText(gnr.getLoggedUser().getLevel().getName().toUpperCase());
-
-                tintLevel(nivel);
-            }
-        });
-
+                    tintLevel(nivel);
+                }
+            });
+        }
         return view;
     }
 

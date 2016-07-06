@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,9 +20,13 @@ import android.widget.ViewFlipper;
 import com.advante.golazzos.Adapters.List_Equipos;
 import com.advante.golazzos.Adapters.List_Ligas;
 import com.advante.golazzos.Adapters.List_Partidos;
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
+import com.advante.golazzos.LoginActivity;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.Partido;
@@ -63,6 +68,10 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
 
@@ -128,6 +137,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
     }
 
     private void buscarPartidos(final int resourse){
+        dialog.show();
         String url = General.endpoint_maches;
         if(idLiga > 0){
             url = url +"?tournament_id="+idLiga;
@@ -140,71 +150,57 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
         if(!idPartido.isEmpty()){
             url = General.endpoint_maches+"/" +idPartido;
         }
-        dialog.show();
-            jsArrayRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    url,
-                    "",
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Manejo de la respuesta
-                            try {
-                                JSONArray data;
-                                if(idPartido.isEmpty()) {
-                                    data = response.getJSONArray("response");
-                                }else{
-                                    data = new JSONArray("["+response.getJSONObject("response").toString()+"]");
-                                }
-                                ArrayList<Partido> partidos = new ArrayList<>();
-                                Partido partido;
-                                for(int i=0;i< data.length();i++){
-                                    partido = new Partido();
-                                    partido.setId(data.getJSONObject(i).getInt("id"));
-                                    partido.setStart_time_utc(data.getJSONObject(i).getString("start_time_utc"));
-                                    partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
-                                    partido.setTournament(new Liga(0,
-                                            data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
-                                            data.getJSONObject(i).getJSONObject("tournament").getString("name")));
-                                    partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
-                                            data.getJSONObject(i).getJSONObject("local_team").getString("name"),
-                                            data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));
-                                    partido.setVisitante(new Equipo(data.getJSONObject(i).getJSONObject("visitant_team").getInt("id"),
-                                            data.getJSONObject(i).getJSONObject("visitant_team").getString("name"),
-                                            data.getJSONObject(i).getJSONObject("visitant_team").getString("image_path")));
-                                    partidos.add(partido);
-
-                                }
-                                if(partidos.size()>0) {
-                                    List_Partidos list_partidos = new List_Partidos(getContext(), partidos, resourse);
-                                    listView.setAdapter(list_partidos);
-                                }
-                                dialog.dismiss();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    }){
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Token " + General.getToken());
-                        params.put("Content-Type", "application/json");
-                        return params;
+        API.getInstance(getContext()).authenticateObjectRequest(Request.Method.GET, url, null, new API_Listener() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+                try {
+                    JSONArray data;
+                    if(idPartido.isEmpty()) {
+                        data = response.getJSONArray("response");
+                    }else{
+                        data = new JSONArray("["+response.getJSONObject("response").toString()+"]");
                     }
-                };
-            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    7000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                    ArrayList<Partido> partidos = new ArrayList<>();
+                    Partido partido;
+                    for(int i=0;i< data.length();i++){
+                        partido = new Partido();
+                        partido.setId(data.getJSONObject(i).getInt("id"));
+                        partido.setStart_time_utc(data.getJSONObject(i).getString("start_time_utc"));
+                        partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
+                        partido.setTournament(new Liga(0,
+                                data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
+                                data.getJSONObject(i).getJSONObject("tournament").getString("name")));
+                        partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
+                                data.getJSONObject(i).getJSONObject("local_team").getString("name"),
+                                data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));
+                        partido.setVisitante(new Equipo(data.getJSONObject(i).getJSONObject("visitant_team").getInt("id"),
+                                data.getJSONObject(i).getJSONObject("visitant_team").getString("name"),
+                                data.getJSONObject(i).getJSONObject("visitant_team").getString("image_path")));
+                        partidos.add(partido);
+
+                    }
+                    if(partidos.size()>0) {
+                        if (getActivity() != null) {
+                            List_Partidos list_partidos = new List_Partidos(getContext(), partidos, resourse);
+                            listView.setAdapter(list_partidos);
+                        }
+                    }
+                    dialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void OnSuccess(JSONArray response) {
+
+            }
+
+            @Override
+            public void OnError(VolleyError error) {
+
+            }
+        });
     }
 
     private void buscarLigas(){

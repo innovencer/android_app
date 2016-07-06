@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,7 @@ import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
@@ -53,48 +55,62 @@ public class RankingFragment extends GeneralFragment {
     TextView textPosicion, textName, textEquipoAlma, textNivel, textAciertos;
     ImageView image1, image2, imageProfile, imageEquipo1;
     String pic_name;
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ranking1, container, false);
-        listView = (ListView) view.findViewById(R.id.listview);
+        if(flag) {
+            listView = (ListView) view.findViewById(R.id.listview);
 
-        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
-        linear2 = (LinearLayout) view.findViewById(R.id.linear2);
-        linear3 = (LinearLayout) view.findViewById(R.id.linear3);
-        linear4 = (LinearLayout) view.findViewById(R.id.linear4);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            linear2 = (LinearLayout) view.findViewById(R.id.linear2);
+            linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            linear4 = (LinearLayout) view.findViewById(R.id.linear4);
 
-        image1 = (ImageView) view.findViewById(R.id.image1);
-        image2 = (ImageView) view.findViewById(R.id.image2);
-        imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
-        imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
+            image1 = (ImageView) view.findViewById(R.id.image1);
+            image2 = (ImageView) view.findViewById(R.id.image2);
+            imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
+            imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
 
-        linear1.setOnClickListener(clickTab);
-        linear2.setOnClickListener(clickTab);
-        linear3.setOnClickListener(clickTab);
-        linear4.setOnClickListener(clickTab);
+            linear1.setOnClickListener(clickTab);
+            linear2.setOnClickListener(clickTab);
+            linear3.setOnClickListener(clickTab);
+            linear4.setOnClickListener(clickTab);
 
-        textName = (TextView) view.findViewById(R.id.textName);
-        textAciertos = (TextView) view.findViewById(R.id.textAciertos);
-        textPosicion = (TextView) view.findViewById(R.id.textPosicion);
-        textEquipoAlma = (TextView) view.findViewById(R.id.textEquipoAlma);
-        textNivel = (TextView) view.findViewById(R.id.textNivel);
+            textName = (TextView) view.findViewById(R.id.textName);
+            textAciertos = (TextView) view.findViewById(R.id.textAciertos);
+            textPosicion = (TextView) view.findViewById(R.id.textPosicion);
+            textEquipoAlma = (TextView) view.findViewById(R.id.textEquipoAlma);
+            textNivel = (TextView) view.findViewById(R.id.textNivel);
 
-        textName.setText(gnr.getLoggedUser().getName());
-        textAciertos.setText(""+gnr.getLoggedUser().getScore());
-        textPosicion.setText(""+gnr.getLoggedUser().getRank());
-        textEquipoAlma.setText(gnr.getLoggedUser().getSoul_team().getName());
-        textNivel.setText(""+gnr.getLoggedUser().getLevel().getOrder());
+            textName.setText(gnr.getLoggedUser().getName());
+            textAciertos.setText("" + gnr.getLoggedUser().getScore());
+            textPosicion.setText("" + gnr.getLoggedUser().getRank());
+            textEquipoAlma.setText(gnr.getLoggedUser().getSoul_team().getName());
+            textNivel.setText("" + gnr.getLoggedUser().getLevel().getOrder());
 
-        gnr.getUser(new IGetUser_Listener() {
-            @Override
-            public void onComplete(Boolean complete, User user) {
-                if(complete){
-                    init();
+            gnr.getUser(new IGetUser_Listener() {
+                @Override
+                public void onComplete(Boolean complete, User user) {
+                    if (complete) {
+                        init();
+                    }
                 }
-            }
-        });
-        getRanking("?weekly=true");
+            });
+            getRanking("?weekly=true");
+        }
         return view;
     }
     Target target = new Target() {

@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.advante.golazzos.Adapters.List_Semanas;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Ganador;
 import com.advante.golazzos.Model.Ganador_Item;
 import com.advante.golazzos.R;
@@ -43,6 +45,18 @@ public class Fragment_Ganadores extends GeneralFragment {
     ArrayList<Ganador> ganadores;
     ListView listView;
     TextView textSemana;
+    Boolean flag = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,9 +69,9 @@ public class Fragment_Ganadores extends GeneralFragment {
                 showDialogSemanas();
             }
         });
-
-        getData(gnr.endpoint_weekly_awards);
-
+        if(flag) {
+            getData(gnr.endpoint_weekly_awards);
+        }
         return view;
     }
 

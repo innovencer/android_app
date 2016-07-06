@@ -28,6 +28,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Comentario;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
@@ -80,198 +81,203 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     ListView listView;
     JsonObjectRequest jsArrayRequest;
 
+    Boolean flag = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_fanaticada_detalle, container, false);
-        callbackManager = CallbackManager.Factory.create();
+        if(flag) {
+            callbackManager = CallbackManager.Factory.create();
 
-        buttonBack = (LinearLayout) view.findViewById(R.id.buttonBack);
-        buttonFacebook = (LinearLayout) view.findViewById(R.id.buttonFacebook);
-        buttonLike = (LinearLayout) view.findViewById(R.id.buttonLike);
-        buttonEstadisticas = (LinearLayout) view.findViewById(R.id.buttonEstadisticas);
-        buttonComentar = (LinearLayout) view.findViewById(R.id.buttonComentar);
-        buttonTwitter = (LinearLayout) view.findViewById(R.id.buttonTwitter);
-        buttonPublicar = (TextView) view.findViewById(R.id.buttonPublicar);
-        linearJugar = (LinearLayout) view.findViewById(R.id.linearJugar);
-        linearImageAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
-        linear1 = (LinearLayout) view.findViewById(R.id.linear1);
-        textLabel = (TextView) view.findViewById(R.id.textLabel);
-        textTime_ago = (TextView) view.findViewById(R.id.textTime_ago);
-        textLike = (TextView) view.findViewById(R.id.textLike);
-        imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
-        imageViewAttached = (ImageView) view.findViewById(R.id.imageAttached);
-        editComentario = (EditText) view.findViewById(R.id.editCometario);
-        listView = (ListView) view.findViewById(R.id.listview);
+            buttonBack = (LinearLayout) view.findViewById(R.id.buttonBack);
+            buttonFacebook = (LinearLayout) view.findViewById(R.id.buttonFacebook);
+            buttonLike = (LinearLayout) view.findViewById(R.id.buttonLike);
+            buttonEstadisticas = (LinearLayout) view.findViewById(R.id.buttonEstadisticas);
+            buttonComentar = (LinearLayout) view.findViewById(R.id.buttonComentar);
+            buttonTwitter = (LinearLayout) view.findViewById(R.id.buttonTwitter);
+            buttonPublicar = (TextView) view.findViewById(R.id.buttonPublicar);
+            linearJugar = (LinearLayout) view.findViewById(R.id.linearJugar);
+            linearImageAttached = (LinearLayout) view.findViewById(R.id.linearAttached);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            textLabel = (TextView) view.findViewById(R.id.textLabel);
+            textTime_ago = (TextView) view.findViewById(R.id.textTime_ago);
+            textLike = (TextView) view.findViewById(R.id.textLike);
+            imageEquipo1 = (ImageView) view.findViewById(R.id.imageEquipo1);
+            imageViewAttached = (ImageView) view.findViewById(R.id.imageAttached);
+            editComentario = (EditText) view.findViewById(R.id.editCometario);
+            listView = (ListView) view.findViewById(R.id.listview);
 
-        Bundle bundle = this.getArguments();
-        label = bundle.getString("label", "");
-        html_center_url = bundle.getString("html_center_url", "");
-        trackable_type = bundle.getString("trackable_type","");
-        imageAttached = bundle.getString("imageAttached","");
-        idPartido = bundle.getString("idPartido","");
-        id = bundle.getInt("id", 0);
-        idImage = bundle.getInt("idImage",0);
-        idLike = bundle.getInt("like", -1);
+            Bundle bundle = this.getArguments();
+            label = bundle.getString("label", "");
+            html_center_url = bundle.getString("html_center_url", "");
+            trackable_type = bundle.getString("trackable_type", "");
+            imageAttached = bundle.getString("imageAttached", "");
+            idPartido = bundle.getString("idPartido", "");
+            id = bundle.getInt("id", 0);
+            idImage = bundle.getInt("idImage", 0);
+            idLike = bundle.getInt("like", -1);
 
-        textLabel.setText(Html.fromHtml(label), TextView.BufferType.SPANNABLE);
-        textTime_ago.setText(bundle.getString("time_ago",""));
-        if(idLike > 0){
-            textLike.setText("No me gusta");
-        }else{
-            textLike.setText("Me gusta");
-        }
-        if(html_center_url.isEmpty()){
-            buttonEstadisticas.setVisibility(View.GONE);
-        }else{
-            buttonEstadisticas.setOnClickListener(new View.OnClickListener() {
+            textLabel.setText(Html.fromHtml(label), TextView.BufferType.SPANNABLE);
+            textTime_ago.setText(bundle.getString("time_ago", ""));
+            if (idLike > 0) {
+                textLike.setText("No me gusta");
+            } else {
+                textLike.setText("Me gusta");
+            }
+            if (html_center_url.isEmpty()) {
+                buttonEstadisticas.setVisibility(View.GONE);
+            } else {
+                buttonEstadisticas.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), EstadisticasActivity.class);
+                        intent.putExtra("html_center_url", html_center_url);
+                        getContext().startActivity(intent);
+                    }
+                });
+            }
+            if (!trackable_type.equals("bet")) {
+                linearJugar.setVisibility(View.GONE);
+            }
+            if (!imageAttached.isEmpty()) {
+                linearImageAttached.setVisibility(View.VISIBLE);
+                pic_name = imageAttached.substring(0, imageAttached.lastIndexOf("/"));
+                pic_name = pic_name.substring(pic_name.lastIndexOf("/") + 1);
+
+                File file = new File(General.local_dir_images + "posts/" + pic_name + ".png");
+                if (file.exists()) {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                    imageViewAttached.setImageBitmap(bm);
+                } else {
+                    Picasso.with(getContext())
+                            .load(imageAttached)
+                            .error(android.R.drawable.ic_delete)
+                            .placeholder(R.drawable.progress_animation)
+                            .into(target);
+                }
+            }
+            linearImageAttached.setVisibility(View.GONE);
+            shareDialog = new ShareDialog(this);
+            shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
                 @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getContext(), EstadisticasActivity.class);
-                    intent.putExtra("html_center_url", html_center_url);
-                    getContext().startActivity(intent);
+                public void onSuccess(Sharer.Result result) {
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+
                 }
             });
-        }
-        if(!trackable_type.equals("bet")){
-            linearJugar.setVisibility(View.GONE);
-        }
-        if(!imageAttached.isEmpty()){
-            linearImageAttached.setVisibility(View.VISIBLE);
-            pic_name = imageAttached.substring(0, imageAttached.lastIndexOf("/"));
-            pic_name = pic_name.substring(pic_name.lastIndexOf("/")+1);
 
-            File file = new File(General.local_dir_images + "posts/" + pic_name + ".png");
+            if (!bundle.getString("profile_pic_url", "").contains("facebook.com")) {
+                pic_name = bundle.getString("profile_pic_url", "").substring(
+                        bundle.getString("profile_pic_url", "").lastIndexOf("/"),
+                        bundle.getString("profile_pic_url", "").lastIndexOf("."));
+            } else {
+                pic_name = "" + idImage;
+            }
+
+            File file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
             if (file.exists()) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                imageViewAttached.setImageBitmap(bm);
-            } else {
-                Picasso.with(getContext())
-                        .load(imageAttached)
-                        .error(android.R.drawable.ic_delete)
-                        .placeholder(R.drawable.progress_animation)
-                        .into(target);
-            }
-        }
-        linearImageAttached.setVisibility(View.GONE);
-        shareDialog = new ShareDialog(this);
-        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result) {
-
+                GraphicsUtil graphicUtil = new GraphicsUtil();
+                imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
+                        bm, 16));
             }
 
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
-
-        if (!bundle.getString("profile_pic_url","").contains("facebook.com")) {
-            pic_name = bundle.getString("profile_pic_url", "").substring(
-                    bundle.getString("profile_pic_url", "").lastIndexOf("/"),
-                    bundle.getString("profile_pic_url", "").lastIndexOf("."));
-        }else{
-            pic_name = ""+idImage;
-        }
-
-        File file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-        if (file.exists()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-        }
-
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().popBackStack();
-            }
-        });
-        buttonFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publishFacebookFeed();
-            }
-        });
-        buttonTwitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publishTwitterFeed();
-            }
-        });
-        buttonLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(idLike>0) {
-                    unlike();
-                }else{
-                    like();
+            buttonBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getFragmentManager().popBackStack();
                 }
-            }
-        });
-        buttonComentar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                linear1.setVisibility(View.VISIBLE);
-                editComentario.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editComentario, InputMethodManager.SHOW_IMPLICIT);
-
-            }
-        });
-
-        buttonPublicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                View view1 = getActivity().getCurrentFocus();
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+            });
+            buttonFacebook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    publishFacebookFeed();
                 }
-                Comentar();
-            }
-        });
+            });
+            buttonTwitter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    publishTwitterFeed();
+                }
+            });
+            buttonLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idLike > 0) {
+                        unlike();
+                    } else {
+                        like();
+                    }
+                }
+            });
+            buttonComentar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    linear1.setVisibility(View.VISIBLE);
+                    editComentario.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editComentario, InputMethodManager.SHOW_IMPLICIT);
 
-        linearJugar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment f = new PartidosPorJugar_Fragment();
-                Bundle b = new Bundle();
-                b.putString("idPartido", ""+idPartido);
-                f.setArguments(b);
-                ft.replace(R.id.flContent, f, "");
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
+                }
+            });
 
-        final Resources r = getResources();
-        final int dp50 = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                50,
-                r.getDisplayMetrics()
-        );
+            buttonPublicar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    View view1 = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+                    }
+                    Comentar();
+                }
+            });
 
-        getData();
+            linearJugar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    Fragment f = new PartidosPorJugar_Fragment();
+                    Bundle b = new Bundle();
+                    b.putString("idPartido", "" + idPartido);
+                    f.setArguments(b);
+                    ft.replace(R.id.flContent, f, "");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
 
+            final Resources r = getResources();
+            final int dp50 = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    50,
+                    r.getDisplayMetrics()
+            );
+
+            getData();
+        }
         return view;
     }
 

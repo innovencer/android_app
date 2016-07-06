@@ -1,5 +1,6 @@
 package com.advante.golazzos.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
@@ -51,6 +53,17 @@ public class Cuenta_Fragment extends GeneralFragment {
     private NPay npay;
 
     String idService;
+    Boolean flag = true;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

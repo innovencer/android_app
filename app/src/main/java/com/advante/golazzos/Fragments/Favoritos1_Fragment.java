@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.SoulTeam;
@@ -57,73 +59,79 @@ public class Favoritos1_Fragment extends GeneralFragment {
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
     SoulTeam soulteamTemp;
+    Boolean flag = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favoritos1, container, false);
+        if(flag) {
+            picView = (ImageView) view.findViewById(R.id.imageEquipoAlma);
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.rect_white);
+            GraphicsUtil graphicUtil = new GraphicsUtil();
+            // picView.setImageBitmap(graphicUtil.getRoundedShape(thePic,(float)1.5,92));
+            picView.setImageBitmap(graphicUtil.getCircleBitmap(
+                    bm, 16));
 
-        picView = (ImageView)view.findViewById(R.id.imageEquipoAlma);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.rect_white);
-        GraphicsUtil graphicUtil = new GraphicsUtil();
-        // picView.setImageBitmap(graphicUtil.getRoundedShape(thePic,(float)1.5,92));
-        picView.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
+            buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
+            buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
+            buttonGuardar = (TextView) view.findViewById(R.id.buttonGuardar);
+            buttonFavoritos2 = (LinearLayout) view.findViewById(R.id.buttonFavoritos2);
+            linear4 = (LinearLayout) view.findViewById(R.id.linear4);
 
-        buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
-        buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
-        buttonGuardar = (TextView) view.findViewById(R.id.buttonGuardar);
-        buttonFavoritos2 = (LinearLayout) view.findViewById(R.id.buttonFavoritos2);
-        linear4 = (LinearLayout) view.findViewById(R.id.linear4);
-
-        textName = (TextView) view.findViewById(R.id.textName);
-        if(gnr.getLoggedUser().getSoul_team() != null) {
-            textName.setText(gnr.getLoggedUser().getSoul_team().getName());
-            setImage();
-        }
-
-        buttonLigas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(equipos != null){
-                    equipos = null;
-                    idEquipo = -1;
-                    buttonEquipos.setText("Seleccionar Equipo");
-                }
-                dialog.show();
-                buscarLigas();
+            textName = (TextView) view.findViewById(R.id.textName);
+            if (gnr.getLoggedUser().getSoul_team() != null) {
+                textName.setText(gnr.getLoggedUser().getSoul_team().getName());
+                setImage();
             }
-        });
-        buttonEquipos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(idLiga != -1) {
+
+            buttonLigas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (equipos != null) {
+                        equipos = null;
+                        idEquipo = -1;
+                        buttonEquipos.setText("Seleccionar Equipo");
+                    }
                     dialog.show();
-                    buscarEquipos();
-                }else{
-                    Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                    buscarLigas();
                 }
-            }
-        });
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (idEquipo != -1) {
-                    postEquipoAlma();
-                } else {
-                    Toast.makeText(getContext(), "Debe seleccionar un equipo para continuar.", Toast.LENGTH_SHORT).show();
+            });
+            buttonEquipos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idLiga != -1) {
+                        dialog.show();
+                        buscarEquipos();
+                    } else {
+                        Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+            buttonGuardar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idEquipo != -1) {
+                        postEquipoAlma();
+                    } else {
+                        Toast.makeText(getContext(), "Debe seleccionar un equipo para continuar.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
-        buttonFavoritos2.setOnClickListener(clickFavoritos1);
-        linear4.setOnClickListener(clickFavoritos1);
-
+            buttonFavoritos2.setOnClickListener(clickFavoritos1);
+            linear4.setOnClickListener(clickFavoritos1);
+        }
         return view;
     }
 

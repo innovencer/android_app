@@ -90,6 +90,7 @@ public class Aciertos_Fragment extends GeneralFragment {
         }
         textPorcentajeGanados.setText(porcentajeGanados +"%");
         barWin1.setPorcentaje(Math.round(porcentajeGanados));
+        barWin1.invalidate();
 
         int porcentajePerdidos = 0;
         if(gnr.getLoggedUser().getCounters().getTotalLoseBets()>0) {
@@ -98,7 +99,7 @@ public class Aciertos_Fragment extends GeneralFragment {
 
         textPorcentajePerdidos.setText(porcentajePerdidos +"%");
         barLose.setPorcentaje(porcentajePerdidos);
-
+        barLose.invalidate();
 
         textJugados1.setText(""+gnr.getLoggedUser().getCounters().getMarcadorTotalBets());
         textAciertos1.setText(""+gnr.getLoggedUser().getCounters().getMarcadorWonBets());

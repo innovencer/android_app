@@ -1,6 +1,7 @@
 package com.advante.golazzos.Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IBuscarLigas_Listener;
+import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.Model.Partido;
@@ -60,76 +62,83 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
     ArrayList<Liga> ligas;
     ArrayList<Equipo> equipos;
     SoulTeam soulteamTemp;
+    Boolean flag = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+            flag = false;
+        }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_partidos_3, container, false);
-        listView = (ListView) view.findViewById(R.id.listview);
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
+        if(flag) {
+            listView = (ListView) view.findViewById(R.id.listview);
+            viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
 
-        buttonPorJugar = (TextView) view.findViewById(R.id.buttonPorJugar);
-        buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
-        buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
-        buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
+            buttonPorJugar = (TextView) view.findViewById(R.id.buttonPorJugar);
+            buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
+            buttonLigas = (TextView) view.findViewById(R.id.buttonLiga);
+            buttonEquipos = (TextView) view.findViewById(R.id.buttonEquipo);
 
-        buttonPorJugar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.flContent, new PartidosPorJugar_Fragment(), "");
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-        buttonEnVivo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.flContent, new PartidosEnVivo_Fragment(), "");
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-        buttonLigas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(equipos != null){
-                    equipos = null;
-                    idEquipo = -1;
-                    buttonEquipos.setText("Seleccionar Equipo");
+            buttonPorJugar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.flContent, new PartidosPorJugar_Fragment(), "");
+                    ft.addToBackStack(null);
+                    ft.commit();
                 }
-                gnr.buscarLigas(new IBuscarLigas_Listener() {
-                    @Override
-                    public void onComplete(ArrayList<Liga> items) {
-                        ligas = items;
-                        if(ligas != null){
-                            showDialogLigas(ligas);
-                        }
+            });
+            buttonEnVivo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.flContent, new PartidosEnVivo_Fragment(), "");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+            buttonLigas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (equipos != null) {
+                        equipos = null;
+                        idEquipo = -1;
+                        buttonEquipos.setText("Seleccionar Equipo");
                     }
-                });
+                    gnr.buscarLigas(new IBuscarLigas_Listener() {
+                        @Override
+                        public void onComplete(ArrayList<Liga> items) {
+                            ligas = items;
+                            if (ligas != null) {
+                                showDialogLigas(ligas);
+                            }
+                        }
+                    });
 
-            }
-        });
-        buttonEquipos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(idLiga != -1) {
-                    dialog.show();
-                    buscarEquipos();
-                }else{
-                    Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-        view.setOnTouchListener(touchListener);
-        buscarPartidos(R.layout.item_partido_4);
+            });
+            buttonEquipos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idLiga != -1) {
+                        dialog.show();
+                        buscarEquipos();
+                    } else {
+                        Toast.makeText(getContext(), "Debe primero seleccionar una liga.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            view.setOnTouchListener(touchListener);
+            buscarPartidos(R.layout.item_partido_4);
+        }
         return view;
     }
 
