@@ -96,8 +96,8 @@ public class RankingFragment extends GeneralFragment {
             textNivel = (TextView) view.findViewById(R.id.textNivel);
 
             textName.setText(gnr.getLoggedUser().getName());
-            textAciertos.setText("" + gnr.getLoggedUser().getScore());
-            textPosicion.setText("" + gnr.getLoggedUser().getRank());
+            //textAciertos.setText("" + gnr.getLoggedUser().getScore());
+            //textPosicion.setText("" + gnr.getLoggedUser().getRank());
             textEquipoAlma.setText(gnr.getLoggedUser().getSoul_team().getName());
             textNivel.setText("" + gnr.getLoggedUser().getLevel().getOrder());
 
@@ -150,10 +150,14 @@ public class RankingFragment extends GeneralFragment {
             if(view.getTag().equals("1")){
                 image1.setVisibility(View.VISIBLE);
                 image2.setVisibility(View.INVISIBLE);
+                textAciertos.setText("" + gnr.getLoggedUser().getScore2());
+                textPosicion.setText("" + gnr.getLoggedUser().getRank2());
                 getRanking("?weekly=true");
             }else{
                 image1.setVisibility(View.INVISIBLE);
                 image2.setVisibility(View.VISIBLE);
+                textAciertos.setText("" + gnr.getLoggedUser().getScore());
+                textPosicion.setText("" + gnr.getLoggedUser().getRank());
                 getRanking("");
             }
         }
@@ -202,6 +206,10 @@ public class RankingFragment extends GeneralFragment {
                         .into(target);
             }
         }
+
+        textAciertos.setText("" + gnr.getLoggedUser().getScore2());
+        textPosicion.setText("" + gnr.getLoggedUser().getRank2());
+
         String imagePath = gnr.getLoggedUser().getSoul_team().getImage_path();
         int idImage = Integer.parseInt(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-")));
 
@@ -270,7 +278,7 @@ public class RankingFragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

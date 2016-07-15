@@ -227,7 +227,7 @@ public class CrearCuentaActivity extends GeneralActivity {
                         try {
                             JSONObject data = response.getJSONObject("response");
 
-                            General.setToken(data.getString("jwt"));
+                            gnr.setToken(data.getString("jwt"));
 
                             Intent intent = new Intent(CrearCuentaActivity.this,Wizzard1Activity.class);
                             startActivity(intent);
@@ -276,7 +276,7 @@ public class CrearCuentaActivity extends GeneralActivity {
                         dialog.dismiss();
                         try {
                             JSONObject data = response.getJSONObject("response");
-                            General.setToken(data.getString("jwt"));
+                            gnr.setToken(data.getString("jwt"));
                             gnr.getUser(new IGetUser_Listener() {
                                 @Override
                                 public void onComplete(Boolean complete, User user) {

@@ -1,4 +1,6 @@
-package com.advante.golazzos.Interface;
+package com.advante.golazzos.Helpers;
+
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,5 +20,17 @@ public class JSONBuilder {
             e.printStackTrace();
         }
         return data;
+    }
+
+    public static JSONObject addFriend(String invitationToken){
+        JSONObject root = new JSONObject();
+        JSONObject data = new JSONObject();
+        try {
+            data.put("invitation_token",invitationToken);
+            root.put("invitation",data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return root;
     }
 }

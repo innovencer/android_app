@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Users;
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
+import com.advante.golazzos.Helpers.JSONBuilder;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.UserBusqueda;
@@ -42,6 +46,9 @@ import com.facebook.share.widget.SendButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -270,7 +277,7 @@ public class Amigos_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

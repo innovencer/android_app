@@ -376,7 +376,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }
@@ -417,7 +417,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }
@@ -470,14 +470,14 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         showLog(""+error.getMessage());
-                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }
@@ -553,7 +553,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

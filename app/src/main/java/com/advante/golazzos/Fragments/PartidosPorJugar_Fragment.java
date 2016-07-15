@@ -153,6 +153,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
         API.getInstance(getContext()).authenticateObjectRequest(Request.Method.GET, url, null, new API_Listener() {
             @Override
             public void OnSuccess(JSONObject response) {
+                listView.setAdapter(null);
                 try {
                     JSONArray data;
                     if(idPartido.isEmpty()) {

@@ -99,7 +99,6 @@
                     android:textSize="7.5dp"
                     android:textColor="@color/black"
                     android:text="POSICIÓN"/>
-
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -204,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="11dp"
                     android:textColor="@color/white"
-                    android:text="4"
+                    android:text="0"
                     android:id="@+id/textPosicion" />
             </LinearLayout>
             <LinearLayout
@@ -217,7 +216,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/image_circle_noborder"
-                    android:src="@drawable/venezuela"
+                    android:src="@drawable/ic_main"
                     />
             </LinearLayout>
             <LinearLayout
@@ -230,7 +229,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/image_circle_noborder"
-                    android:src="@drawable/venezuela"
+                    android:src="@drawable/ic_main"
                     />
             </LinearLayout>
             <LinearLayout

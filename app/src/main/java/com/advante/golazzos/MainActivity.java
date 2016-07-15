@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
+import com.advante.golazzos.Helpers.JSONBuilder;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.User;
 import com.android.volley.AuthFailureError;
@@ -24,6 +27,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,10 +67,10 @@ public class MainActivity extends GeneralActivity {
             }
         });
 
-        preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
-        //showLog(preferences.getString("token",""));
+        //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
+        //preferences.edit().putString("invitation_token", "cbb5ec40d72e3705a3d2d58f4a1bad3fcbb5ec40d72e3705a3d2d58f4a1bad3f").apply();
+        showLog(preferences.getString("token",""));
         if(!preferences.getString("token","").equals("")){
-            General.setToken(preferences.getString("token",""));
             gnr.getUser(new IGetUser_Listener() {
                 @Override
                 public void onComplete(Boolean complete, User user) {
@@ -89,6 +93,26 @@ public class MainActivity extends GeneralActivity {
             linearButton2.setVisibility(View.VISIBLE);
         }
 
+        if(!preferences.getString("invitation_token","").equals("")) {
+            API.getInstance(this).authenticateObjectRequest(Request.Method.POST, gnr.endpoint_invitation, JSONBuilder.addFriend(preferences.getString("invitation_token","")), new API_Listener() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    preferences.edit().putString("invitation_token","").apply();
+                    showLog(response.toString());
+                }
+
+                @Override
+                public void OnSuccess(JSONArray response) {
+
+                }
+
+                @Override
+                public void OnError(VolleyError error) {
+                    String data = new String(error.networkResponse.data);
+                    showLog(""+data);
+                }
+            });
+        }
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         if(FirebaseInstanceId.getInstance().getToken() != null && !FirebaseInstanceId.getInstance().getToken().isEmpty() ){
             if(!FirebaseInstanceId.getInstance().getToken().equals(preferences.getString("device_registration_id",""))) {
@@ -139,7 +163,7 @@ public class MainActivity extends GeneralActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

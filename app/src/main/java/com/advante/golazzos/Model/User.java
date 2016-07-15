@@ -17,9 +17,13 @@ public class User extends Model {
     Counters counters;
     int rank;
     int score;
+    int rank2;
+    int score2;
     Boolean is_friend;
     UserSettings userSettings;
     String wizzard;
+    String invitation_token;
+
 
     public User() {
     }
@@ -154,5 +158,29 @@ public class User extends Model {
 
     public void setWizzard(String wizzard) {
         this.wizzard = wizzard;
+    }
+
+    public int getRank2() {
+        return rank2;
+    }
+
+    public void setRank2(int rank2) {
+        this.rank2 = rank2;
+    }
+
+    public int getScore2() {
+        return score2;
+    }
+
+    public void setScore2(int score2) {
+        this.score2 = score2;
+    }
+
+    public String getInvitation_token() {
+        return invitation_token;
+    }
+
+    public void setInvitation_token(String invitation_token) {
+        this.invitation_token = invitation_token;
     }
 }

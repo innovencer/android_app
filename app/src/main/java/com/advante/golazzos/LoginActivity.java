@@ -12,9 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.User;
 import com.android.volley.AuthFailureError;
@@ -33,6 +35,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,9 +72,9 @@ public class LoginActivity extends GeneralActivity {
         backButton = (RelativeLayout) findViewById(R.id.backButton);
 
         if(isFacebookLoggedIn()){
-            if(stayFBConnected)
+            if(stayFBConnected) {
                 loginFB(AccessToken.getCurrentAccessToken().getToken());
-            else{
+            }else{
                 LoginManager.getInstance().logOut();
             }
         }
@@ -140,7 +143,6 @@ public class LoginActivity extends GeneralActivity {
     }
 
     private void loginFB(String token){
-        dialog.show();
         JSONObject post = new JSONObject();
         JSONObject parametros = new JSONObject();
         try {
@@ -149,40 +151,31 @@ public class LoginActivity extends GeneralActivity {
             post.put("token",parametros);
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
-        jsArrayRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                General.endpoint_tokens,
-                post,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Manejo de la respuesta
-                        dialog.dismiss();
-                        try {
-                            JSONObject data = response.getJSONObject("response");
-                            General.setToken(data.getString("jwt"));
-                            gnr.getUser(iGetUser_listener);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Manejo de errores
-                        dialog.dismiss();
-                        showShortToast("Error en la comunicacion, por favor intente mas tarde.");
+        dialog.show();
+        API.getInstance(this).unAuthenticateObjectRequest(Request.Method.POST, General.endpoint_tokens, post, new API_Listener() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+                try {
+                    JSONObject data = response.getJSONObject("response");
+                    gnr.setToken(data.getString("jwt"));
+                    gnr.getUser(iGetUser_listener);
+                    dialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    }
-                });
-        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                7000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
+            @Override
+            public void OnSuccess(JSONArray response) {
+
+            }
+
+            @Override
+            public void OnError(VolleyError error) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void loginCredential(String email, String password){
@@ -207,7 +200,7 @@ public class LoginActivity extends GeneralActivity {
                         // Manejo de la respuesta
                         try {
                             JSONObject data = response.getJSONObject("response");
-                            General.setToken(data.getString("jwt"));
+                            gnr.setToken(data.getString("jwt"));
                             gnr.getUser(iGetUser_listener);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -258,10 +251,12 @@ public class LoginActivity extends GeneralActivity {
         public void onComplete(Boolean complete, User user) {
             if(complete) {
                 if (user.getWizzard().equals("complete")) {
+                    showLog("principal");
                     Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
+                    showLog("wizzard");
                     Intent intent = new Intent(LoginActivity.this, Wizzard1Activity.class);
                     startActivity(intent);
                     finish();
@@ -326,7 +321,7 @@ public class LoginActivity extends GeneralActivity {
                      @Override
                      public Map<String, String> getHeaders() throws AuthFailureError {
                          Map<String, String>  params = new HashMap<String, String>();
-                         params.put("Authorization", "Token "+ General.getToken());
+                         params.put("Authorization", "Token "+ gnr.getToken());
                          params.put("Content-Type", "application/json");
                          return params;
                      }
@@ -399,7 +394,7 @@ public class LoginActivity extends GeneralActivity {
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String>  params = new HashMap<String, String>();
-                            params.put("Authorization", "Token "+ General.getToken());
+                            params.put("Authorization", "Token "+ gnr.getToken());
                             params.put("Content-Type", "application/json");
                             return params;
                         }
@@ -413,5 +408,10 @@ public class LoginActivity extends GeneralActivity {
             }
         });
         dialog1.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

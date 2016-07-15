@@ -35,12 +35,13 @@
     <string name="followers_endpoint">followers</string>
     <string name="subscription_endpoint">subscription</string>
     <string name="password_endpoint">passwords</string>
+    <string name="invitation_endpoint">invitations</string>
     <string name="npay_co">41b3a332ede867ef21284c74886463ee</string>
     <string name="npay_mx">dcc65262bcd170c684d98cf084fc9a4e</string>
     <string name="users_search">users/search?query=</string>
     <string name="delete_favorite_team_url">https://www.golazzos.com/api/v2/favorite_teams/%1$s</string>
     <string name="favorites_teams_by_user_url">https://www.golazzos.com/api/v2/favorite_teams</string>
-    <string name="dataSize">421</string>
+    <string name="dataSize">430</string>
     <string name="noAmigos">Aún no sigues a nadie, invita mas amigos para demostrarles que eres un 10 en la cancha</string>
     <string name="noSeguidores">Nadie sigue tus jugadas aun. Invita a mas amigos y muestrales quien sabe mas de futbol</string>
     <string name="noPartidos">No hay Partidos en Vivo en este Momento</string>
@@ -54,6 +55,8 @@
     <string name="menuAyuda">AYUDA</string>
     <string name="menuGolazzos">GOLAZZOS</string>
     <string name="menuSalir">SALIR</string>
+
+    <string name="errorComunicaion">Error en la comunicación, por favor intente más tarde.</string>
 
 
     <!-- Urls not played matches -->

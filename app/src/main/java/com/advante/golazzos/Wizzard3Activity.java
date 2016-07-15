@@ -13,7 +13,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.API_Listener;
-import com.advante.golazzos.Interface.JSONBuilder;
+import com.advante.golazzos.Helpers.JSONBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -82,7 +82,7 @@ public class Wizzard3Activity extends GeneralActivity {
                         "mailto","", null));
                 emailIntent.setType("text/html");
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Te invito a Jugar a Golazzos");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getId()+")");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getInvitation_token()+")");
                 startActivity(Intent.createChooser(emailIntent, "Golazzos"));
             }
         });
@@ -93,7 +93,7 @@ public class Wizzard3Activity extends GeneralActivity {
                 API.getInstance(Wizzard3Activity.this).authenticateObjectRequest(Request.Method.PUT, gnr.endpoint_users + "/me", JSONBuilder.UpdateWizard(), new API_Listener() {
                     @Override
                     public void OnSuccess(JSONObject response) {
-                        Intent intent = new Intent(Wizzard3Activity.this,PrincipalActivity.class);
+                        Intent intent = new Intent(Wizzard3Activity.this,Wizzard4Activity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -114,7 +114,7 @@ public class Wizzard3Activity extends GeneralActivity {
 
     private void publishTwitterFeed(){
         TweetComposer.Builder builder = new TweetComposer.Builder(this)
-                .text("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getId()+")");
+                .text("El primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getInvitation_token()+")");
         builder.show();
     }
 
@@ -191,7 +191,7 @@ public class Wizzard3Activity extends GeneralActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("Authorization", "Token "+ General.getToken());
+                params.put("Authorization", "Token "+ gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

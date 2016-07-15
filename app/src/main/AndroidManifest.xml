@@ -3,8 +3,6 @@
     package="com.advante.golazzos">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
@@ -66,6 +64,9 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".Wizzard3Activity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".Wizzard4Activity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".PrincipalActivity"

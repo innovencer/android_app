@@ -226,7 +226,8 @@ public class Jugadas_Fragment extends GeneralFragment {
                                                 data.getJSONObject(i).getInt("amount")+ " puntos al "+
                                                 //data.getJSONObject(i).getString("type")+ " en "+
                                                 "<font color='#0E5A80'>"+data.getJSONObject(i).getJSONObject("match").getJSONObject("local_team").getString("name") + "</font> vs <font color='#0E5A80'>"+ data.getJSONObject(i).getJSONObject("match").getJSONObject("visitant_team").getString("name")+"</font>"+
-                                                " resultado "+ data.getJSONObject(i).getString("option");
+                                                " resultado "+ data.getJSONObject(i).getString("option") + ".<br>" +
+                                                " Ganancia Posible: "+ data.getJSONObject(i).getInt("amount_to_deposit") +" puntos";
                                         jugada.setType(1);
                                         jugada.setStatus("not_started");
                                         break;
@@ -339,7 +340,7 @@ public class Jugadas_Fragment extends GeneralFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
+                params.put("Authorization", "Token " + gnr.getToken());
                 params.put("Content-Type", "application/json");
                 return params;
             }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.advante.golazzos.Interface.API_Listener;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,39 +56,25 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             e.printStackTrace();
         }
 
-        jsArrayRequest = new JsonObjectRequest(
-                Request.Method.PUT,
-                General.endpoint_users+"/me",
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        SharedPreferences preferences = MyFirebaseInstanceIDService.this.getSharedPreferences(
-                                General.packetname, Context.MODE_PRIVATE);
-                            preferences.edit().putString("device_registration_id",device_registration_id).apply();
-                            //Toast.makeText(MyFirebaseInstanceIDService.this,"Device ID Actualizado",Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MyFirebaseInstanceIDService.this,"Error en al tratar de conectar con el servicio web. Intente mas tarde",Toast.LENGTH_SHORT).show();
-                        //dialog.dismiss();
-                    }
-                }){
+        API.getInstance(this).authenticateObjectRequest(Request.Method.PUT, General.endpoint_users + "/me", user, new API_Listener() {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + General.getToken());
-                params.put("Content-Type", "application/json");
-                return params;
+            public void OnSuccess(JSONObject response) {
+                SharedPreferences preferences = MyFirebaseInstanceIDService.this.getSharedPreferences(
+                        General.packetname, Context.MODE_PRIVATE);
+                preferences.edit().putString("device_registration_id",device_registration_id).apply();
             }
-        };
-        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                7000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
+
+            @Override
+            public void OnSuccess(JSONArray response) {
+
+            }
+
+            @Override
+            public void OnError(VolleyError error) {
+
+            }
+        });
+
     }
 
 }

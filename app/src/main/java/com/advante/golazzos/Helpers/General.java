@@ -36,7 +36,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by Ruben Flores on 3/31/2016.
  */
@@ -65,6 +64,7 @@ public class General {
     public static String endpoint_weekly_awards;
     public static String endpoint_subscription;
     public static String endpoint_password;
+    public static String endpoint_invitation;
 
     public static final String KEYWORD = "TESTSERVICE6";
     public static final String KEYWORD_UNS= "TESTSERVICE6BAJA";
@@ -78,10 +78,9 @@ public class General {
     public static String[] betTypes = {"Marcador", "Gana/Pierde"};
     public static String[] resultTypes = {"GANA LOCAL", "GANA VISITANTE", "EMPATE"};
 
-    private static String token;
     private static User loggedUser;
 
-    public SharedPreferences preferences;
+    private SharedPreferences preferences;
 
     public static String locale;
 
@@ -93,6 +92,8 @@ public class General {
 
     ArrayList<Liga> ligas = null;
     IBuscarLigas_Listener iBuscarLigas;
+
+    private API api;
 
     public General(Context context) {
         General.context = context;
@@ -116,12 +117,15 @@ public class General {
         endpoint_followers = url_base + context.getString(R.string.followers_endpoint);
         endpoint_weekly_awards = url_base + context.getString(R.string.weekly_awards_endpoint);
         endpoint_subscription = url_base + context.getString(R.string.subscription_endpoint);
-        endpoint_password = url_base + context.getString(R.string.password_endpoint);;
+        endpoint_password = url_base + context.getString(R.string.password_endpoint);
+        endpoint_invitation = url_base + context.getString(R.string.invitation_endpoint);
         locale = context.getResources().getConfiguration().locale.getISO3Country();
         dialog = new ProgressDialog(context);
         dialog.setCancelable(false);
         dialog.setTitle("");
         dialog.setMessage("Conectando...");
+
+        api = API.getInstance(context);
 
         preferences = context.getSharedPreferences(
                 General.packetname, Context.MODE_PRIVATE);
@@ -137,12 +141,12 @@ public class General {
         }
     }
 
-    public static String getToken() {
-        return token;
+    public String getToken() {
+        return preferences.getString("token","");
     }
 
-    public static void setToken(String token) {
-        General.token = token;
+    public void setToken(String token) {
+        preferences.edit().putString("token",token).apply();
     }
 
     public User getLoggedUser() {
@@ -239,7 +243,7 @@ public class General {
 
     public void getUser(final IGetUser_Listener iGetUser_listener){
         dialog.show();
-        API.getInstance(context).authenticateObjectRequest(Request.Method.GET, General.endpoint_users + "/me", null, new API_Listener() {
+        api.authenticateObjectRequest(Request.Method.GET, General.endpoint_users + "/me", null, new API_Listener() {
             @Override
             public void OnSuccess(JSONObject response) {
                 User user1 = new User();
@@ -253,6 +257,7 @@ public class General {
                     user1.setPoints(data.getDouble("points"));
                     user1.setProfile_pic_url(data.getString("profile_pic_url"));
                     user1.setWizzard(data.getString("wizard_status"));
+                    user1.setInvitation_token(data.getString("invitation_token"));
 
                     if(!data.isNull("soul_team")){
                         JSONObject soul_team = data.getJSONObject("soul_team");
@@ -267,6 +272,16 @@ public class General {
                         user1.setRank(data.getJSONObject("ranking").getInt("rank"));
                     else
                         user1.setRank(0);
+
+                    if(!data.getJSONObject("week_ranking").isNull("score"))
+                        user1.setScore2(data.getJSONObject("week_ranking").getInt("score"));
+                    else
+                        user1.setScore2(0);
+                    if(!data.getJSONObject("week_ranking").isNull("rank"))
+                        user1.setRank2(data.getJSONObject("week_ranking").getInt("rank"));
+                    else
+                        user1.setRank2(0);
+
 
                     JSONObject level = data.getJSONObject("level");
                     user1.setLevel(new UserLevel(level.getInt("hits_count"), level.getString("logo_url"),
@@ -313,7 +328,7 @@ public class General {
                             total_bets,
                             won_bets
                     ));
-                    boolean friendship_notification = false;
+                    boolean friendship_notification;
                     if(!data.getJSONObject("settings").has("friendship_notification")){
                         friendship_notification = true;
                     }else{
@@ -326,30 +341,13 @@ public class General {
                             friendship_notification,
                             data.getJSONObject("settings").getBoolean("closed_match_notification")));
                     setLoggedUser(user1);
-
-                    preferences.edit().putString("token",General.getToken()).apply();
+                    //preferences.edit().putString("token",getToken()).apply();
                     dialog.dismiss();
-
                     iGetUser_listener.onComplete(true, user1);
-
-
-                    try{
-                        File myFile = new File(local_dir+"tests.txt");
-                        myFile.createNewFile();
-                        FileOutputStream fOut = new FileOutputStream(myFile);
-                        OutputStreamWriter myOutWriter =
-                                new OutputStreamWriter(fOut);
-                        myOutWriter.append(General.getToken());
-                        myOutWriter.close();
-                        fOut.close();
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
                 } catch (JSONException e) {
+                    dialog.dismiss();
                     iGetUser_listener.onComplete(false, null);
                     e.printStackTrace();
-                    Toast.makeText(context,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
                 }
             }
 
@@ -360,7 +358,8 @@ public class General {
 
             @Override
             public void OnError(VolleyError error) {
-
+                dialog.dismiss();
+                iGetUser_listener.onComplete(false, null);
             }
         });
     }
