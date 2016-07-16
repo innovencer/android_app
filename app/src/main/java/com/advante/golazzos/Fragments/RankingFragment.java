@@ -19,6 +19,7 @@ import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Helpers.Picasso;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.MainActivity;
@@ -31,16 +32,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +50,6 @@ public class RankingFragment extends GeneralFragment {
     LinearLayout linear1, linear2, linear3, linear4;
     TextView textPosicion, textName, textEquipoAlma, textNivel, textAciertos;
     ImageView image1, image2, imageProfile, imageEquipo1;
-    String pic_name;
     Boolean flag = true;
 
     @Override

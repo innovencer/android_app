@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.Interface.NPayListener;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
@@ -40,6 +41,7 @@ public class NPay {
     private Activity activity;
     private ProgressDialog dialog;
     private General gnr;
+    private NPayListener nPayListener;
 
     public NPay(Activity activity) {
         this.activity = activity;
@@ -91,6 +93,7 @@ public class NPay {
         @Override
         public void onCancel() {
             dialog.dismiss();
+            nPayListener.OnComplete(false);
         }
     };
 
@@ -134,6 +137,7 @@ public class NPay {
                         dialog.dismiss();
                     }
                 });
+                nPayListener.OnComplete(true);
             }
 
             @Override
@@ -144,12 +148,14 @@ public class NPay {
             @Override
             public void OnError(VolleyError error) {
                 dialog.dismiss();
+                nPayListener.OnComplete(false);
             }
         });
     }
 
-    public void CreateSubscription(){
+    public void CreateSubscription(NPayListener nPayListener){
         dialog.show();
+        this.nPayListener = nPayListener;
         npay.CreateSubscription(getIdService(), General.KEYWORD, General.MEDIA);
     }
 

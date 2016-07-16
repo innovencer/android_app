@@ -30,6 +30,7 @@ import com.advante.golazzos.LoginActivity;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
+import com.advante.golazzos.Model.Multipliers;
 import com.advante.golazzos.Model.Partido;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.R;
@@ -47,7 +48,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Ruben Flores on 4/22/2016.
@@ -169,6 +172,23 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                     }else{
                         data = new JSONArray("["+response.getJSONObject("response").toString()+"]");
                     }
+
+                    if(response.has("multipliers")){
+                        Iterator<String> iter = response.getJSONObject("multipliers").keys();
+                        ArrayList<Multipliers> multiplierses = new ArrayList<>();
+                        Multipliers multiplier;
+                        while (iter.hasNext()) {
+                            String key = iter.next();
+                            Object value = response.getJSONObject("multipliers").get(key);
+                            multiplier = new Multipliers();
+                            multiplier.setType(key);
+                            multiplier.setNon_subscribed(((JSONObject)value).getInt("non_subscribed"));
+                            multiplier.setSubscribed(((JSONObject)value).getInt("subscribed"));
+                            multiplierses.add(multiplier);
+                        }
+                        General.setMultipliers(multiplierses);
+                    }
+
                     ArrayList<Partido> partidos = new ArrayList<>();
                     Partido partido;
                     for(int i=0;i< data.length();i++){
@@ -189,6 +209,7 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                         partidos.add(partido);
 
                     }
+
                     if(partidos.size()>0) {
                         if (getActivity() != null) {
                             List_Partidos list_partidos = new List_Partidos(getContext(), partidos, resourse);

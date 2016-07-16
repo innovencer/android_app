@@ -15,6 +15,7 @@ import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.Counters;
 import com.advante.golazzos.Model.Liga;
+import com.advante.golazzos.Model.Multipliers;
 import com.advante.golazzos.Model.SoulTeam;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
@@ -36,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -81,6 +83,7 @@ public class General {
     public static String[] resultTypes = {"GANA LOCAL", "GANA VISITANTE", "EMPATE"};
 
     private static User loggedUser;
+    private static ArrayList<Multipliers> multiplierses;
 
     private SharedPreferences preferences;
 
@@ -354,5 +357,20 @@ public class General {
         ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
         image.compress(compressFormat, quality, byteArrayOS);
         return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
+    }
+
+    public static void setMultipliers(ArrayList<Multipliers> _multiplierses){
+        multiplierses = _multiplierses;
+    }
+
+
+    public static String getMultipliers(int type, int amount){
+        int value;
+        if(loggedUser.getPaid_subscription()) {
+            value = multiplierses.get(type).getSubscribed() * amount;
+        }else{
+            value = multiplierses.get(type).getNon_subscribed() * amount;
+        }
+        return ""+value;
     }
 }

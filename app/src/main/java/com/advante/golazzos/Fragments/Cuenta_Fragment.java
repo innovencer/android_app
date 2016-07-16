@@ -17,6 +17,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.Interface.NPayListener;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
@@ -104,7 +105,12 @@ public class Cuenta_Fragment extends GeneralFragment {
         linearSuplente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CreateSubscription();
+                npay.CreateSubscription(new NPayListener() {
+                    @Override
+                    public void OnComplete(Boolean pass) {
+
+                    }
+                });
             }
         });
 

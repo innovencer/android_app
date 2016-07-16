@@ -465,7 +465,7 @@
                         android:textSize="18dp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/colorAccent"
-                        android:text="50"
+                        android:text="0"
                         android:id="@+id/textPuntosJuegas" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -502,7 +502,7 @@
                     android:layout_gravity="center"
                     android:textColor="@color/greenApple"
                     android:textStyle="bold|italic"
-                    android:text="100"
+                    android:text="0"
                     android:id="@+id/textPuntosGanas" />
                 <TextView
                     android:layout_width="wrap_content"

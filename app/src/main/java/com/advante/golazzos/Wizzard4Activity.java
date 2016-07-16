@@ -15,6 +15,7 @@ import com.advante.golazzos.Helpers.JSONBuilder;
 import com.advante.golazzos.Helpers.NPay;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.API_Listener;
+import com.advante.golazzos.Interface.NPayListener;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -79,10 +80,15 @@ public class Wizzard4Activity extends GeneralActivity {
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CreateSubscription();
-                Intent intent = new Intent(Wizzard4Activity.this,PrincipalActivity.class);
-                startActivity(intent);
-                finish();
+                npay.CreateSubscription(new NPayListener() {
+                    @Override
+                    public void OnComplete(Boolean pass) {
+                        Intent intent = new Intent(Wizzard4Activity.this,PrincipalActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
             }
         });
     }

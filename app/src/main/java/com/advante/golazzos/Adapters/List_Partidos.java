@@ -67,6 +67,10 @@ public class List_Partidos extends ArrayAdapter<Partido> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Partido item = getItem(position);
+        int type = 0;
+        if(viewLayout == R.layout.item_partido_3){
+            type = 1;
+        }
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(viewLayout, parent, false);
 
@@ -170,6 +174,10 @@ public class List_Partidos extends ArrayAdapter<Partido> {
             holder.editVisitante.setText("" + item.getVisitant_score());
         }
 
+        holder.textPuntosJuegas.setText(General.pointsToBet[0]);
+        holder.textPuntosGanas.setText(General.getMultipliers(type,Integer.parseInt(General.pointsToBet[0])));
+
+        final int finalType = type;
         holder.textPuntosJuegas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,7 +194,7 @@ public class List_Partidos extends ArrayAdapter<Partido> {
                         int selectedPosition = i;
                         if (selectedPosition >= 0) {
                             holder.textPuntosJuegas.setText(General.pointsToBet[selectedPosition]);
-                            holder.textPuntosGanas.setText(General.pointsToWin[selectedPosition]);
+                            holder.textPuntosGanas.setText(General.getMultipliers(finalType,Integer.parseInt(General.pointsToBet[selectedPosition])));
                         }
                         dialog.dismiss();
                     }
