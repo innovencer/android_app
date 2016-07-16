@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.Post;
@@ -68,61 +69,7 @@ public class List_Posts extends ArrayAdapter<Post> {
 
         final String pic_name = ""+ item.getOwner().getId();
 
-        File file = new File(General.local_dir_images + "profile/no_profile.png");
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        GraphicsUtil graphicUtil = new GraphicsUtil();
-        holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
-
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                Bitmap bm = bitmap;
-                GraphicsUtil graphicUtil = new GraphicsUtil();
-                holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-                FileOutputStream stream = null;
-                File file;
-                try {
-                    file = new File(General.local_dir_images + "profile/");
-                    if(!file.exists()){
-                        file.mkdir();
-                    }
-                    stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                    stream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {}
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {}
-        };
-
-        file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-        if (file.exists()) {
-            try{
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 100));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        } else {
-            Picasso.with(context)
-                    .load(item.getOwner().getProfile_pic_url())
-                    .into(target);
-        }
+        com.advante.golazzos.Helpers.Picasso.with(context).load(item.getOwner().getProfile_pic_url()).transform(new CircleTransform()).into(holder.imageEquipo1);
 
         return convertView;
     }

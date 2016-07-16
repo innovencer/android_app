@@ -302,7 +302,8 @@ public class PartidosFinalizado_Fragment extends GeneralFragment {
                                 partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
                                 partido.setTournament(new Liga(0,
                                         data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
-                                        data.getJSONObject(i).getJSONObject("tournament").getString("name")));
+                                        data.getJSONObject(i).getJSONObject("tournament").getString("name"),
+                                        data.getJSONObject(i).getJSONObject("tournament").getString("logo")));
                                 partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
                                         data.getJSONObject(i).getJSONObject("local_team").getString("name"),
                                         data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));

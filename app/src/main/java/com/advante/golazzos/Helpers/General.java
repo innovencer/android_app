@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -174,55 +176,38 @@ public class General {
         this.iBuscarLigas = buscarligas;
         dialog.show();
         ligas = null;
-        jsArrayRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                General.endpoint_tournaments,
-                "",
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Manejo de la respuesta
-                        try {
-                            JSONArray data = response.getJSONArray("response");
-                            ligas = new ArrayList<>();
-                            Liga liga;
-                            for (int i = 0; i < data.length(); i++) {
-                                liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
-                                        data.getJSONObject(i).getInt("id"),
-                                        data.getJSONObject(i).getString("name"));
-                                ligas.add(liga);
-                            }
-                            dialog.dismiss();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        iBuscarLigas.onComplete(ligas);
+        API.getInstance(context).authenticateObjectRequest(Request.Method.GET, General.endpoint_tournaments, null, new API_Listener() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+                try {
+                    JSONArray data = response.getJSONArray("response");
+                    ligas = new ArrayList<>();
+                    Liga liga;
+                    for (int i = 0; i < data.length(); i++) {
+                        liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
+                                data.getJSONObject(i).getInt("id"),
+                                data.getJSONObject(i).getString("name"),
+                                data.getJSONObject(i).getString("logo"));
+                        ligas.add(liga);
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Manejo de errores
-                        String body = "";
-                        //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        if (error.networkResponse.data != null) {
-                            try {
-                                body = new String(error.networkResponse.data, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        dialog.dismiss();
-                        iBuscarLigas.onComplete(ligas);
-                    }
-                });
-        jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                7000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(context).addToRequestQueue(jsArrayRequest);
+                    dialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                iBuscarLigas.onComplete(ligas);
+            }
+
+            @Override
+            public void OnSuccess(JSONArray data) {
+
+            }
+
+            @Override
+            public void OnError(VolleyError error) {
+                String msg = new String(error.networkResponse.data);
+                Log.d("Golazzos", ""+ msg);
+            }
+        });
     }
 
     public static Fragment getLastFragment() {
@@ -362,5 +347,12 @@ public class General {
                 iGetUser_listener.onComplete(false, null);
             }
         });
+    }
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
     }
 }

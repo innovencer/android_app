@@ -69,7 +69,7 @@ public class MainActivity extends GeneralActivity {
 
         //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
         //preferences.edit().putString("invitation_token", "cbb5ec40d72e3705a3d2d58f4a1bad3fcbb5ec40d72e3705a3d2d58f4a1bad3f").apply();
-        showLog(preferences.getString("token",""));
+        //showLog(preferences.getString("token",""));
         if(!preferences.getString("token","").equals("")){
             gnr.getUser(new IGetUser_Listener() {
                 @Override

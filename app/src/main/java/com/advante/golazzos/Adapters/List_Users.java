@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
@@ -113,6 +115,12 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
         if(item.getSouldTeamName() != null) {
             holder.textEquipoAlma.setText(item.getSouldTeamName());
         }
+
+        com.advante.golazzos.Helpers.Picasso.with(context).load(item.getPatchSoulTeam()).transform(new CircleTransform()).into(holder.imageEquipo1);
+        com.advante.golazzos.Helpers.Picasso.with(context).load(item.getPatchProfileImage()).transform(new CircleTransform()).into(holder.imageProfile);
+        /*
+        Log.d("Golazz",""+ item.getPatchSoulTeam());
+
         File file = new File(General.local_dir_images + "profile/no_profile.png");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -180,6 +188,7 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
                     .load(item.getPatchProfileImage())
                     .into(target);
         }
+    */
 
         holder.linearAdd.setOnClickListener(new View.OnClickListener() {
             @Override

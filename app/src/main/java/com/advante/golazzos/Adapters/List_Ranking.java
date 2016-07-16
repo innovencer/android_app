@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Helpers.Picasso;
 import com.advante.golazzos.Model.Ranking_Item;
 import com.advante.golazzos.R;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -97,7 +97,6 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
             holder = (ViewHolder)convertView.getTag();
         }
 
-
         holder.textName.setText(item.getName());
         int pos = position+1;
         holder.textPosicion.setText(""+pos);
@@ -105,6 +104,10 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
         holder.textAciertos.setText(""+item.getAciertos());
         holder.textEquipoAlma.setText(item.getSouldTeamName());
 
+        Picasso.with(context).load(item.getPatchSoulTeam()).transform(new CircleTransform()).into(holder.imageEquipo1);
+        Picasso.with(context).load(item.getPatchProfileImage()).transform(new CircleTransform()).into(holder.imageProfile);
+
+        /*
         File file = new File(General.local_dir_images + "profile/no_profile.png");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -178,6 +181,7 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
                     .load(item.getPatchProfileImage())
                     .into(target);
         }
+        */
 
         return convertView;
     }

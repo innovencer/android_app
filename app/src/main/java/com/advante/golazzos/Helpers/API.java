@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -109,13 +110,13 @@ public class API {
 
     public void authenticateArrayRequest(int method, final String url, JSONObject request, final API_Listener listener){
         if (!getToken().equals("")) {
-            objectRequest = new JsonObjectRequest(
+            arrayRequest = new JsonArrayRequest(
                     method,
                     url,
                     request,
-                    new Response.Listener<JSONObject>() {
+                    new Response.Listener<JSONArray>() {
                         @Override
-                        public void onResponse(JSONObject response) {
+                        public void onResponse(JSONArray response) {
                             listener.OnSuccess(response);
                         }
                     },
@@ -138,8 +139,33 @@ public class API {
                     7000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            VolleySingleton.getInstance(context).addToRequestQueue(objectRequest);
+            VolleySingleton.getInstance(context).addToRequestQueue(arrayRequest);
         }
+    }
+
+    public void unAuthenticateArrayRequest(int method, final String url, JSONObject request, final API_Listener listener){
+        arrayRequest = new JsonArrayRequest(
+                method,
+                url,
+                request,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        listener.OnSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showError();
+                        listener.OnError(error);
+                    }
+                });
+        objectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).addToRequestQueue(arrayRequest);
     }
 
     private void showError(){

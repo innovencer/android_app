@@ -1,5 +1,6 @@
 package com.advante.golazzos.Helpers;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -28,6 +29,19 @@ public class JSONBuilder {
         try {
             data.put("invitation_token",invitationToken);
             root.put("invitation",data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return root;
+    }
+
+    public static JSONObject changeAvatar(Bitmap bitmap){
+        JSONObject root = new JSONObject();
+        JSONObject data = new JSONObject();
+        try {
+            String base64 = "data:image/jpeg;base64,"+ General.encodeToBase64(bitmap, Bitmap.CompressFormat.JPEG, 100);
+            data.put("avatar_base_64",base64);
+            root.put("user",data);
         } catch (JSONException e) {
             e.printStackTrace();
         }

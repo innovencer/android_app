@@ -1,8 +1,6 @@
 package com.advante.golazzos.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.advante.golazzos.Helpers.General;
-import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Helpers.CircleTransform;
+import com.advante.golazzos.Helpers.Picasso;
 import com.advante.golazzos.Model.Liga;
 import com.advante.golazzos.R;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -57,26 +54,7 @@ public class List_Ligas extends ArrayAdapter<Liga> {
         }
         holder.textName.setText(item.getName());
 
-        File file = new File(General.local_dir_images + "ligas/" + item.getId() + ".png");
-        if (file.exists()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-        } else {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-            Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.rect_white);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            holder.imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-        }
-
-        holder.imageEquipo1.setVisibility(View.VISIBLE);
+        Picasso.with(context).load(item.getLogo()).transform(new CircleTransform()).into(holder.imageEquipo1);
 
         return convertView;
     }

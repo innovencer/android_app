@@ -22,6 +22,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralActivity;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.Model.Equipo;
 import com.advante.golazzos.Model.Liga;
 import com.android.volley.AuthFailureError;
@@ -118,7 +119,15 @@ public class Wizzard2Activity extends GeneralActivity {
                     buttonEquipos.setText("Seleccionar Equipo");
                 }
                 dialog.show();
-                buscarLigas();
+                gnr.buscarLigas(new IBuscarLigas_Listener() {
+                    @Override
+                    public void onComplete(ArrayList<Liga> items) {
+                        ligas = items;
+                        if (ligas != null) {
+                            showDialogLigas(ligas);
+                        }
+                    }
+                });
             }
         });
         buttonEquipos.setOnClickListener(new View.OnClickListener() {
@@ -348,62 +357,6 @@ public class Wizzard2Activity extends GeneralActivity {
             imageView.setImageBitmap(graphicUtil.getCircleBitmap(
                     bm, 16));
             imageView1.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void buscarLigas(){
-        if(ligas == null) {
-            jsArrayRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    General.endpoint_tournaments,
-                    "",
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Manejo de la respuesta
-                            try {
-                                JSONArray data = response.getJSONArray("response");
-                                ligas = new ArrayList<>();
-                                Liga liga;
-                                for (int i = 0; i < data.length(); i++) {
-                                    liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
-                                            data.getJSONObject(i).getInt("id"),
-                                            data.getJSONObject(i).getString("name"));
-                                    ligas.add(liga);
-                                }
-                                showDialogLigas(ligas);
-                                dialog.dismiss();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Manejo de errores
-                            String body = "";
-                            //get status code here
-                            String statusCode = String.valueOf(error.networkResponse.statusCode);
-                            //get response body and parse with appropriate encoding
-                            if (error.networkResponse.data != null) {
-                                try {
-                                    body = new String(error.networkResponse.data, "UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    7000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
-        }else{
-            dialog.dismiss();
-            showDialogLigas(ligas);
         }
     }
 

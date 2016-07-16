@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Model.Ganador_Item;
@@ -115,72 +117,9 @@ public class List_Ganadores extends ArrayAdapter<Ganador_Item> {
         holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
                 bm, 16));
 
-        if(item.getPatchSoulTeam() != null) {
-            String imagePath = item.getPatchSoulTeam().substring(item.getPatchSoulTeam().lastIndexOf("/") + 1, item.getPatchSoulTeam().lastIndexOf("-"));
-            file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
-            bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            holder.imageEquipo1.setImageBitmap(bm);
-            holder.imageEquipo1.setVisibility(View.VISIBLE);
-        }else{
-            //holder.imageEquipo1.setVisibility(View.INVISIBLE);
-            holder.imageEquipo1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_main));
-        }
-        final String pic_name;
-        if(item.getPatchProfileImage().contains("facebook.com")){
-            pic_name = "" + item.getIdProfile();
-        }else{
-            pic_name = item.getPatchProfileImage().substring(
-                    item.getPatchProfileImage().lastIndexOf("/"),
-                    item.getPatchProfileImage().lastIndexOf("."));
-        }
-
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                Bitmap bm = bitmap;
-                GraphicsUtil graphicUtil = new GraphicsUtil();
-                holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-                FileOutputStream stream = null;
-                File file;
-                try {
-                    file = new File(General.local_dir_images + "profile/");
-                    if(!file.exists()){
-                        file.mkdir();
-                    }
-                    stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                    stream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {}
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {}
-        };
-
-        file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-        if (file.exists()) {
-            try{
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 100));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        } else {
-            Picasso.with(context)
-                    .load(item.getPatchProfileImage())
-                    .into(target);
-        }
+        com.advante.golazzos.Helpers.Picasso.with(context).load("http:"+item.getPatchSoulTeam()).transform(new CircleTransform()).into(holder.imageEquipo1);
+        com.advante.golazzos.Helpers.Picasso.with(context).load(item.getPatchProfileImage()).transform(new CircleTransform()).into(holder.imageProfile);
+        holder.imageEquipo1.setVisibility(View.VISIBLE);
 
         return convertView;
     }

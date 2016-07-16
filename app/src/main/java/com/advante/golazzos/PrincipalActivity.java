@@ -58,22 +58,38 @@ import com.advante.golazzos.Fragments.PartidosPorJugar_Fragment;
 import com.advante.golazzos.Fragments.Perfil_Fragment;
 import com.advante.golazzos.Fragments.RankingFragment;
 import com.advante.golazzos.Fragments.Trofeos_Fragment;
+import com.advante.golazzos.Helpers.API;
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Helpers.JSONBuilder;
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Model.LeftMenu_Item;
 import com.advante.golazzos.Model.User;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.mlsdev.rximagepicker.RxImageConverters;
+import com.mlsdev.rximagepicker.RxImagePicker;
+import com.mlsdev.rximagepicker.Sources;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 
 import bolts.AppLinks;
 import io.npay.activity.NPay;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Ruben Flores on 4/19/2016.
@@ -771,46 +787,10 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         }
     }
 
-    Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Bitmap bm = bitmap;
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-            FileOutputStream stream = null;
-            File file;
-            try {
-                file = new File(General.local_dir_images + "profile/");
-                if(!file.exists()){
-                    file.mkdir();
-                }
-                stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                stream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {}
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
-    };
 
     private void loadProfile() {
         if (gnr.getLoggedUser() != null) {
-            File file = new File(General.local_dir_images + "profile/no_profile.png");
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
+            Picasso.with(this).load(gnr.getLoggedUser().getProfile_pic_url()).transform(new CircleTransform()).into(imageProfile);
 
             textName.setText("Hola, " + gnr.getLoggedUser().getName().split(" ")[0]);
             String s = String.format("%,d", Math.round(gnr.getLoggedUser().getPoints()));
@@ -824,43 +804,9 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
             }
 
             textNivel.setText("" + gnr.getLoggedUser().getLevel().getOrder());
-            if (gnr.getLoggedUser().getProfile_pic_url().contains("facebook.com")) {
-                pic_name = "" + gnr.getLoggedUser().getId();
-
-                file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-                if (file.exists()) {
-                    options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                    graphicUtil = new GraphicsUtil();
-                    imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                            bm, 16));
-                } else {
-                    Picasso.with(this)
-                            .load(gnr.getLoggedUser().getProfile_pic_url())
-                            .into(target);
-                }
-
-            } else {
-                pic_name = gnr.getLoggedUser().getProfile_pic_url().substring(
-                        gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("/"),
-                        gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("."));
-                if (file.exists()) {
-                    options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                    graphicUtil = new GraphicsUtil();
-                    imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                            bm, 16));
-                } else {
-                    Picasso.with(this)
-                            .load(gnr.getLoggedUser().getProfile_pic_url())
-                            .into(target);
-                }
-            }
         }
     }
-
+    
     @Override
     public void onAttachFragment(Fragment f) {
         super.onAttachFragment(f);

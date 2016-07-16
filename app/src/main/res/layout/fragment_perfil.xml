@@ -145,11 +145,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="70dp"
                             android:gravity="center"
                             android:layout_weight="0.5">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
                             <ImageView
                                 android:id="@+id/imageProfile"
                                 android:layout_width="70dp"
@@ -157,7 +161,16 @@
                                 android:background="@drawable/image_circle_noborder"
                                 android:src="@drawable/venezuela"
                                 />
-                        </LinearLayout>
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="-5dp"
+                                android:layout_gravity="bottom"
+                                android:tint="@color/greenApple"
+                                android:src="@drawable/pencil"
+                                android:id="@+id/imageEditar" />
+                            </LinearLayout>
+                        </RelativeLayout>
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

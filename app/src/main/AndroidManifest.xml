@@ -11,6 +11,7 @@
         android:icon="@mipmap/ic_main"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name="com.advante.golazzos.Helpers.App"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

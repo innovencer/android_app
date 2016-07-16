@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Ranking;
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
@@ -31,7 +32,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,36 +113,6 @@ public class RankingFragment extends GeneralFragment {
         }
         return view;
     }
-    Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Bitmap bm = bitmap;
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-            FileOutputStream stream = null;
-            File file;
-            try {
-                file = new File(General.local_dir_images + "profile/");
-                if(!file.exists()){
-                    file.mkdir();
-                }
-                stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                stream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {}
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
-    };
 
     View.OnClickListener clickTab = new View.OnClickListener() {
         @Override
@@ -164,61 +134,10 @@ public class RankingFragment extends GeneralFragment {
     };
 
     private void init(){
-        File file = new File(General.local_dir_images + "profile/no_profile.png");
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        GraphicsUtil graphicUtil = new GraphicsUtil();
-        imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
-
-        if (gnr.getLoggedUser().getProfile_pic_url().contains("facebook.com")) {
-            pic_name = "" + gnr.getLoggedUser().getId();
-
-            file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-            if (file.exists()) {
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                graphicUtil = new GraphicsUtil();
-                imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-            } else {
-                Picasso.with(getContext())
-                        .load(gnr.getLoggedUser().getProfile_pic_url())
-                        .into(target);
-            }
-
-        } else {
-            pic_name = gnr.getLoggedUser().getProfile_pic_url().substring(
-                    gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("/"),
-                    gnr.getLoggedUser().getProfile_pic_url().lastIndexOf("."));
-            if (file.exists()) {
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                graphicUtil = new GraphicsUtil();
-                imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-            } else {
-                Picasso.with(getContext())
-                        .load(gnr.getLoggedUser().getProfile_pic_url())
-                        .into(target);
-            }
-        }
-
         textAciertos.setText("" + gnr.getLoggedUser().getScore2());
         textPosicion.setText("" + gnr.getLoggedUser().getRank2());
-
-        String imagePath = gnr.getLoggedUser().getSoul_team().getImage_path();
-        int idImage = Integer.parseInt(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-")));
-
-        file = new File(General.local_dir_images + "equipos/" + idImage + ".gif");
-        if(file.exists()) {
-            bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-        }
+        Picasso.with(getContext()).load(gnr.getLoggedUser().getProfile_pic_url()).transform(new CircleTransform()).into(imageProfile);
+        Picasso.with(getContext()).load(gnr.getLoggedUser().getSoul_team().getImage_path()).transform(new CircleTransform()).into(imageEquipo1);
     }
 
     private void getRanking(String type){

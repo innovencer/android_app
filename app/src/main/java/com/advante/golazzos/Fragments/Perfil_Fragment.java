@@ -1,26 +1,38 @@
 package com.advante.golazzos.Fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.advante.golazzos.Adapters.List_Input;
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
+import com.advante.golazzos.Helpers.JSONBuilder;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.User;
+import com.advante.golazzos.PrincipalActivity;
 import com.advante.golazzos.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -29,13 +41,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.login.LoginManager;
+import com.mlsdev.rximagepicker.RxImageConverters;
+import com.mlsdev.rximagepicker.RxImagePicker;
+import com.mlsdev.rximagepicker.Sources;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Ruben Flores on 5/25/2016.
@@ -44,7 +65,7 @@ public class Perfil_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     EditText editNombre, editApellido, editEmail, editTelefono;
     TextView textInfo,textNotificaciones,textCuenta, textCerrarSesion;
-    ImageView imageProfile,imageTipoUsuario;
+    ImageView imageProfile,imageTipoUsuario,imageEditar;
     LinearLayout linear1, linear2, linear3,linearGuardar;
     Boolean flag = true;
 
@@ -68,6 +89,7 @@ public class Perfil_Fragment extends GeneralFragment {
             editEmail = (EditText) view.findViewById(R.id.editEmail);
             editTelefono = (EditText) view.findViewById(R.id.editTelefono);
             imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
+            imageEditar = (ImageView) view.findViewById(R.id.imageEditar);
 
             textInfo = (TextView) view.findViewById(R.id.textInfo);
             textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
@@ -100,6 +122,12 @@ public class Perfil_Fragment extends GeneralFragment {
                     gnr.setLoggedUser(null);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
+                }
+            });
+            imageEditar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectImage();
                 }
             });
 
@@ -241,4 +269,70 @@ public class Perfil_Fragment extends GeneralFragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
     }
+
+    private void pickImageFromSource(Sources source) {
+        RxImagePicker.with(getContext()).requestImage(source)
+                .flatMap(new Func1<Uri, Observable<Bitmap>>() {
+                    @Override
+                    public Observable<Bitmap> call(Uri uri) {
+                        return RxImageConverters.uriToBitmap(getContext(), uri);
+                    }
+                })
+                .subscribe(new Action1<Bitmap>() {
+                    @Override
+                    public void call(Bitmap bitmap) {
+                        // Do something with Bitmap
+                        imageProfile.setImageBitmap(bitmap);
+                        API.getInstance(getContext()).authenticateObjectRequest(Request.Method.PUT, gnr.endpoint_users + "/me",
+                                JSONBuilder.changeAvatar(bitmap),
+                                new API_Listener() {
+                                    @Override
+                                    public void OnSuccess(JSONObject response) {
+
+                                    }
+
+                                    @Override
+                                    public void OnSuccess(JSONArray response) {
+
+                                    }
+
+                                    @Override
+                                    public void OnError(VolleyError error) {
+
+                                    }
+                                });
+                    }
+                });
+    }
+
+    private void selectImage() {
+        final String[] items = { "Camara", "Galeria", "Cancelar" };
+        final Dialog dialog = new Dialog(getContext(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_input);
+
+        List_Input adapter = new List_Input(getContext(), Arrays.asList(items));
+        ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0:
+                        pickImageFromSource(Sources.CAMERA);
+                        dialog.dismiss();
+                        break;
+                    case 1:
+                        pickImageFromSource(Sources.GALLERY);
+                        dialog.dismiss();
+                        break;
+                    case 2:
+                        dialog.dismiss();
+                }
+            }
+        });
+        listView.setAdapter(adapter);
+        dialog.show();
+    }
+
 }

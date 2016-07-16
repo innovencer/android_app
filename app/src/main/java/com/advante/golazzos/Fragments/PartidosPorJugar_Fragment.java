@@ -25,6 +25,7 @@ import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.API_Listener;
+import com.advante.golazzos.Interface.IBuscarLigas_Listener;
 import com.advante.golazzos.LoginActivity;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Equipo;
@@ -116,8 +117,15 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                     idEquipo = -1;
                     buttonEquipos.setText("Seleccionar Equipo");
                 }
-                dialog.show();
-                buscarLigas();
+                gnr.buscarLigas(new IBuscarLigas_Listener() {
+                    @Override
+                    public void onComplete(ArrayList<Liga> items) {
+                        ligas = items;
+                        if (ligas != null) {
+                            showDialogLigas(ligas);
+                        }
+                    }
+                });
             }
         });
         buttonEquipos.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +178,8 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                         partido.setHtml_center_url(data.getJSONObject(i).getString("html_center_url"));
                         partido.setTournament(new Liga(0,
                                 data.getJSONObject(i).getJSONObject("tournament").getInt("id"),
-                                data.getJSONObject(i).getJSONObject("tournament").getString("name")));
+                                data.getJSONObject(i).getJSONObject("tournament").getString("name"),
+                                data.getJSONObject(i).getJSONObject("tournament").getString("logo")));
                         partido.setLocal(new Equipo(data.getJSONObject(i).getJSONObject("local_team").getInt("id"),
                                 data.getJSONObject(i).getJSONObject("local_team").getString("name"),
                                 data.getJSONObject(i).getJSONObject("local_team").getString("image_path")));
@@ -202,50 +211,6 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
 
             }
         });
-    }
-
-    private void buscarLigas(){
-        if(ligas == null) {
-            jsArrayRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    General.endpoint_tournaments,
-                    "",
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Manejo de la respuesta
-                            try {
-                                JSONArray data = response.getJSONArray("response");
-                                ligas = new ArrayList<>();
-                                Liga liga;
-                                for (int i = 0; i < data.length(); i++) {
-                                    liga = new Liga(data.getJSONObject(i).getInt("data_factory_id"),
-                                            data.getJSONObject(i).getInt("id"),
-                                            data.getJSONObject(i).getString("name"));
-                                    ligas.add(liga);
-                                }
-                                showDialogLigas(ligas);
-                                dialog.dismiss();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            dialog.dismiss();
-                        }
-                    });
-            jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    7000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
-        }else{
-            dialog.dismiss();
-            showDialogLigas(ligas);
-        }
     }
 
     private void buscarEquipos(){

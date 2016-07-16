@@ -7,11 +7,13 @@ public class Liga {
     int data_factory_id;
     int id;
     String name;
+    String logo;
 
-    public Liga(int data_factory_id, int id, String name) {
+    public Liga(int data_factory_id, int id, String name, String logo) {
         this.data_factory_id = data_factory_id;
         this.id = id;
         this.name = name;
+        this.logo = logo;
     }
 
     public int getData_factory_id() {
@@ -36,6 +38,14 @@ public class Liga {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     @Override

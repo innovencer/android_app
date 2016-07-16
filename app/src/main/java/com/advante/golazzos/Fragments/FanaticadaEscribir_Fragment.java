@@ -203,7 +203,7 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
         try {
             values.put("text", editComentarios.getText().toString());
             if(bitmapAttached != null){
-                String base64 = "data:image/jpeg;base64,"+encodeToBase64(bitmapAttached, Bitmap.CompressFormat.JPEG, 100);
+                String base64 = "data:image/jpeg;base64,"+General.encodeToBase64(bitmapAttached, Bitmap.CompressFormat.JPEG, 100);
                 values.put("image_base_64",base64);
             }
             post.put("post",values);
@@ -356,11 +356,4 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
         @Override
         public void onPrepareLoad(Drawable placeHolderDrawable) {}
     };
-
-    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
-    {
-        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-        image.compress(compressFormat, quality, byteArrayOS);
-        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
-    }
 }
