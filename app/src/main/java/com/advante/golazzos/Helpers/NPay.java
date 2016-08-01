@@ -45,7 +45,7 @@ public class NPay {
 
     public NPay(Activity activity) {
         this.activity = activity;
-        new General(activity);
+        gnr = new General(activity);
 
         npay = new io.npay.activity.NPay(activity);
         npay.setOnSubscriptionCreatedListener(listenCreate);

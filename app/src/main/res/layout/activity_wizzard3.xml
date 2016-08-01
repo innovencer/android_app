@@ -120,12 +120,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textSize="12dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:text="@string/text.wizzard3.text1"/>
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="260dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
@@ -140,12 +144,31 @@
                 android:id="@+id/imageFB" />
         </LinearLayout>
         <LinearLayout
+            android:visibility="visible"
+            android:layout_width="260dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/buttonFB2">
+            <com.facebook.share.widget.SendButton
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="1dp"
+                android:text="FACEBOOK"
+                android:textSize="15dp"
+                android:id="@+id/button_facebook"
+                android:background="@drawable/border_white2"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="260dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@drawable/border_white"
+            android:background="@drawable/border_white2"
             android:id="@+id/buttonTW">
             <ImageView
                 android:layout_width="25dp"
@@ -159,7 +182,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@drawable/border_white"
+            android:background="@drawable/border_white2"
             android:id="@+id/buttonMA">
             <ImageView
                 android:layout_width="20dp"

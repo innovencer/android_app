@@ -6,10 +6,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Comentarios;
 import com.advante.golazzos.EstadisticasActivity;
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
@@ -42,10 +45,14 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -61,7 +68,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,7 +81,6 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
     TextView textTime_ago,textLabel,textLike, buttonPublicar;
     EditText editComentario;
     ImageView imageEquipo1, imageViewAttached;
-    ShareDialog shareDialog;
     CallbackManager callbackManager;
     String label,html_center_url,trackable_type, imageAttached;
     String pic_name,idPartido;
@@ -150,41 +158,9 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             }
             if (!imageAttached.isEmpty()) {
                 linearImageAttached.setVisibility(View.VISIBLE);
-                pic_name = imageAttached.substring(0, imageAttached.lastIndexOf("/"));
-                pic_name = pic_name.substring(pic_name.lastIndexOf("/") + 1);
-
-                File file = new File(General.local_dir_images + "posts/" + pic_name + ".png");
-                if (file.exists()) {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                    imageViewAttached.setImageBitmap(bm);
-                } else {
-                    Picasso.with(getContext())
-                            .load(imageAttached)
-                            .error(android.R.drawable.ic_delete)
-                            .placeholder(R.drawable.progress_animation)
-                            .into(target);
-                }
+                com.advante.golazzos.Helpers.Picasso.with(getContext()).load(imageAttached).transform(new CircleTransform()).into(imageViewAttached);
             }
-            linearImageAttached.setVisibility(View.GONE);
-            shareDialog = new ShareDialog(this);
-            shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-                @Override
-                public void onSuccess(Sharer.Result result) {
-
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-
-                @Override
-                public void onError(FacebookException error) {
-
-                }
-            });
+            //linearImageAttached.setVisibility(View.GONE);
 
             if (!bundle.getString("profile_pic_url", "").contains("facebook.com")) {
                 pic_name = bundle.getString("profile_pic_url", "").substring(
@@ -194,15 +170,7 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                 pic_name = "" + idImage;
             }
 
-            File file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-            if (file.exists()) {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                GraphicsUtil graphicUtil = new GraphicsUtil();
-                imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-            }
+            com.advante.golazzos.Helpers.Picasso.with(getContext()).load(gnr.getLoggedUser().getProfile_pic_url()).transform(new CircleTransform()).into(imageEquipo1);
 
             buttonBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -281,66 +249,46 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         return view;
     }
 
-    Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Bitmap bm = bitmap;
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageViewAttached.setImageBitmap(bm);
-            FileOutputStream stream = null;
-            File file;
-            try {
-                file = new File(General.local_dir_images + "posts/");
-                if(!file.exists()){
-                    file.mkdir();
-                }
-                stream = new FileOutputStream(General.local_dir_images + "posts/"+pic_name+".png");
-                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                stream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {}
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
-    };
 
     private void publishTwitterFeed(){
         TweetComposer.Builder builder = new TweetComposer.Builder(getContext())
-             .text(label);
+             .text(label.replace("<font color='#0E5A80'>","").replace("</font>","").replace("<br>",""));
         builder.show();
     }
 
     private void publishFacebookFeed(){
+        callbackManager = CallbackManager.Factory.create();
+        final ShareDialog shareDialog = new ShareDialog(this);
 
-        Bundle params = new Bundle();
-        JSONObject value = new JSONObject();
-        try {
-            value.put("value","SELF");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.d(General.appname, "success");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(General.appname, "error "+error.getMessage() );
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(General.appname, "cancel");
+            }
+        });
+
+        if (shareDialog.canShow(ShareLinkContent.class)) {
+
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Golazzos")
+                    .setContentDescription(label.replace("<font color='#0E5A80'>","").replace("</font>","").replace("<br>","").replace("<inviter>","").replace("</inviter>",""))
+                    .setContentUrl(Uri.parse("http://apys.com.mx/movil/index.php"))
+                    //.setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
+                    .build();
+            shareDialog.show(linkContent);
         }
-        params.putString("message", label.replace("<font color='#0E5A80'>","").replace("</font>",""));
-        params.putString("link", getResources().getString(R.string.shareContentUrl));
-        params.putString("privacy", value.toString());
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/me/feed",
-                params,
-                HttpMethod.POST,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
-                        Toast.makeText(getContext(),"Mensaje compartido en facebook.",Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ).executeAsync();
-        Toast.makeText(getContext(), "Compartiendo en facebook...", Toast.LENGTH_SHORT).show();
+
     }
 
     private void like(){
@@ -564,4 +512,11 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
     }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

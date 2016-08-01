@@ -1,5 +1,7 @@
 package com.advante.golazzos;
 
+import android.os.Bundle;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.General;
@@ -25,6 +28,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.SendButton;
 import com.facebook.share.widget.ShareDialog;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
@@ -61,7 +65,33 @@ public class Wizzard3Activity extends GeneralActivity {
         imageTW = (ImageView) findViewById(R.id.imageTW);
         imageMA = (ImageView) findViewById(R.id.imageMA);
 
-        //changeColorButton(1);
+
+        callbackManager = CallbackManager.Factory.create();
+        SendButton sendButton = (SendButton) findViewById(R.id.button_facebook);
+        sendButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                showLog(result.toString());
+            }
+
+            @Override
+            public void onCancel() {
+                showLog("cancelled");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                showLog(error.getMessage());
+            }
+        });
+
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentTitle("Juega Conmigo Golazzos!")
+                .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
+                .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token()))
+                .setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
+                .build();
+        sendButton.setShareContent(linkContent);
 
         buttonFB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,12 +108,15 @@ public class Wizzard3Activity extends GeneralActivity {
         buttonMA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto","", null));
-                emailIntent.setType("text/html");
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Te invito a Jugar a Golazzos");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Te gustan los RETOS? ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getInvitation_token()+")");
-                startActivity(Intent.createChooser(emailIntent, "Golazzos"));
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Golazzos");
+                i.putExtra(Intent.EXTRA_TEXT   , "Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token()+")");
+                try {
+                    startActivity(Intent.createChooser(i, "Send Mail"));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(Wizzard3Activity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         buttonSiguiente.setOnClickListener(new View.OnClickListener() {
@@ -114,41 +147,12 @@ public class Wizzard3Activity extends GeneralActivity {
 
     private void publishTwitterFeed(){
         TweetComposer.Builder builder = new TweetComposer.Builder(this)
-                .text("El primer JUEGO SOCIAL de predicciones de FUTBOL! Decarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A"+gnr.getLoggedUser().getInvitation_token()+")");
+                .text("Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token()+")");
         builder.show();
     }
 
     private void shareOnFacebook(){
-        shareDialog = new ShareDialog(this);
-        if (ShareDialog.canShow(ShareLinkContent.class)) {
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Hello Facebook")
-                    .setContentDescription(
-                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                    .build();
 
-            shareDialog.show(linkContent);
-        }
-        // this part is optional
-        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-
-            @Override
-            public void onSuccess(Sharer.Result result) {
-                addPoints(300);
-                changeColorButton(1);
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
     }
 
     private void addPoints(int points){

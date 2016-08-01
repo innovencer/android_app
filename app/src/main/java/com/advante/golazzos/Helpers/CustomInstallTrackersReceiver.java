@@ -33,15 +33,17 @@ public class CustomInstallTrackersReceiver extends BroadcastReceiver {
         HashMap<String, String> values = new HashMap<String, String>();
         try {
             if (intent.hasExtra("referrer")) {
-                //Log.d("Golazzos", "referrer: " + URLDecoder.decode(intent.getStringExtra("referrer")));
+                Log.d("Golazzos", "referrer: " + URLDecoder.decode(intent.getStringExtra("referrer")));
+                /*
                 String referrers[] = URLDecoder.decode(intent.getStringExtra("referrer")).split("&");
                 for (String referrerValue : referrers) {
                     String keyValue[] = referrerValue.split("=");
                     values.put(URLDecoder.decode(keyValue[0]), URLDecoder.decode(keyValue[1]));
                 }
-                //Log.d("Golazzos", "referrer: " + values);
+                Log.d("Golazzos", "referrer: " + values);
                 String invitation = values.get("utm_content").split(":")[1];
-                preferences.edit().putString("invitation_token",invitation).apply();
+                */
+                preferences.edit().putString("invitation_token", URLDecoder.decode(intent.getStringExtra("referrer"))).apply();
             }
         } catch (Exception e) {
 

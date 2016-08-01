@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.advante.golazzos.Adapters.List_Input;
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
@@ -178,22 +179,7 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
                 gnr.getLoggedUser().setProfile_pic_url("http:"+gnr.getLoggedUser().getProfile_pic_url());
             }
         }
-
-
-        File file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-        if (file.exists()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Log.d("profile ", file.getAbsolutePath());
-            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-        } else {
-            Picasso.with(getContext())
-                    .load(gnr.getLoggedUser().getProfile_pic_url())
-                    .into(target);
-        }
+        com.advante.golazzos.Helpers.Picasso.with(getContext()).load(gnr.getLoggedUser().getProfile_pic_url()).transform(new CircleTransform()).into(imageEquipo1);
     }
     private void Comentar(){
         dialog.show();
@@ -326,34 +312,4 @@ public class FanaticadaEscribir_Fragment extends GeneralFragment {
         dialog.show();
     }
 
-    Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Bitmap bm = bitmap;
-            GraphicsUtil graphicUtil = new GraphicsUtil();
-            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
-                    bm, 16));
-            FileOutputStream stream = null;
-            File file;
-            try {
-                file = new File(General.local_dir_images + "profile/");
-                if(!file.exists()){
-                    file.mkdir();
-                }
-                stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                stream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {}
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
-    };
 }

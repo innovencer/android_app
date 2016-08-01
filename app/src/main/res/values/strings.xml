@@ -42,11 +42,16 @@
     <string name="delete_favorite_team_url">https://www.golazzos.com/api/v2/favorite_teams/%1$s</string>
     <string name="favorites_teams_by_user_url">https://www.golazzos.com/api/v2/favorite_teams</string>
     <string name="dataSize">430</string>
-    <string name="noAmigos">Aún no sigues a nadie, invita mas amigos para demostrarles que eres un 10 en la cancha</string>
-    <string name="noSeguidores">Nadie sigue tus jugadas aun. Invita a mas amigos y muestrales quien sabe mas de futbol</string>
+    <string name="noAmigos">Golazzos es mas divertido si compites! Invita a tus amigos y si aceptan los 2 ganan 300 puntos!</string>
+    <string name="noSeguidores">Golazzos es mas divertido si compites! Invita a tus amigos y si aceptan los 2 ganan 300 puntos!</string>
     <string name="noPartidos">No hay Partidos en Vivo en este Momento</string>
+    <string name="noPartidosPorJugar">No hay Partidos en Por Jugar en la liga seleccionada</string>
     <string name="noPost">No tiene ningún mensaje en el estadio</string>
-    <string name="noJugadas">No se encontraron jugadas.</string>
+    <string name="noJugadas">No tienes Jugadas. Ve a PARTIDOS  y Juega!</string>
+    <string name="noJugadasVIVO">No tienes Jugadas EN VIVO  ahora!</string>
+    <string name="noJugadasFINALIZADAS">No tienes Jugadas FINALIZADAS todavia!</string>
+    <string name="noRanking">No hay RANKING esta semana en el momento</string>
+    <string name="noRetos">Pronto tendremos los RETOS.</string>
     <string name="menuPerfil">PERFÍL</string>
     <string name="menuEstadio">ESTADIO</string>
     <string name="menuPartidos">PARTIDOS</string>
@@ -85,8 +90,8 @@
     <string name="sharing_url_twitter">https://twitter.com/intent/tweet?text=Instala la aplicacion de golazzos&amp;url=http://www.golazzos.com</string>
 
     <string name="text.equipo_alma">Todos tenemos un equipo del alma, selecciona el tuyo</string>
-    <string name="text.wizzard3.text1">¡Invita a tus amigos y te regalamos <b>300 puntos</b>!</string>
+    <string name="text.wizzard3.text1">¡Golazzos es mas divertido si compites!.\nInvita a tus amigos \nSi aceptan los 2 ganan <b>300 puntos!!</b>!</string>
 
-    <string name="hintEscribir"><i>QUÉ TIENES EN MENTE?</i></string>
-    <string name="text1"><i>"Como recompeza obtendrás"</i></string>
+    <string name="hintEscribir"><i>¿QUÉ TIENES EN MENTE?</i></string>
+    <string name="text1"><i>"Como recompenza obtendrás"</i></string>
 </resources>

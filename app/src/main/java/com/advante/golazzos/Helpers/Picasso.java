@@ -40,10 +40,12 @@ public class Picasso {
         if(transformation == null)
             com.squareup.picasso.Picasso.with(context).load(this.path)
                                     .error(R.drawable.ic_main)
+                                    .placeholder(R.drawable.ic_main)
                                     .into(imageView);
         else
             com.squareup.picasso.Picasso.with(context).load(this.path).transform(transformation)
                                     .error(R.drawable.ic_main)
+                                    .placeholder(R.drawable.ic_main)
                                     .into(imageView);
     }
 

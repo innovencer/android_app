@@ -80,9 +80,6 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
         View view = inflater.inflate(R.layout.fragment_partidos_2, container, false);
         if(flag) {
             listView = (ListView) view.findViewById(R.id.listview);
-            View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match, null);
-            ((ViewGroup) listView.getParent()).addView(emptyView);
-            listView.setEmptyView(emptyView);
 
             viewFlipper = (ViewFlipper) view.findViewById(R.id.view_flipper);
 
@@ -170,6 +167,7 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
                                             data.getJSONObject(i).getInt("data_factory_id"));
                                     equipos.add(equipo);
                                 }
+
                                 showDialogEquipos(equipos);
                                 dialog.dismiss();
                             } catch (JSONException e) {
@@ -317,6 +315,11 @@ public class PartidosEnVivo_Fragment extends GeneralFragment {
                                 partido.setVisitant_score(data.getJSONObject(i).getInt("visitant_score"));
                                 partidos.add(partido);
 
+                            }
+                            if(partidos.size() <= 0){
+                                View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match, null);
+                                ((ViewGroup) listView.getParent()).addView(emptyView);
+                                listView.setEmptyView(emptyView);
                             }
                             List_Partidos list_partidos = new List_Partidos(getContext(),partidos,resourse);
                             listView.setAdapter(list_partidos);

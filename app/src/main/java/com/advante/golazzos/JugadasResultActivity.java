@@ -52,7 +52,6 @@ public class JugadasResultActivity extends GeneralActivity {
             textPuntosGanas.setText("" + extras.getInt("amount"));
         }
 
-        showLog(""+extras.getInt("image"));
         File file;
         Bitmap bm;
         GraphicsUtil graphicUtil = new GraphicsUtil();

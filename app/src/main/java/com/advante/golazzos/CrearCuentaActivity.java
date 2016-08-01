@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -176,22 +177,19 @@ public class CrearCuentaActivity extends GeneralActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Manejo de errores
-                        String body = "";
-                        //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        if(statusCode != null && statusCode.equals("422")){
-                            if(error.networkResponse.data!=null) {
-                                try {
-                                    body = new String(error.networkResponse.data,"UTF-8");
-                                    showShortToast("Ya existe una cuenta con los datos suministrados.");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
+                        try {
+                            JSONObject jsonObject = new JSONObject(new String(error.networkResponse.data));
+                            String msg = jsonObject.getString("messages");
+                            String msgFinal = "";
+                            for(int i = 0;i < msg.split(",").length;i++){
+                                msgFinal = msgFinal + msg.split(",")[i] + System.getProperty("line.separator");
                             }
-                        }else{
-                            showShortToast("Error en la comunicacion, por favor intente mas tarde.");
+
+                            msgFinal = msgFinal.replace("[","").replace("]","").replace("{","").replace("}","");
+
+                            showShortToast(msgFinal);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                         dialog.dismiss();
                     }

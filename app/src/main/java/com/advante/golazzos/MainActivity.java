@@ -69,7 +69,7 @@ public class MainActivity extends GeneralActivity {
 
         //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
         //preferences.edit().putString("invitation_token", "cbb5ec40d72e3705a3d2d58f4a1bad3fcbb5ec40d72e3705a3d2d58f4a1bad3f").apply();
-        //showLog(preferences.getString("token",""));
+        showLog(preferences.getString("token",""));
         if(!preferences.getString("token","").equals("")){
             gnr.getUser(new IGetUser_Listener() {
                 @Override
@@ -91,27 +91,6 @@ public class MainActivity extends GeneralActivity {
         }else{
             linearButton1.setVisibility(View.VISIBLE);
             linearButton2.setVisibility(View.VISIBLE);
-        }
-
-        if(!preferences.getString("invitation_token","").equals("")) {
-            API.getInstance(this).authenticateObjectRequest(Request.Method.POST, gnr.endpoint_invitation, JSONBuilder.addFriend(preferences.getString("invitation_token","")), new API_Listener() {
-                @Override
-                public void OnSuccess(JSONObject response) {
-                    preferences.edit().putString("invitation_token","").apply();
-                    showLog(response.toString());
-                }
-
-                @Override
-                public void OnSuccess(JSONArray response) {
-
-                }
-
-                @Override
-                public void OnError(VolleyError error) {
-                    String data = new String(error.networkResponse.data);
-                    showLog(""+data);
-                }
-            });
         }
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         if(FirebaseInstanceId.getInstance().getToken() != null && !FirebaseInstanceId.getInstance().getToken().isEmpty() ){

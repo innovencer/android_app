@@ -1,9 +1,13 @@
 package com.advante.golazzos;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,6 +65,7 @@ public class Wizzard4Activity extends GeneralActivity {
                     @Override
                     public void OnSuccess(JSONObject response) {
                         Intent intent = new Intent(Wizzard4Activity.this,PrincipalActivity.class);
+                        intent.putExtra("wizzard","true");
                         startActivity(intent);
                         finish();
                     }
@@ -84,6 +89,8 @@ public class Wizzard4Activity extends GeneralActivity {
                     @Override
                     public void OnComplete(Boolean pass) {
                         Intent intent = new Intent(Wizzard4Activity.this,PrincipalActivity.class);
+                        intent.putExtra("wizzard","true");
+                        intent.putExtra("premium","true");
                         startActivity(intent);
                         finish();
                     }

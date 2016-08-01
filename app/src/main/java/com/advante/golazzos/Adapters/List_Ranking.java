@@ -104,17 +104,12 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
         holder.textAciertos.setText(""+item.getAciertos());
         holder.textEquipoAlma.setText(item.getSouldTeamName());
 
-        Picasso.with(context).load(item.getPatchSoulTeam()).transform(new CircleTransform()).into(holder.imageEquipo1);
         Picasso.with(context).load(item.getPatchProfileImage()).transform(new CircleTransform()).into(holder.imageProfile);
 
-        /*
-        File file = new File(General.local_dir_images + "profile/no_profile.png");
+        File file;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        final GraphicsUtil graphicUtil = new GraphicsUtil();
-        holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
+        Bitmap bm;
 
         if(item.getPatchSoulTeam() != null) {
             String imagePath = item.getPatchSoulTeam().substring(item.getPatchSoulTeam().lastIndexOf("/") + 1, item.getPatchSoulTeam().lastIndexOf("-"));
@@ -125,64 +120,6 @@ public class List_Ranking  extends ArrayAdapter<Ranking_Item> {
         }else{
             holder.imageEquipo1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_main));
         }
-        final String pic_name;
-        if(item.getPatchProfileImage().contains("facebook.com")){
-            pic_name = "" + item.getIdProfile();
-        }else{
-            pic_name = item.getPatchProfileImage().substring(
-                    item.getPatchProfileImage().lastIndexOf("/"),
-                    item.getPatchProfileImage().lastIndexOf("."));
-        }
-
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                Bitmap bm = bitmap;
-                GraphicsUtil graphicUtil = new GraphicsUtil();
-                holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-                FileOutputStream stream = null;
-                File file;
-                try {
-                    file = new File(General.local_dir_images + "profile/");
-                    if(!file.exists()){
-                        file.mkdir();
-                    }
-                    stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                    stream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {}
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {}
-        };
-
-        file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-        if (file.exists()) {
-            try{
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 100));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        } else {
-            Picasso.with(context)
-                    .load(item.getPatchProfileImage())
-                    .into(target);
-        }
-        */
-
         return convertView;
     }
 

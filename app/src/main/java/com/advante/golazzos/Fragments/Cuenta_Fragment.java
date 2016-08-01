@@ -1,6 +1,9 @@
 package com.advante.golazzos.Fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import com.advante.golazzos.Interface.NPayListener;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.R;
+import com.advante.golazzos.Wizzard4Activity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -108,7 +113,21 @@ public class Cuenta_Fragment extends GeneralFragment {
                 npay.CreateSubscription(new NPayListener() {
                     @Override
                     public void OnComplete(Boolean pass) {
+                        if(pass) {
+                            final Dialog dialog1 = new Dialog(getActivity(), android.R.style.Theme_DeviceDefault_Dialog);
+                            dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog1.setContentView(R.layout.dialog_titular);
+                            ImageView image = (ImageView) dialog1.findViewById(R.id.image);
 
+                            image.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dialog1.dismiss();
+                                }
+                            });
+                            dialog1.show();
+                        }
                     }
                 });
             }

@@ -64,7 +64,7 @@ public class Amigos_Fragment extends GeneralFragment {
     ImageView imgInvitar, imgNoAmigos;
     int normalHeight = 0;
     private CallbackManager callbackManager;
-    Boolean flag = true;
+    Boolean flag = true, first = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,7 @@ public class Amigos_Fragment extends GeneralFragment {
 
             final String appLinkUrl;
 
-            appLinkUrl = "https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=utm_source%3Dfacebook%26utm_medium%3Dmessenger%26utm_content%3Did%253A" + gnr.getLoggedUser().getId();
+            appLinkUrl = "https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer=" + gnr.getLoggedUser().getInvitation_token();
 
             final AppInviteContent content = new AppInviteContent.Builder()
                     .setApplinkUrl(appLinkUrl)
@@ -129,20 +129,17 @@ public class Amigos_Fragment extends GeneralFragment {
 
                 @Override
                 public void onError(FacebookException error) {
-                    showLog(error.getMessage());
+                    showShortToast(error.getMessage());
                 }
             });
 
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle("Juega Conmigo Golazzos!")
                     .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
-                    .setImageUrl(Uri.parse("http://principal-desarrollo.com/golazzos/img/ic_main.png"))
-                    .setContentUrl(Uri.parse(appLinkUrl))
+                    .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer"))
+                    //.setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
                     .build();
-
             sendButton.setShareContent(linkContent);
-
-            getData(General.endpoint_friends);
 
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 public void onGlobalLayout() {
@@ -156,22 +153,51 @@ public class Amigos_Fragment extends GeneralFragment {
                         imgNoAmigos.setVisibility(View.GONE);
                         textNoAmigos.setVisibility(View.GONE);
                     } else if (view.getHeight() == normalHeight) {
-                        checkItems();
+                        checkItems(first);
                     }
 
                 }
             });
+
+            if(!preferences.getString("invitation_token","").equals("")) {
+                API.getInstance(getContext()).authenticateObjectRequest(Request.Method.POST, gnr.endpoint_invitation, JSONBuilder.addFriend(preferences.getString("invitation_token","")), new API_Listener() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        preferences.edit().putString("invitation_token","").apply();
+                        getData(General.endpoint_friends);
+                        showLog(response.toString());
+                    }
+
+                    @Override
+                    public void OnSuccess(JSONArray response) {
+                    }
+
+                    @Override
+                    public void OnError(VolleyError error) {
+                        String data = new String(error.networkResponse.data);
+                        showLog(""+data);
+                        preferences.edit().putString("invitation_token","").apply();
+                        getData(General.endpoint_friends);
+                    }
+                });
+            }else{
+                getData(General.endpoint_friends);
+            }
         }
         return view;
     }
 
-    private void checkItems(){
-        if(listView.getAdapter()!= null && listView.getAdapter().getCount() > 0){
-            imgNoAmigos.setVisibility(View.GONE);
-            textNoAmigos.setVisibility(View.GONE);
+    private void checkItems(Boolean first){
+        if(!first) {
+            if (listView.getAdapter() != null && listView.getAdapter().getCount() > 0) {
+                imgNoAmigos.setVisibility(View.GONE);
+                textNoAmigos.setVisibility(View.GONE);
+            } else {
+                imgNoAmigos.setVisibility(View.VISIBLE);
+                textNoAmigos.setVisibility(View.VISIBLE);
+            }
         }else{
-            imgNoAmigos.setVisibility(View.VISIBLE);
-            textNoAmigos.setVisibility(View.VISIBLE);
+            this.first = false;
         }
     }
 
@@ -192,6 +218,7 @@ public class Amigos_Fragment extends GeneralFragment {
 
     private void getData(String endpoint){
         dialog.show();
+
         if(endpoint.equals(gnr.endpoint_friends)){
             textNoAmigos.setText(getString(R.string.noAmigos));
         }else if (endpoint.equals(gnr.endpoint_followers)){
@@ -287,5 +314,11 @@ public class Amigos_Fragment extends GeneralFragment {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

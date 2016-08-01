@@ -118,7 +118,6 @@ public class Wizzard2Activity extends GeneralActivity {
                     idEquipo = -1;
                     buttonEquipos.setText("Seleccionar Equipo");
                 }
-                dialog.show();
                 gnr.buscarLigas(new IBuscarLigas_Listener() {
                     @Override
                     public void onComplete(ArrayList<Liga> items) {

@@ -197,9 +197,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/app_nohaypartidos"
-            android:scaleType="fitStart"/>
+            android:scaleType="fitXY"/>
         <TextView
-            android:id="@+id/textNoAmigos"
+            android:id="@+id/textNoJugadas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"

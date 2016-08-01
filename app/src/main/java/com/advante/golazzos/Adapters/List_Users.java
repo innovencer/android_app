@@ -116,19 +116,13 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
             holder.textEquipoAlma.setText(item.getSouldTeamName());
         }
 
-        com.advante.golazzos.Helpers.Picasso.with(context).load(item.getPatchSoulTeam()).transform(new CircleTransform()).into(holder.imageEquipo1);
         com.advante.golazzos.Helpers.Picasso.with(context).load(item.getPatchProfileImage()).transform(new CircleTransform()).into(holder.imageProfile);
-        /*
-        Log.d("Golazz",""+ item.getPatchSoulTeam());
 
-        File file = new File(General.local_dir_images + "profile/no_profile.png");
+        File file;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        final GraphicsUtil graphicUtil = new GraphicsUtil();
-        holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
-
+        Bitmap bm;
+        GraphicsUtil graphicUtil = new GraphicsUtil();
         if(item.getPatchSoulTeam() != null) {
             String imagePath = item.getPatchSoulTeam().substring(item.getPatchSoulTeam().lastIndexOf("/") + 1, item.getPatchSoulTeam().lastIndexOf("-"));
             file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
@@ -139,56 +133,6 @@ public class List_Users extends ArrayAdapter<UserBusqueda> {
         }else{
             holder.imageEquipo1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_main));
         }
-        final String pic_name ="" + item.getIdProfile();
-
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                Bitmap bm = bitmap;
-                GraphicsUtil graphicUtil = new GraphicsUtil();
-                holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 16));
-                FileOutputStream stream = null;
-                File file;
-                try {
-                    file = new File(General.local_dir_images + "profile/");
-                    if(!file.exists()){
-                        file.mkdir();
-                    }
-                    stream = new FileOutputStream(General.local_dir_images + "profile/"+pic_name+".png");
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                    stream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {}
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {}
-        };
-
-        file = new File(General.local_dir_images + "profile/" + pic_name + ".png");
-        if (file.exists()) {
-            try{
-                options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                holder.imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                        bm, 100));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        } else {
-            Picasso.with(context)
-                    .load(item.getPatchProfileImage())
-                    .into(target);
-        }
-    */
 
         holder.linearAdd.setOnClickListener(new View.OnClickListener() {
             @Override

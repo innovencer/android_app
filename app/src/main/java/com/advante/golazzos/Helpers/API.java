@@ -135,7 +135,7 @@ public class API {
                     return params;
                 }
             };
-            objectRequest.setRetryPolicy(new DefaultRetryPolicy(
+            arrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                     7000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -161,7 +161,7 @@ public class API {
                         listener.OnError(error);
                     }
                 });
-        objectRequest.setRetryPolicy(new DefaultRetryPolicy(
+        arrayRequest.setRetryPolicy(new DefaultRetryPolicy(
                 7000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

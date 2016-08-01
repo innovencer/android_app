@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,12 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Input;
 import com.advante.golazzos.Helpers.API;
+import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.JSONBuilder;
+import com.advante.golazzos.Helpers.Picasso;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
@@ -64,7 +67,7 @@ import rx.functions.Func1;
 public class Perfil_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     EditText editNombre, editApellido, editEmail, editTelefono;
-    TextView textInfo,textNotificaciones,textCuenta, textCerrarSesion;
+    TextView textInfo,textNotificaciones,textCuenta, textCerrarSesion, textTipoUsuario;
     ImageView imageProfile,imageTipoUsuario,imageEditar;
     LinearLayout linear1, linear2, linear3,linearGuardar;
     Boolean flag = true;
@@ -90,11 +93,13 @@ public class Perfil_Fragment extends GeneralFragment {
             editTelefono = (EditText) view.findViewById(R.id.editTelefono);
             imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
             imageEditar = (ImageView) view.findViewById(R.id.imageEditar);
+            imageTipoUsuario = (ImageView) view.findViewById(R.id.imageTipoUsuario);
 
             textInfo = (TextView) view.findViewById(R.id.textInfo);
             textNotificaciones = (TextView) view.findViewById(R.id.textNotificaciones);
             textCuenta = (TextView) view.findViewById(R.id.textCuenta);
             textCerrarSesion = (TextView) view.findViewById(R.id.textCerrarSesion);
+            textTipoUsuario = (TextView) view.findViewById(R.id.textTipoUsuario);
 
             linear1 = (LinearLayout) view.findViewById(R.id.linear1);
             linear2 = (LinearLayout) view.findViewById(R.id.linear2);
@@ -178,21 +183,17 @@ public class Perfil_Fragment extends GeneralFragment {
             editNombre.setText(nombre);
             editApellido.setText(apellido);
             editEmail.setText(gnr.getLoggedUser().getEmail());
+            if(gnr.getLoggedUser().getPaid_subscription()){
+                textTipoUsuario.setText("Titular");
+                imageTipoUsuario.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.titular_icono));
+            }else{
+                textTipoUsuario.setText("Suplente");
+                imageTipoUsuario.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.suplente_icono));
+            }
         }
 
-        File noImage = new File(General.local_dir_images + "profile/no_profile.png");
-        File file = new File(General.local_dir_images + "profile/"+ gnr.getLoggedUser().getId() +".png");
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        GraphicsUtil graphicUtil = new GraphicsUtil();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bm;
-        if(file.exists())
-            bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        else{
-            bm = BitmapFactory.decodeFile(noImage.getAbsolutePath(), options);
-        }
-        imageProfile.setImageBitmap(graphicUtil.getCircleBitmap(
-                bm, 16));
+        Picasso.with(getContext()).load(gnr.getLoggedUser().getProfile_pic_url()).transform(new CircleTransform()).into(imageProfile);
+
     }
 
     View.OnClickListener onClickInfo = new View.OnClickListener() {

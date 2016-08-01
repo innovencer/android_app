@@ -37,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,7 +133,20 @@ public class RankingFragment extends GeneralFragment {
         textAciertos.setText("" + gnr.getLoggedUser().getScore2());
         textPosicion.setText("" + gnr.getLoggedUser().getRank2());
         Picasso.with(getContext()).load(gnr.getLoggedUser().getProfile_pic_url()).transform(new CircleTransform()).into(imageProfile);
-        Picasso.with(getContext()).load(gnr.getLoggedUser().getSoul_team().getImage_path()).transform(new CircleTransform()).into(imageEquipo1);
+        String imagePath = gnr.getLoggedUser().getSoul_team().getImage_path();
+        int idImage = Integer.parseInt(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-")));
+
+        File file;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bm;
+        GraphicsUtil graphicUtil = new GraphicsUtil();
+        file = new File(General.local_dir_images + "equipos/" + idImage + ".gif");
+        if(file.exists()) {
+            bm = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            imageEquipo1.setImageBitmap(graphicUtil.getCircleBitmap(
+                    bm, 16));
+        }
     }
 
     private void getRanking(String type){
@@ -172,6 +186,11 @@ public class RankingFragment extends GeneralFragment {
                                     ranking_item.setType(1);
                                 }
                                 ranking_items.add(ranking_item);
+                            }
+                            if(ranking_items.size() <= 0){
+                                View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match_1,null);
+                                ((ViewGroup)listView.getParent()).addView(emptyView);
+                                listView.setEmptyView(emptyView);
                             }
                             List_Ranking list = new List_Ranking(getContext(),ranking_items);
                             listView.setAdapter(list);

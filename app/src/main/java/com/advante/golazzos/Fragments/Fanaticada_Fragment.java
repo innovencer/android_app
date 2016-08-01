@@ -191,7 +191,8 @@ public class Fanaticada_Fragment extends GeneralFragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Error en al tratar de conectar con el servicio web. Intente mas tarde", Toast.LENGTH_SHORT).show();
+                        String msgError = new String(error.networkResponse.data);
+                        Toast.makeText(getContext(), "Error. "+ msgError , Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
                 }){

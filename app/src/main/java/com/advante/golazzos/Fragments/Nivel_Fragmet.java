@@ -235,7 +235,7 @@ public class Nivel_Fragmet extends GeneralFragment {
         if(nivel<levelClick){
             text1.setText(getString(R.string.text1));
         }else{
-            text1.setText("Como recompeza obtuviste");
+            text1.setText("Como recompenza obtuviste");
         }
         setPassedTextView(getTextView(levelClick));
         File file = new File(General.local_dir_images + "levels/trof_" + levelClick + ".png");

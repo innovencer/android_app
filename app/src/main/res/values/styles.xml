@@ -9,7 +9,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarSize">@dimen/actionBarSize</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlActivated">@color/grayFlush</item>
         <item name="colorControlHighlight">@color/grayFlush</item>

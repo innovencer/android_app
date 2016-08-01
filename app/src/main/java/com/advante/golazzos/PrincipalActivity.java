@@ -1,6 +1,7 @@
 package com.advante.golazzos;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -35,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -42,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.LeftMenuAdapter;
 import com.advante.golazzos.Fragments.Aciertos_Fragment;
@@ -69,6 +72,7 @@ import com.advante.golazzos.Model.LeftMenu_Item;
 import com.advante.golazzos.Model.User;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.facebook.FacebookSdk;
 import com.mlsdev.rximagepicker.RxImageConverters;
 import com.mlsdev.rximagepicker.RxImagePicker;
 import com.mlsdev.rximagepicker.Sources;
@@ -127,11 +131,48 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+        FacebookSdk.sdkInitialize(this);
+        Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
+        if (targetUrl != null) {
+            Toast.makeText(this, "App Link Target URL: " + targetUrl.toString(),Toast.LENGTH_SHORT).show();
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer_w);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        
+        if(getIntent().getStringExtra("wizzard") != null){
+            final Dialog dialog1 = new Dialog(PrincipalActivity.this,android.R.style.Theme_DeviceDefault_Dialog);
+            dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog1.setContentView(R.layout.dialog_500_puntos);
+            ImageView image = (ImageView) dialog1.findViewById(R.id.image);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog1.dismiss();
+                }
+            });
+            dialog1.show();
+        }
+        if(getIntent().getStringExtra("premium") != null){
+            final Dialog dialog1 = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog);
+            dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog1.setContentView(R.layout.dialog_titular);
+            ImageView image = (ImageView) dialog1.findViewById(R.id.image);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog1.dismiss();
+                }
+            });
+            dialog1.show();
+        }
 
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -274,8 +315,6 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         bottomMenu2 = (LinearLayout) findViewById(R.id.bottomMenu2);
 
         loadProfile();
-
-        Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         npay = new NPay(this);
 
         final Resources r = getResources();
@@ -288,6 +327,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         final FrameLayout view = (FrameLayout) findViewById(R.id.flContent);
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
             public void onGlobalLayout(){
+                Log.d("Golazz","now "+ view.getHeight() +" normal "+normalHeight);
                 if(!no_menu) {
                     if (normalHeight == 0) {
                         normalHeight = view.getHeight();

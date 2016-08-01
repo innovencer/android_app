@@ -100,6 +100,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/line1"
         android:layout_above="@+id/line2"
+        android:layout_marginTop="-6dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:visibility="visible"
@@ -137,7 +138,8 @@
         <com.facebook.share.widget.SendButton
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Invita a tus amigos y gana 300 puntos"
+            android:text="Invita ya a tus Amigos"
+            android:gravity="center"
             android:textSize="15dp"
             android:id="@+id/button_facebook"
             android:layout_centerVertical="true"

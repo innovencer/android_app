@@ -14,7 +14,7 @@
         android:layout_marginTop="70dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/noPost"
+        android:text="@string/noPartidosPorJugar"
         android:gravity="center_horizontal"
         android:textColor="@color/white"
         android:textStyle="italic|bold"

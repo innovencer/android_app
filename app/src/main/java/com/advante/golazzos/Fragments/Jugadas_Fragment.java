@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,7 +60,8 @@ public class Jugadas_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     RecyclerView recycler;
     RelativeLayout linearJugadas;
-    TextView buttonFinalizado, buttonEnVivo, buttonPORJUGAR;
+    LinearLayout linear1, linear2, linear3, linear4;
+    TextView buttonFinalizado, buttonEnVivo, buttonPORJUGAR, textNoJugadas;
 
     private ViewFlipper viewFlipper;
     private float lastX;
@@ -72,7 +74,7 @@ public class Jugadas_Fragment extends GeneralFragment {
 
     String status = "?status=not_started",bet_type_id = "";
     int tab = 1;
-    Boolean flag = true;
+    Boolean flag = true, screen_jugadas = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,32 @@ public class Jugadas_Fragment extends GeneralFragment {
             recycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
             linearJugadas = (RelativeLayout) view.findViewById(R.id.linearJugadas);
+            linear1 = (LinearLayout) view.findViewById(R.id.linear1);
+            linear2 = (LinearLayout) view.findViewById(R.id.linear2);
+            linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            linear4 = (LinearLayout) view.findViewById(R.id.linear4);
 
+            View.OnClickListener jugadasClick = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    screen_jugadas = true;
+                    getData(status + bet_type_id);
+                }
+            };
+            View.OnClickListener retosClick = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    screen_jugadas = false;
+                    getData(status + bet_type_id);
+                }
+            };
+
+            linear1.setOnClickListener(jugadasClick);
+            linear3.setOnClickListener(jugadasClick);
+            linear2.setOnClickListener(retosClick);
+            linear4.setOnClickListener(retosClick);
+
+            textNoJugadas = (TextView) view.findViewById(R.id.textNoJugadas);
             buttonFinalizado = (TextView) view.findViewById(R.id.buttonFinalizado);
             buttonEnVivo = (TextView) view.findViewById(R.id.buttonEnVivo);
             buttonPORJUGAR = (TextView) view.findViewById(R.id.buttonPORJUGAR);
@@ -168,6 +195,20 @@ public class Jugadas_Fragment extends GeneralFragment {
     }
 
     private void getData(String param){
+        linearJugadas.setVisibility(View.GONE);
+        if(screen_jugadas) {
+            if (param.contains("being_played")) {
+                textNoJugadas.setText(getString(R.string.noJugadasVIVO));
+            } else if (param.contains("finished")) {
+                textNoJugadas.setText(getString(R.string.noJugadasFINALIZADAS));
+            } else {
+                textNoJugadas.setText(getString(R.string.noJugadas));
+            }
+        }else{
+            linearJugadas.setVisibility(View.VISIBLE);
+            textNoJugadas.setText(getString(R.string.noRetos));
+            return;
+        }
         dialog.show();
         jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -265,9 +306,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                                 jugadas.add(jugada);
                             }
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            if(jugadas.size()>0){
-                                linearJugadas.setVisibility(View.GONE);
-                            }else{
+                            if(jugadas.size()<=0){
                                 linearJugadas.setVisibility(View.VISIBLE);
                             }
                             List_Jugadas adapter = new List_Jugadas(getActivity(), jugadas, new OnItemClickListener() {
@@ -299,6 +338,13 @@ public class Jugadas_Fragment extends GeneralFragment {
                                         intent.putExtra("textTime_ago",item.getTextTime_ago());
                                         intent.putExtra("textLabel", item.getLabel());
                                         intent.putExtra("textTitulo", item.getOption());
+                                        if(item.getWhich_image() == 1){
+                                            intent.putExtra("option", "Gana Local");
+                                        }else if(item.getWhich_image() == 2){
+                                            intent.putExtra("option", "Gana Visitante");
+                                        }else{
+                                            intent.putExtra("option", "Empate");
+                                        }
                                         switch (item.getWhich_image()){
                                             case 1:
                                                 intent.putExtra("image",item.getEquipo1().getData_factory_id());
@@ -310,7 +356,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                                                 intent.putExtra("image",-1);
                                                 break;
                                         }
-                                        showLog(item.getAmount_to_deposit() +" "+ item.getAmount());
+
                                         intent.putExtra("amount_to_deposit", item.getAmount_to_deposit());
                                         intent.putExtra("amount", item.getAmount());
                                         if(item.getStatus().contains("won")){

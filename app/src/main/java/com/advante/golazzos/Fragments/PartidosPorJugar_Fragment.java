@@ -215,6 +215,10 @@ public class PartidosPorJugar_Fragment extends GeneralFragment {
                             List_Partidos list_partidos = new List_Partidos(getContext(), partidos, resourse);
                             listView.setAdapter(list_partidos);
                         }
+                    }else{
+                        View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match_1,null);
+                        ((ViewGroup)listView.getParent()).addView(emptyView);
+                        listView.setEmptyView(emptyView);
                     }
                     dialog.dismiss();
                 } catch (JSONException e) {

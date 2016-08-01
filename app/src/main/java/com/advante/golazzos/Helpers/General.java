@@ -93,7 +93,7 @@ public class General {
 
     private ProgressDialog dialog;
 
-    JsonObjectRequest jsArrayRequest;
+    JsonObjectRequest jsObject;
 
     ArrayList<Liga> ligas = null;
     IBuscarLigas_Listener iBuscarLigas;
@@ -372,5 +372,9 @@ public class General {
             value = multiplierses.get(type).getNon_subscribed() * amount;
         }
         return ""+value;
+    }
+
+    private void createAppLink(){
+
     }
 }
