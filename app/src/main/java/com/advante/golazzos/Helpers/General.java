@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -21,25 +22,43 @@ import com.advante.golazzos.Model.User;
 import com.advante.golazzos.Model.UserLevel;
 import com.advante.golazzos.Model.UserSettings;
 import com.advante.golazzos.R;
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Ruben Flores on 3/31/2016.
  */
@@ -93,7 +112,7 @@ public class General {
 
     private ProgressDialog dialog;
 
-    JsonObjectRequest jsObject;
+    JsonObjectRequest objectRequest;
 
     ArrayList<Liga> ligas = null;
     IBuscarLigas_Listener iBuscarLigas;
@@ -126,7 +145,7 @@ public class General {
         endpoint_invitation = url_base + context.getString(R.string.invitation_endpoint);
         locale = context.getResources().getConfiguration().locale.getISO3Country();
         dialog = new ProgressDialog(context);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setTitle("");
         dialog.setMessage("Conectando...");
 
@@ -373,8 +392,52 @@ public class General {
         }
         return ""+value;
     }
-
-    private void createAppLink(){
-
+/*
+    public void applink() {
+        HashMap<String, String> param = new HashMap<String, String>();
+        System.out.println("fb token "+preferences.getString("fb_token",""));
+        param.put("access_token", preferences.getString("fb_token",""));
+        param.put("name", "Android App Link Object Example");
+        param.put("android", " [\n" +
+                "    {\n" +
+                "      \"url\" : \"sharesample://story/1234\",\n" +
+                "      \"package\" : \"com.advante.golazzos\",\n" +
+                "      \"app_name\" : \"ShareSample\",\n" +
+                "    },\n" +
+                "  ]");
+        param.put("web"," {\n" +
+                "    \"should_fallback\" : false,\n" +
+                "  }");
+        JSONObject request = new JSONObject(param);
+        System.out.println(request.toString());
+        objectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                "https://graph.facebook.com/app/app_link_hosts",
+                request,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("res "+response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("error "+ new String(error.networkResponse.data));
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        objectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                7000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).addToRequestQueue(objectRequest);
     }
+*/
 }

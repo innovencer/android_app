@@ -102,8 +102,8 @@
         android:layout_above="@+id/line2"
         android:layout_marginTop="-6dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:visibility="visible"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
         android:src="@drawable/app_notienesamigos"/>
     <TextView
         android:id="@+id/textNoAmigos"

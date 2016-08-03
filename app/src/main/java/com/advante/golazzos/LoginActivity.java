@@ -119,6 +119,7 @@ public class LoginActivity extends GeneralActivity {
                         protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
                             // profile2 is the new profile
                             loginFB(accessToken.getToken());
+                            preferences.edit().putString("fb_token", accessToken.getToken()).apply();
                             mProfileTracker.stopTracking();
                         }
                     };

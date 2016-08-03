@@ -3,6 +3,8 @@ package com.advante.golazzos.Helpers;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.squareup.picasso.OkHttpDownloader;
 
 /**
@@ -23,6 +25,9 @@ public class App extends Application {
         built.setIndicatorsEnabled(false);
         built.setLoggingEnabled(false);
         com.squareup.picasso.Picasso.setSingletonInstance(built);
+
+        FacebookSdk.sdkInitialize(this);
+        AppEventsLogger.activateApp(this);
     }
 
     public static Context getContext(){

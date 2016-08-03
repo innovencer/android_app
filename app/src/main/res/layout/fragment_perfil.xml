@@ -178,8 +178,8 @@
                             android:layout_weight="0.5"
                             android:orientation="vertical">
                             <ImageView
-                                android:layout_width="55dp"
-                                android:layout_height="55dp"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
                                 android:src="@drawable/suplente_icono"
                                 android:id="@+id/imageTipoUsuario" />
                             <TextView

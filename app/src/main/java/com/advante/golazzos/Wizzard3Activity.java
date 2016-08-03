@@ -111,7 +111,7 @@ public class Wizzard3Activity extends GeneralActivity {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Golazzos");
-                i.putExtra(Intent.EXTRA_TEXT   , "Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token()+")");
+                i.putExtra(Intent.EXTRA_TEXT   , getString(R.string.share_Email)+"&referrer="+gnr.getLoggedUser().getInvitation_token()+")");
                 try {
                     startActivity(Intent.createChooser(i, "Send Mail"));
                 } catch (android.content.ActivityNotFoundException ex) {
@@ -147,7 +147,7 @@ public class Wizzard3Activity extends GeneralActivity {
 
     private void publishTwitterFeed(){
         TweetComposer.Builder builder = new TweetComposer.Builder(this)
-                .text("Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token()+")");
+                .text(getString(R.string.share_Twitter)+"&referrer="+gnr.getLoggedUser().getInvitation_token()+")");
         builder.show();
     }
 

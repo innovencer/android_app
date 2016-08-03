@@ -116,6 +116,15 @@ public class Amigos_Fragment extends GeneralFragment {
 
             callbackManager = CallbackManager.Factory.create();
             SendButton sendButton = (SendButton) view.findViewById(R.id.button_facebook);
+
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Juega Conmigo Golazzos!")
+                    .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
+                    .setContentUrl(Uri.parse("https://www.golazzos.com/"))
+                    //.setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
+                    .build();
+            sendButton.setShareContent(linkContent);
+
             sendButton.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
                 @Override
                 public void onSuccess(Sharer.Result result) {
@@ -133,13 +142,6 @@ public class Amigos_Fragment extends GeneralFragment {
                 }
             });
 
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Juega Conmigo Golazzos!")
-                    .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
-                    .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer"))
-                    //.setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
-                    .build();
-            sendButton.setShareContent(linkContent);
 
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 public void onGlobalLayout() {
@@ -188,6 +190,7 @@ public class Amigos_Fragment extends GeneralFragment {
     }
 
     private void checkItems(Boolean first){
+
         if(!first) {
             if (listView.getAdapter() != null && listView.getAdapter().getCount() > 0) {
                 imgNoAmigos.setVisibility(View.GONE);

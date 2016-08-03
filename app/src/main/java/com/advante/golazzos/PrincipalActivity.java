@@ -72,7 +72,11 @@ import com.advante.golazzos.Model.LeftMenu_Item;
 import com.advante.golazzos.Model.User;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.mlsdev.rximagepicker.RxImageConverters;
 import com.mlsdev.rximagepicker.RxImagePicker;
 import com.mlsdev.rximagepicker.Sources;
@@ -131,7 +135,6 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-        FacebookSdk.sdkInitialize(this);
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         if (targetUrl != null) {
             Toast.makeText(this, "App Link Target URL: " + targetUrl.toString(),Toast.LENGTH_SHORT).show();
@@ -342,6 +345,7 @@ public class PrincipalActivity extends AppCompatActivity implements NavigationVi
         });
 
     }
+
 
     private void showFragment(int position){
         Fragment fragment = null;

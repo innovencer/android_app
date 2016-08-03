@@ -93,5 +93,9 @@
     <string name="text.wizzard3.text1">¡Golazzos es mas divertido si compites!.\nInvita a tus amigos \nSi aceptan los 2 ganan <b>300 puntos!!</b>!</string>
 
     <string name="hintEscribir"><i>¿QUÉ TIENES EN MENTE?</i></string>
+    <string name="dialog.Estadisticas.Message"><i>Abrir estadísticas YA!</i></string>
     <string name="text1"><i>"Como recompenza obtendrás"</i></string>
+    <string name="share.Twitter">Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos</string>
+    <string name="share.Facebook">  (https://play.google.com/store/apps/details?id=com.advante.golazzos</string>
+    <string name="share.Email">Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos</string>
 </resources>

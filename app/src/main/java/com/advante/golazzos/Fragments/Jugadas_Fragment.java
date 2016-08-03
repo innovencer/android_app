@@ -106,6 +106,9 @@ public class Jugadas_Fragment extends GeneralFragment {
             View.OnClickListener jugadasClick = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    linear3.setVisibility(View.VISIBLE);
+                    linear4.setVisibility(View.INVISIBLE);
+
                     screen_jugadas = true;
                     getData(status + bet_type_id);
                 }
@@ -113,8 +116,12 @@ public class Jugadas_Fragment extends GeneralFragment {
             View.OnClickListener retosClick = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    linear3.setVisibility(View.INVISIBLE);
+                    linear4.setVisibility(View.VISIBLE);
+
                     screen_jugadas = false;
                     getData(status + bet_type_id);
+
                 }
             };
 

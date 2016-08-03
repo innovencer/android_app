@@ -28,7 +28,7 @@ public class GeneralFragment  extends Fragment {
         gnr = new General(getContext());
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("");
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setMessage("Conectando...");
     }
 

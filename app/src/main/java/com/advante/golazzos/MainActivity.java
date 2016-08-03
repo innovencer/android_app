@@ -22,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.AccessToken;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.twitter.sdk.android.Twitter;
@@ -66,7 +67,7 @@ public class MainActivity extends GeneralActivity {
                 startActivity(intent);
             }
         });
-
+        showLog("access token "+AccessToken.getCurrentAccessToken());
         //preferences.edit().putString("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwaXJlc19hdCI6IjIwMTYtMDYtMDYgMjI6MTg6NTAgVVRDIn0.9-DWmrp6eTWXTYmVRg2F237ShHIr9iXr7M8a1YoD4UA").apply();
         //preferences.edit().putString("invitation_token", "cbb5ec40d72e3705a3d2d58f4a1bad3fcbb5ec40d72e3705a3d2d58f4a1bad3f").apply();
         showLog(preferences.getString("token",""));

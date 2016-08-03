@@ -15,8 +15,8 @@ android {
         applicationId "com.advante.golazzos"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 49
-        versionName "1.3.43"
+        versionCode 52
+        versionName "1.3.46"
         multiDexEnabled true
         generatedDensities = []
     }

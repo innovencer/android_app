@@ -197,7 +197,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/app_nohaypartidos"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
         <TextView
             android:id="@+id/textNoJugadas"
             android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,19 @@ import com.advante.golazzos.Helpers.NPay;
 import com.advante.golazzos.Interface.IGetUser_Listener;
 import com.advante.golazzos.Interface.NPayListener;
 import com.advante.golazzos.Model.User;
+
+import java.security.SecureRandom;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by Ruben Flores on 4/23/2016.
@@ -84,6 +98,7 @@ public class EstadisticasActivity extends GeneralActivity {
                                 public void onClick(View view) {
                                     dialog1.dismiss();
                                     wb = (WebView) findViewById(R.id.webView);
+                                    disableCertificateValidation();
                                     wb.setWebViewClient(new webViewClient());
                                     webSettings = wb.getSettings();
                                     webSettings.setJavaScriptEnabled(true);
@@ -120,17 +135,18 @@ public class EstadisticasActivity extends GeneralActivity {
         public void onReceivedSslError(WebView view,final SslErrorHandler handler, SslError error) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(EstadisticasActivity.this);
             showLog(error.toString());
-            builder.setMessage("Server SSL Certificate seems invalid. Do you want to continue ?");
-            builder.setPositiveButton("continue", new DialogInterface.OnClickListener() {
+            builder.setMessage(getString(R.string.dialog_Estadisticas_Message));
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     handler.proceed();
                 }
             });
-            builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     handler.cancel();
+                    finish();
                 }
             });
             final AlertDialog dialog = builder.create();
@@ -176,5 +192,30 @@ public class EstadisticasActivity extends GeneralActivity {
         alertDialog.show();
             */
         }
+    }
+
+    public static void disableCertificateValidation() {
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                }};
+
+        // Ignore differences between given hostname and certificate hostname
+        HostnameVerifier hv = new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) { return true; }
+        };
+
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(hv);
+        } catch (Exception e) {}
     }
 }
