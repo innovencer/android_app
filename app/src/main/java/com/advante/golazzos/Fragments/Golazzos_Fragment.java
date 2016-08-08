@@ -12,11 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.LoginActivity;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.R;
+import com.advante.golazzos.Wizzard3Activity;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 /**
@@ -74,10 +76,15 @@ public class Golazzos_Fragment extends GeneralFragment {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("message/rfc822");
                     i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailContacto)});
                     i.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
                     i.putExtra(android.content.Intent.EXTRA_TEXT, "");
-                    startActivity(Intent.createChooser(i, "Contactar a Golazzos"));
+                    try {
+                        startActivity(Intent.createChooser(i, "Contactar a Golazzos"));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

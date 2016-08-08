@@ -161,6 +161,7 @@ public class CrearCuentaActivity extends GeneralActivity {
                             user1.setPaid_subscription(data.getBoolean("paid_subscription"));
                             user1.setPoints(data.getDouble("points"));
                             user1.setProfile_pic_url(data.getString("profile_pic_url"));
+                            user1.setInvitation_token(data.getString("invitation_token"));
 
                             JSONObject level = data.getJSONObject("level");
 

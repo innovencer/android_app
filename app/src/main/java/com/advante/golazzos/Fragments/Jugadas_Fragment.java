@@ -212,6 +212,7 @@ public class Jugadas_Fragment extends GeneralFragment {
                 textNoJugadas.setText(getString(R.string.noJugadas));
             }
         }else{
+            recycler.setAdapter(null);
             linearJugadas.setVisibility(View.VISIBLE);
             textNoJugadas.setText(getString(R.string.noRetos));
             return;

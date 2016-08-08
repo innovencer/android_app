@@ -125,7 +125,7 @@ public class Wizzard3Activity extends GeneralActivity {
         buttonOT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                String link = getString(R.string.baseLanding)+gnr.getLoggedUser().getInvitation_token();
+                String link = getString(R.string.share_Email)+"&referrer="+gnr.getLoggedUser().getInvitation_token()+")";
                 if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
                     android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboard.setText(link);

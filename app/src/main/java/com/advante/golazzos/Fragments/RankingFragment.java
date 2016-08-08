@@ -191,9 +191,10 @@ public class RankingFragment extends GeneralFragment {
                                 View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match_1,null);
                                 ((ViewGroup)listView.getParent()).addView(emptyView);
                                 listView.setEmptyView(emptyView);
+                            }else {
+                                List_Ranking list = new List_Ranking(getContext(), ranking_items);
+                                listView.setAdapter(list);
                             }
-                            List_Ranking list = new List_Ranking(getContext(),ranking_items);
-                            listView.setAdapter(list);
                             dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -61,7 +61,7 @@ public class Amigos_Fragment extends GeneralFragment {
     ListView listView;
     LinearLayout linear1, linear2, linear3, linear4;
     TextView textNoAmigos;
-    ImageView imgInvitar, imgNoAmigos;
+    ImageView imgInvitar, imgNoAmigos, image1, image2;
     int normalHeight = 0;
     private CallbackManager callbackManager;
     Boolean flag = true, first = true;
@@ -86,6 +86,9 @@ public class Amigos_Fragment extends GeneralFragment {
             linear2 = (LinearLayout) view.findViewById(R.id.linear2);
             linear3 = (LinearLayout) view.findViewById(R.id.linear3);
             linear4 = (LinearLayout) view.findViewById(R.id.linear4);
+
+            image1 = (ImageView) view.findViewById(R.id.image1);
+            image2 = (ImageView) view.findViewById(R.id.image2);
 
             imgInvitar = (ImageView) view.findViewById(R.id.imgInvitar);
             imgNoAmigos = (ImageView) view.findViewById(R.id.imgNoAmigos);
@@ -208,12 +211,12 @@ public class Amigos_Fragment extends GeneralFragment {
         @Override
         public void onClick(View view) {
             if(view.getTag().equals("1")){
-                linear3.setVisibility(View.VISIBLE);
-                linear4.setVisibility(View.INVISIBLE);
+                image1.setVisibility(View.VISIBLE);
+                image2.setVisibility(View.INVISIBLE);
                 getData(General.endpoint_friends);
             }else{
-                linear3.setVisibility(View.INVISIBLE);
-                linear4.setVisibility(View.VISIBLE);
+                image1.setVisibility(View.INVISIBLE);
+                image2.setVisibility(View.VISIBLE);
                 getData(General.endpoint_followers);
             }
         }

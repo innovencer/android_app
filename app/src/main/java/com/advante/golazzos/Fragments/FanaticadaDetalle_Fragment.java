@@ -26,11 +26,13 @@ import android.widget.Toast;
 
 import com.advante.golazzos.Adapters.List_Comentarios;
 import com.advante.golazzos.EstadisticasActivity;
+import com.advante.golazzos.Helpers.API;
 import com.advante.golazzos.Helpers.CircleTransform;
 import com.advante.golazzos.Helpers.General;
 import com.advante.golazzos.Helpers.GeneralFragment;
 import com.advante.golazzos.Helpers.GraphicsUtil;
 import com.advante.golazzos.Helpers.VolleySingleton;
+import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.Comentario;
 import com.advante.golazzos.Model.User;
@@ -54,8 +56,6 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import org.json.JSONArray;
@@ -249,11 +249,38 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
         return view;
     }
 
-
     private void publishTwitterFeed(){
-        TweetComposer.Builder builder = new TweetComposer.Builder(getContext())
-             .text(label.replace("<font color='#0E5A80'>","").replace("</font>","").replace("<br>",""));
-        builder.show();
+        dialog.show();
+        JSONObject request = new JSONObject();
+        try {
+            request.put("longUrl", "https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        API.getInstance(getContext()).unAuthenticateObjectRequest(Request.Method.POST, "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBqKNa1AIrPJsa8zQTfsUTgumE8TNKlu2k", request, new API_Listener() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+                dialog.dismiss();
+                TweetComposer.Builder builderTW = null;
+                try {
+                    builderTW = new TweetComposer.Builder(getContext())
+                            .text(label.replace("<font color='#0E5A80'>","").replace("</font>","").replace("<br>","").replace("<inviter>","").replace("</inviter>","") +" Juega Ya en Golazzos! Descarga la APP. "+ response.getString("id"));
+                    builderTW.show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void OnSuccess(JSONArray response) {
+
+            }
+
+            @Override
+            public void OnError(VolleyError error) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void publishFacebookFeed(){

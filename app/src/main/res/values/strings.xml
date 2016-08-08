@@ -98,7 +98,7 @@
     <string name="share.Twitter">Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos</string>
     <string name="share.Facebook">  (https://play.google.com/store/apps/details?id=com.advante.golazzos</string>
     <string name="share.Email">Golazzos, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP (https://play.google.com/store/apps/details?id=com.advante.golazzos</string>
-    <string name="baseLanding">http://apys.com.mx/movil/landing/index.php?referrer=</string>
+    <string name="baseLanding">https://golazzos.com/movil/landing?referrer=</string>
     <string name="baseLandingIco">http://apys.com.mx/imagenes/ic_main.png</string>
     <string name="emailContacto">servicioalcliente@golazzos.com</string>
     <string name="terminosText">
@@ -111,10 +111,10 @@
         2. FUNCIONAMIENTO DEL JUEGO\n
         Golazzos funciona en 3 simples pasos.
         SELECCIONA los partidos, de la lista de ligas y equipos que diseñamos para ti.
-        \n\n
+        \n
         JUEGA: Escoge las jugadas que más te gusten (Marcador, Gana-Pierde etc), selecciona tu predicción, los puntos a jugar y confirma.\n
         \n
-        COMPARTE tu pasión en nuestro "ESTADIO", el sitio dentro de Golazzos donde podrás comentar tus jugadas, las de tus amigos, presumir cada uno de tus logros y demostrar que de jugadas y de fútbol, tú eres el que manda.\n
+        COMPARTE tu pasión en nuestro "ESTADIO", el sitio dentro de Golazzos donde podrás comentar tus jugadas, las de tus amigos, presumir cada uno de tus logros y demostrar que de jugadas y de fútbol, tú eres el que manda.\n\n
         3. DESCRIPCIÓN DE PUNTOS\n
         Existen 6 formas en que puedes obtener PUNTOS dentro de Golazzos para avanzar mas rápido en el juega.\n
         AL REGISTRARTE Y COMPLETAR EL CALENTAMIENTO te damos 500 PUNTOS.\n
@@ -126,70 +126,63 @@
         SUBIENDO NIVELES: Cada vez que acumules aciertos en Golazzos subirás niveles y ganaras trofeos. Cada vez que superes un nivel abonaremos  PUNTOS a tu cuenta de acuerdo al nivel que logres.\n
         POR TU POSICION EN EL RANKING SEMANAL. Cada semana compites con el resto de la comunidad. Los jugadores que obtuvieron un mayor número de aciertos obtendrán puntos adicionales.\n
         SI TE CONVIERTES EN TITULAR.  Si te conviertes en titular obtendrás hasta 5 veces tus puntos por aciertes.\n
-        SI TE QUEDAS SIN PUNTOS la mejor forma de seguir jugando es invitando a mas amigos. Cada amigo que acepte te dará 300 PUNTOS.\n
-        \n
-        \n
-        \n
+        SI TE QUEDAS SIN PUNTOS la mejor forma de seguir jugando es invitando a mas amigos. Cada amigo que acepte te dará 300 PUNTOS.\n\n
         4.  MODALIDADES DE JUEGO\n
         En Golazzos hay 2 modalidades de Juego:\n
         SUPLENTE: Los jugadores suplentes obtienen hasta 3 veces la ganancia en puntos a sus predicciones acertadas. No hay ningún costo para jugar como suplente en Golazzos.\n
-        \n
         TITULAR: Los jugadores titulares pueden avanzar MAS RÁPIDO en el juego. Si eres titular obtienes:\n
         Hasta 5 veces la ganancia en puntos a tus predicciones acertadas.\n
         Acceso a las “ESTADÍSTICAS” de los partidos y torneos para que hagas mejores decisiones.\n
         Acceso a PROMOCIONES especiales\n
         No te desplegamos publicidad online.\n
-        Como titular pagas una subscripción de bajo valor a través de tu operador celular o usando tu tarjeta de crédito o débito.\n
+        Como titular pagas una subscripción de bajo valor a través de tu operador celular o usando tu tarjeta de crédito o débito.\n\n
         5. TIPOS  DE JUGADAS\n
         En la APP Móvil de Golazzos hay 2 tipos de Jugadas que puedes hacer:\n
         ACERTAR EL MARCADOR:  Debes acertar el marcador exacto del partido. Los suplentes ganan hasta 3 veces sus puntos si aciertan y los titulares ganan hasta 5 veces sus puntos si aciertan.\n
-        \n
         ACERTAR EL GANA/PIERDE: Debes acertar si Gana Local, hay empate o Gana Visitante. Los suplentes ganan hasta 2 veces sus puntos si aciertan y los titulares ganan hasta 3 veces sus puntos si aciertan.\n
-        Golazzos podrá agregar o quitar tipos de jugadas en cualquier momento a su discreción.\n
+        Golazzos podrá agregar o quitar tipos de jugadas en cualquier momento a su discreción.\n\n
         6. CIERRE DE PARTIDOS\n
-        Los partidos abiertos para hacer predicciones se cierran aproximadamente 5 minutos antes de su comienzo.\n
+        Los partidos abiertos para hacer predicciones se cierran aproximadamente 5 minutos antes de su comienzo.\n\n
         7. REPARTICIÓN DE PUNTOS GANADOS\n
-        La repartición de los puntos ganados se realizará dentro de las 24 horas posteriores al término del partido. Los PUNTOS serán consignados en tu cuenta de usuario.\n
+        La repartición de los puntos ganados se realizará dentro de las 24 horas posteriores al término del partido. Los PUNTOS serán consignados en tu cuenta de usuario.\n\n
         8. RESULTADOS GANADORES\n
         Los resultados ganadores en los partidos se determinarán en el tiempo oficial que dura un partido de futbol: los 90 minutos (primero y segundo tiempo oficiales) más los minutos extras que asigne el árbitro en el tiempo oficial. Si existen periodos suplementarios a causa de empates u otras situaciones de los reglamentos contemplados por los torneos nacionales o internacionales también entrarán a determinar el resultado. Lo único que no se considerará son los resultados asociados a definiciones por penaltis a menos que Golazzos abra algún tipo de jugada para esta forma de resolución de los encuentros.\n
-        \n
-        \n
         Aquí algunos ejemplos:\n
         JUGADA POR MARCADOR: Si un partido se extiende por 120 minutos (90 de tiempo oficial + 30 Suplementarios) y termina en los 90 minutos 0-0 y en los 30 minutos suplementarios 1-1 se tomará como ganador el marcador 1-1. Si hay definición desde el punto penalti no se tomarán en cuenta los goles anotados para determinar el marcador final.\n
-        JUGADA POR GANA/PIERDE: Si un partido se extiende por 120 minutos (90 de tiempo oficial + 30 Suplementarios) y termina en los 90 minutos 0-0 y en los 30 minutos suplementarios 1-1 se tomará como ganador el resultado “empate”. Si hay definición desde el punto penalti no se tendrán en cuenta en el resultado ganador.\n
+        JUGADA POR GANA/PIERDE: Si un partido se extiende por 120 minutos (90 de tiempo oficial + 30 Suplementarios) y termina en los 90 minutos 0-0 y en los 30 minutos suplementarios 1-1 se tomará como ganador el resultado “empate”. Si hay definición desde el punto penalti no se tendrán en cuenta en el resultado ganador.\n\n
         9. PROMOCIONES ESPECIALES\n
         Golazzos lanzará promociones especiales que podrán tener sus propias condiciones. Favor de consultar las mismas cuando éstas se publiquen.\n
     </string>
     <string name="textPrivacidad">
         AVISO DE PRIVACIDAD\n
-        1.GOLAZZOS LLC, en adelante LA SOCIEDAD, con domicilio en 3422 Old Capitolio Trail, Suite 700, Wilmington, DE 19808, USA  tiene la convicción de proteger la información personal proporcionada por LOS USUARIOS y son los UNICOS responsables de su tratamiento cuando sean recabados a través del SITIO DE INTERNET, la aplicación móvil o por cualquier otro medio, apegándose en todo momento a los preceptos relativos al Federal Trade Commission Act (15 U.S.C. §§41-58) (FTC Act)\n
-        2. GOLAZZOS LLC podrá solicitar y/o recolectar a través del SITIO DE INTERNET, la aplicación móvil o por cualquier otro medio, datos personales de LOS USUARIOS para su uso comercial, divulgación y/o almacenamiento por cualquier medio para los fines abajo señalados. LA SOCIEDAD y/o cualquier tercero que llegue a intervenir en cualquier fase del tratamiento de datos personales guardará confidencialidad respecto de los mismos cuando tengan dicho carácter, conforme a las disposiciones legales aplicables.\n
-        3. El ingreso y/o registro de datos personales implica el consentimiento pleno y sin reservas de LOS USUARIOS para el tratamiento de sus datos personales, de acuerdo con el presente Aviso de Privacidad. En el caso de que se requieran datos financieros, será necesario que EL USUARIO otorgue su consentimiento expreso antes de proporcionar los mismos. \n
-        4. Los datos personales que LOS USUARIOS proporcionen al momento de su ingreso y/o registro al SITIO DE INTERNET y/o aplicación móvil, tienen como finalidad el registro y captación de participantes en el juego relacionado con la actividad del USUARIO en el SITIO DE INTERNET y/o la aplicación móvil y podrán incluir de manera enunciativa más no limitativa los siguientes:\n
+        1.GOLAZZOS LLC, en adelante LA SOCIEDAD, con domicilio en 3422 Old Capitolio Trail, Suite 700, Wilmington, DE 19808, USA  tiene la convicción de proteger la información personal proporcionada por LOS USUARIOS y son los UNICOS responsables de su tratamiento cuando sean recabados a través del SITIO DE INTERNET, la aplicación móvil o por cualquier otro medio, apegándose en todo momento a los preceptos relativos al Federal Trade Commission Act (15 U.S.C. §§41-58) (FTC Act)\n\n
+        2. GOLAZZOS LLC podrá solicitar y/o recolectar a través del SITIO DE INTERNET, la aplicación móvil o por cualquier otro medio, datos personales de LOS USUARIOS para su uso comercial, divulgación y/o almacenamiento por cualquier medio para los fines abajo señalados. LA SOCIEDAD y/o cualquier tercero que llegue a intervenir en cualquier fase del tratamiento de datos personales guardará confidencialidad respecto de los mismos cuando tengan dicho carácter, conforme a las disposiciones legales aplicables.\n\n
+        3. El ingreso y/o registro de datos personales implica el consentimiento pleno y sin reservas de LOS USUARIOS para el tratamiento de sus datos personales, de acuerdo con el presente Aviso de Privacidad. En el caso de que se requieran datos financieros, será necesario que EL USUARIO otorgue su consentimiento expreso antes de proporcionar los mismos. \n\n
+        4. Los datos personales que LOS USUARIOS proporcionen al momento de su ingreso y/o registro al SITIO DE INTERNET y/o aplicación móvil, tienen como finalidad el registro y captación de participantes en el juego relacionado con la actividad del USUARIO en el SITIO DE INTERNET y/o la aplicación móvil y podrán incluir de manera enunciativa más no limitativa los siguientes:\n\n
         Nombre completo \n
         Fecha de nacimiento\n
         Sexo \n
         Domicilio completo\n
         Ocupación \n
         Teléfono \n
-        Dirección de correo electrónico\n
+        Dirección de correo electrónico\n\n
         5. Los datos personales que LOS USUARIOS proporcionen por otros medios, tienen como finalidad la realización de promoción, información y publicidad de los productos y/o servicios prestados, dar servicio al cliente y soporte técnico, y podrán incluir de manera enunciativa más no limitativa, los siguientes:\n
         Dirección de correo electrónico \n
         Nombre completo \n
-        Número telefónico \n
+        Número telefónico \n\n
         6. GOLAZZOS LLC cuenta con las medidas físicas, técnicas y administrativas de seguridad para la protección de datos personales proporcionados por LOS USUARIOS.\n
-         \n
-        7. EL USUARIO tiene la posibilidad de cancelar en cualquier momento el envío de promociones y otros e-mails enviados por GOLAZZOS LLC con fines publicitarios. La cancelación podrá realizarla enviando un email a servicioalcliente@golazzos.com. EL USUARIO es consciente de que por motivos administrativos la ejecución de dicha cancelación transcurrirá en un periodo de tiempo de hasta 24 horas.\n
-        8. El SITIO DE INTERNET y/o la aplicación móvil puede contener herramientas de búsqueda en la “world wide web”, como botones, banners y/o hipervínculos, que al ser utilizado por EL USUARIO trasportan a otras páginas web que pueden ser propiedad de terceros. Los datos personales que LOS USUARIOS proporcionen a través de dichas páginas NO se encuentran contemplados por este Aviso de Privacidad y su tratamiento NO es responsabilidad de LA OPERADORA NI DE LA SOCIEDAD.\n
-        9. GOLAZZOS LLC podrá revelar y/o transferir los datos personales proporcionados por EL USUARIO a terceros, incluyendo sin limitar a empresas filiales así como a proveedores y/o socios comerciales para efectos de verificación de datos bancarios, transacciones de saldo y promociones, y estos están obligados a cumplir con lo previsto en este Aviso de Privacidad. \n
+         \n\n
+        7. EL USUARIO tiene la posibilidad de cancelar en cualquier momento el envío de promociones y otros e-mails enviados por GOLAZZOS LLC con fines publicitarios. La cancelación podrá realizarla enviando un email a servicioalcliente@golazzos.com. EL USUARIO es consciente de que por motivos administrativos la ejecución de dicha cancelación transcurrirá en un periodo de tiempo de hasta 24 horas.\n\n
+        8. El SITIO DE INTERNET y/o la aplicación móvil puede contener herramientas de búsqueda en la “world wide web”, como botones, banners y/o hipervínculos, que al ser utilizado por EL USUARIO trasportan a otras páginas web que pueden ser propiedad de terceros. Los datos personales que LOS USUARIOS proporcionen a través de dichas páginas NO se encuentran contemplados por este Aviso de Privacidad y su tratamiento NO es responsabilidad de LA OPERADORA NI DE LA SOCIEDAD.\n\n
+        9. GOLAZZOS LLC podrá revelar y/o transferir los datos personales proporcionados por EL USUARIO a terceros, incluyendo sin limitar a empresas filiales así como a proveedores y/o socios comerciales para efectos de verificación de datos bancarios, transacciones de saldo y promociones, y estos están obligados a cumplir con lo previsto en este Aviso de Privacidad. \n\n
         10. EL USUARIO tiene el derecho de acceder a sus datos personales que posee el SITIO DE INTERNET y/o la aplicación móvil y a los detalles del tratamiento de los mismos, así como a rectificarlos y modificarlos en caso de ser inexactos o cancelarlos cuando considere que resulten ser excesivos o innecesarios para las finalidades que justificaron su obtención u oponerse al tratamiento de los mismos para fines específicos. Así también, EL USUARIO podrá revocar el consentimiento que haya otorgado al SITIO DE INTERNET y/o la aplicación móvil para el tratamiento de sus datos.\n
         Lo anterior se puede realizar enviando una solicitud dirigida al Departamento de Datos Personales a la cuenta de correo electrónico contacto servicioalcliente@golazzos.com . La solicitud deberá incluir por lo menos la siguiente información:  \n
         Nombre completo y domicilio u otro medio para comunicarle la respuesta a su solicitud. \n
         Copia escaneada de su identificación oficial, o en caso de que no sea usted el titular, una carta poder o los documentos que lo acrediten como representante legal del titular.\n
         Indicar el derecho que desea ejercer (acceder, rectificar, cancelar, oponerse o la manifestación expresa de revocar su consentimiento al tratamiento de sus datos personales). \n
         GOLAZZOS LLC le comunicará la respuesta por la misma vía de correo electrónico en un plazo no mayor a 20 días hábiles.  \n
-        EL USUARIO también podrá acceder y rectificar sus datos directamente a través del SITIO DE INTERNET y/o la aplicación móvil, simplemente accediendo con su cuenta de usuario y contraseña y así también podrá oponerse a recibir mensajes publicitarios enviando un email a servicioalcliente@golazzos.com\n
-        11. EL USUARIO se declara conforme con el hecho de que los datos personales que lleguen al conocimiento de GOLAZZOS LLC sean registrados y procesados dentro del sistema informático de este SITIO DE INTERNET y/o la aplicación móvil.  \n
+        EL USUARIO también podrá acceder y rectificar sus datos directamente a través del SITIO DE INTERNET y/o la aplicación móvil, simplemente accediendo con su cuenta de usuario y contraseña y así también podrá oponerse a recibir mensajes publicitarios enviando un email a servicioalcliente@golazzos.com\n\n
+        11. EL USUARIO se declara conforme con el hecho de que los datos personales que lleguen al conocimiento de GOLAZZOS LLC sean registrados y procesados dentro del sistema informático de este SITIO DE INTERNET y/o la aplicación móvil.  \n\n
         12. Se conocen como “Datos personales Sensibles” a “aquellos que puedan revelar aspectos como origen racial o étnico, estado de salud presente y futuro, información genética, creencias religiosas, filosóficas y/o morales, afiliación sindical, opiniones políticas, preferencia sexual”.En caso de que GOLAZZOS LLC llegue a requerir “Datos Personales Sensibles” de LOS USUARIOS, estos deberán proporcionar su consentimiento expreso.\n
     </string>
 </resources>

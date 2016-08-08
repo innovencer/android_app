@@ -17,7 +17,7 @@
             android:textStyle="bold"
             android:textSize="12dp"
             android:gravity="center_horizontal|bottom"
-            android:text="TÉRMINOS"
+            android:text="REGLAMENTO"
             android:id="@+id/textInfo" />
         <TextView
             android:layout_width="0dp"
@@ -27,7 +27,7 @@
             android:textStyle="bold"
             android:textSize="12dp"
             android:gravity="center_horizontal|bottom"
-            android:text="NOSOTROS"
+            android:text="PRIVACIDAD"
             android:id="@+id/textNotificaciones" />
         <TextView
             android:layout_width="0dp"
@@ -112,6 +112,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:textColor="@color/white"
+                    android:gravity="left|top"
                     android:text="@string/terminosText"
                     />
             </ScrollView>
