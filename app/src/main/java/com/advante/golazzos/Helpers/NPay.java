@@ -112,6 +112,7 @@ public class NPay {
                 Log.v("Service ID", resultItem.getIDService());
                 Log.v("Cancelled", resultItem.getCancelled());
                 Log.v("Status", resultItem.getStatus());
+
             } catch(Exception e){
                 e.printStackTrace();
             }
@@ -153,15 +154,43 @@ public class NPay {
         });
     }
 
+    private void cancelSubcrip(){
+        API.getInstance(activity).authenticateObjectRequest(Request.Method.DELETE, General.endpoint_subscription, null, new API_Listener() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+                gnr.getUser(new IGetUser_Listener() {
+                    @Override
+                    public void onComplete(Boolean complete, User user) {
+                        dialog.dismiss();
+                    }
+                });
+                nPayListener.OnComplete(true);
+            }
+
+            @Override
+            public void OnSuccess(JSONArray response) {
+
+            }
+
+            @Override
+            public void OnError(VolleyError error) {
+                dialog.dismiss();
+                nPayListener.OnComplete(false);
+            }
+        });
+    }
+
     public void CreateSubscription(NPayListener nPayListener){
         dialog.show();
         this.nPayListener = nPayListener;
         npay.CreateSubscription(getIdService(), General.KEYWORD, General.MEDIA);
     }
 
-    public void CancelSubscription(){
+    public void CancelSubscription(NPayListener nPayListener){
         dialog.show();
+        this.nPayListener = nPayListener;
         npay.CancelSubscription().CancelSubscription(gnr.getLoggedUser().getSubscription_id(), getIdService());
+        cancelSubcrip();
     }
 
     private String getIdService(){

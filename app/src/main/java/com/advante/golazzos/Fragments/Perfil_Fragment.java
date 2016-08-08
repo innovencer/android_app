@@ -33,6 +33,7 @@ import com.advante.golazzos.Helpers.Picasso;
 import com.advante.golazzos.Helpers.VolleySingleton;
 import com.advante.golazzos.Interface.API_Listener;
 import com.advante.golazzos.Interface.IGetUser_Listener;
+import com.advante.golazzos.LoginActivity;
 import com.advante.golazzos.MainActivity;
 import com.advante.golazzos.Model.User;
 import com.advante.golazzos.PrincipalActivity;
@@ -67,7 +68,7 @@ import rx.functions.Func1;
 public class Perfil_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     EditText editNombre, editApellido, editEmail, editTelefono;
-    TextView textInfo,textNotificaciones,textCuenta, textCerrarSesion, textTipoUsuario;
+    TextView textInfo,textNotificaciones,textCuenta, textCerrarSesion, textTipoUsuario, textSetPassword;
     ImageView imageProfile,imageTipoUsuario,imageEditar;
     LinearLayout linear1, linear2, linear3,linearGuardar;
     Boolean flag = true;
@@ -100,6 +101,7 @@ public class Perfil_Fragment extends GeneralFragment {
             textCuenta = (TextView) view.findViewById(R.id.textCuenta);
             textCerrarSesion = (TextView) view.findViewById(R.id.textCerrarSesion);
             textTipoUsuario = (TextView) view.findViewById(R.id.textTipoUsuario);
+            textSetPassword = (TextView) view.findViewById(R.id.textSetPassword);
 
             linear1 = (LinearLayout) view.findViewById(R.id.linear1);
             linear2 = (LinearLayout) view.findViewById(R.id.linear2);
@@ -127,6 +129,12 @@ public class Perfil_Fragment extends GeneralFragment {
                     gnr.setLoggedUser(null);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
+                }
+            });
+            textSetPassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setPassowrd();
                 }
             });
             imageEditar.setOnClickListener(new View.OnClickListener() {
@@ -334,6 +342,81 @@ public class Perfil_Fragment extends GeneralFragment {
         });
         listView.setAdapter(adapter);
         dialog.show();
+    }
+
+    private void setPassowrd(){
+        final Dialog dialog1 = new Dialog(getContext(),android.R.style.Theme_DeviceDefault_Dialog);
+        dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setContentView(R.layout.dialog_password_3);
+        final EditText password1 = (EditText) dialog1.findViewById(R.id.editPassword);
+        final EditText password2 = (EditText) dialog1.findViewById(R.id.editPassword2);
+        LinearLayout btnAceptar = (LinearLayout) dialog1.findViewById(R.id.btnAceptar);
+        LinearLayout btnCancelar = (LinearLayout) dialog1.findViewById(R.id.btnCancelar);
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(password1.getText().toString().length()>0 && password1.getText().toString().equals(password2.getText().toString())){
+                    dialog.show();
+                    JSONObject password = new JSONObject();
+                    JSONObject data = new JSONObject();
+
+                    try {
+                        //data.put("reset_password_token", token.getText().toString());
+                        data.put("password", password1.getText().toString());
+                        //data.put("password_confirmation", password2.getText().toString());
+                        password.put("user", data);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    showLog(password.toString());
+                    jsArrayRequest = new JsonObjectRequest(
+                            Request.Method.PUT,
+                            General.endpoint_users+"/me",
+                            password,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    dialog.dismiss();
+                                    dialog1.dismiss();
+                                    showShortToast("Su clave se ha cambiado exitosamente.");
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    dialog.dismiss();
+                                    Toast.makeText(getContext(),new String(error.networkResponse.data),Toast.LENGTH_SHORT).show();
+                                }
+                            }){
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String>  params = new HashMap<String, String>();
+                            params.put("Authorization", "Token "+ gnr.getToken());
+                            params.put("Content-Type", "application/json");
+                            return params;
+                        }
+                    };
+                    jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                            7000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    VolleySingleton.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                }else{
+                    Toast.makeText(getContext(),"Error, revise los campos e intente nuevamente.",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog1.show();
     }
 
 }

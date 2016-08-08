@@ -90,7 +90,6 @@ public class Cuenta_Fragment extends GeneralFragment {
         linearSuplente = (LinearLayout) view.findViewById(R.id.linearSuplente);
         linearButton1 = (LinearLayout) view.findViewById(R.id.linearButton1);
 
-
         gnr.getUser(new IGetUser_Listener() {
             @Override
             public void onComplete(Boolean complete, User user) {
@@ -103,7 +102,14 @@ public class Cuenta_Fragment extends GeneralFragment {
         linearButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                npay.CancelSubscription();
+                npay.CancelSubscription(new NPayListener() {
+                    @Override
+                    public void OnComplete(Boolean pass) {
+                        if(pass){
+                            init();
+                        }
+                    }
+                });
             }
         });
 

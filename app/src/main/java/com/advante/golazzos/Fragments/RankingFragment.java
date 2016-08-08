@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class RankingFragment extends GeneralFragment {
     JsonArrayRequest jsArrayRequest;
     ListView listView;
     LinearLayout linear1, linear2, linear3, linear4;
+    RelativeLayout linear5;
     TextView textPosicion, textName, textEquipoAlma, textNivel, textAciertos;
     ImageView image1, image2, imageProfile, imageEquipo1;
     Boolean flag = true;
@@ -74,6 +76,8 @@ public class RankingFragment extends GeneralFragment {
             linear2 = (LinearLayout) view.findViewById(R.id.linear2);
             linear3 = (LinearLayout) view.findViewById(R.id.linear3);
             linear4 = (LinearLayout) view.findViewById(R.id.linear4);
+
+            linear5 = (RelativeLayout) view.findViewById(R.id.linear5);
 
             image1 = (ImageView) view.findViewById(R.id.image1);
             image2 = (ImageView) view.findViewById(R.id.image2);
@@ -151,6 +155,7 @@ public class RankingFragment extends GeneralFragment {
 
     private void getRanking(String type){
         dialog.show();
+        listView.setAdapter(null);
         jsArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 General.endpoint_ranking +type,
@@ -188,10 +193,14 @@ public class RankingFragment extends GeneralFragment {
                                 ranking_items.add(ranking_item);
                             }
                             if(ranking_items.size() <= 0){
-                                View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match_1,null);
-                                ((ViewGroup)listView.getParent()).addView(emptyView);
-                                listView.setEmptyView(emptyView);
+                                //View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_match_1,null);
+                                //((ViewGroup)listView.getParent()).addView(emptyView);
+                                //listView.setEmptyView(emptyView);
+                                listView.setVisibility(View.GONE);
+                                linear5.setVisibility(View.VISIBLE);
                             }else {
+                                listView.setVisibility(View.VISIBLE);
+                                linear5.setVisibility(View.GONE);
                                 List_Ranking list = new List_Ranking(getContext(), ranking_items);
                                 listView.setAdapter(list);
                             }
