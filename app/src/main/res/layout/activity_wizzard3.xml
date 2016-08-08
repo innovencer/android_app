@@ -190,6 +190,23 @@
                 android:src="@drawable/mail_logo"
                 android:id="@+id/imageMA" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/border_white2"
+            android:id="@+id/buttonOthers">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="Copiar Vínculo"/>
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

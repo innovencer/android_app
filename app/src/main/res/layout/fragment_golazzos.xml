@@ -99,10 +99,78 @@
         </LinearLayout>
     </LinearLayout>
         <LinearLayout
+            android:id="@+id/linearTerminos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             android:orientation="vertical">
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/white"
+                    android:text="@string/terminosText"
+                    />
+            </ScrollView>
         </LinearLayout>
-
+    <LinearLayout
+        android:id="@+id/linearNosotros"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
+                android:text="@string/textPrivacidad"
+                />
+        </ScrollView>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/linearContacto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="45dp"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="Para contactarnos, envíamos un correo electrónico a:"/>
+        <LinearLayout
+            android:id="@+id/linearButton1"
+            android:layout_width="240dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:layout_below="@id/text"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/background_green_rounded">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:text="@string/emailContacto"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_contacto"/>
+    </RelativeLayout>
 </LinearLayout>

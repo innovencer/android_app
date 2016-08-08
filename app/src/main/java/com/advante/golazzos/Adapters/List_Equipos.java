@@ -58,8 +58,8 @@ public class List_Equipos extends ArrayAdapter<Equipo> {
         holder.textName.setText(item.getName() + " ("+ item.getInitials()+")");
 
         String imagePath = item.getImage_path();
-        imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
-        File file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
+//        imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
+        File file = new File(General.local_dir_images + "equipos/" + item.getData_factory_id() + ".gif");
 
         if (file.exists()) {
             BitmapFactory.Options options = new BitmapFactory.Options();

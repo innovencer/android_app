@@ -1,5 +1,7 @@
 package com.advante.golazzos;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -46,7 +48,7 @@ public class Wizzard3Activity extends GeneralActivity {
     JsonObjectRequest jsArrayRequest;
     CallbackManager callbackManager;
     ShareDialog shareDialog;
-    LinearLayout buttonFB, buttonTW, buttonMA;
+    LinearLayout buttonFB, buttonTW, buttonMA, buttonOT;
     TextView buttonSiguiente;
     ImageView imageFB, imageTW, imageMA;
 
@@ -59,12 +61,13 @@ public class Wizzard3Activity extends GeneralActivity {
         buttonFB = (LinearLayout) findViewById(R.id.buttonFB);
         buttonTW = (LinearLayout) findViewById(R.id.buttonTW);
         buttonMA = (LinearLayout) findViewById(R.id.buttonMA);
+        buttonOT = (LinearLayout) findViewById(R.id.buttonOthers);
+
         buttonSiguiente = (TextView) findViewById(R.id.buttonSiguiente);
 
         imageFB = (ImageView) findViewById(R.id.imageFB);
         imageTW = (ImageView) findViewById(R.id.imageTW);
         imageMA = (ImageView) findViewById(R.id.imageMA);
-
 
         callbackManager = CallbackManager.Factory.create();
         SendButton sendButton = (SendButton) findViewById(R.id.button_facebook);
@@ -88,8 +91,8 @@ public class Wizzard3Activity extends GeneralActivity {
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
                 .setContentTitle("Juega Conmigo Golazzos!")
                 .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
-                .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.advante.golazzos&referrer="+gnr.getLoggedUser().getInvitation_token()))
-                .setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
+                .setContentUrl(Uri.parse(getString(R.string.baseLanding)+gnr.getLoggedUser().getInvitation_token()))
+                .setImageUrl(Uri.parse(getString(R.string.baseLandingIco)))
                 .build();
         sendButton.setShareContent(linkContent);
 
@@ -117,6 +120,25 @@ public class Wizzard3Activity extends GeneralActivity {
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(Wizzard3Activity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        buttonOT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                String link = getString(R.string.baseLanding)+gnr.getLoggedUser().getInvitation_token();
+                if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipboard.setText(link);
+                } else {
+                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("Se ha copiado el link", link);
+                    clipboard.setPrimaryClip(clip);
+                }
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
         buttonSiguiente.setOnClickListener(new View.OnClickListener() {

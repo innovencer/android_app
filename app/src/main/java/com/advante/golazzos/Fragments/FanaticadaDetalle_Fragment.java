@@ -283,8 +283,8 @@ public class FanaticadaDetalle_Fragment extends GeneralFragment {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle("Golazzos")
                     .setContentDescription(label.replace("<font color='#0E5A80'>","").replace("</font>","").replace("<br>","").replace("<inviter>","").replace("</inviter>",""))
-                    .setContentUrl(Uri.parse("http://apys.com.mx/movil/index.php"))
-                    //.setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
+                    .setContentUrl(Uri.parse(getString(R.string.baseLanding)+gnr.getLoggedUser().getInvitation_token()))
+                    .setImageUrl(Uri.parse(getString(R.string.baseLandingIco)))
                     .build();
             shareDialog.show(linkContent);
         }

@@ -120,8 +120,8 @@ public class Amigos_Fragment extends GeneralFragment {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle("Juega Conmigo Golazzos!")
                     .setContentDescription("ATREVETE a competir conmigo en GOLAZZOS, el primer JUEGO SOCIAL de predicciones de FUTBOL! Descarga la APP.")
-                    .setContentUrl(Uri.parse("https://www.golazzos.com/"))
-                    //.setImageUrl(Uri.parse("http://apys.com.mx/imagenes/ic_main.png"))
+                    .setContentUrl(Uri.parse(getString(R.string.baseLanding)+gnr.getLoggedUser().getInvitation_token()))
+                    .setImageUrl(Uri.parse(getString(R.string.baseLandingIco)))
                     .build();
             sendButton.setShareContent(linkContent);
 

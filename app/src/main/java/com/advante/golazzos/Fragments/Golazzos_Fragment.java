@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.advante.golazzos.Helpers.GeneralFragment;
@@ -24,7 +25,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 public class Golazzos_Fragment extends GeneralFragment {
     JsonObjectRequest jsArrayRequest;
     TextView textInfo,textNotificaciones,textCuenta;
-    LinearLayout linear1, linear2, linear3;
+    LinearLayout linear1, linear2, linear3, linearTerminios, linearNostros, linearButton1;
+    RelativeLayout linearContacto;
     ImageView image1, image2, image3;
     Boolean flag = true;
 
@@ -50,6 +52,10 @@ public class Golazzos_Fragment extends GeneralFragment {
             linear1 = (LinearLayout) view.findViewById(R.id.linear1);
             linear2 = (LinearLayout) view.findViewById(R.id.linear2);
             linear3 = (LinearLayout) view.findViewById(R.id.linear3);
+            linearTerminios = (LinearLayout) view.findViewById(R.id.linearTerminos);
+            linearNostros = (LinearLayout) view.findViewById(R.id.linearNosotros);
+            linearContacto = (RelativeLayout) view.findViewById(R.id.linearContacto);
+            linearButton1 = (LinearLayout) view.findViewById(R.id.linearButton1);
 
             image1 = (ImageView) view.findViewById(R.id.image1);
             image2 = (ImageView) view.findViewById(R.id.image2);
@@ -63,6 +69,17 @@ public class Golazzos_Fragment extends GeneralFragment {
 
             textCuenta.setOnClickListener(onClickCuenta);
             linear3.setOnClickListener(onClickCuenta);
+
+            linearButton1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailContacto)});
+                    i.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+                    i.putExtra(android.content.Intent.EXTRA_TEXT, "");
+                    startActivity(Intent.createChooser(i, "Contactar a Golazzos"));
+                }
+            });
         }
         return view;
     }
@@ -73,6 +90,9 @@ public class Golazzos_Fragment extends GeneralFragment {
             image1.setVisibility(View.VISIBLE);
             image2.setVisibility(View.INVISIBLE);
             image3.setVisibility(View.INVISIBLE);
+            linearTerminios.setVisibility(View.VISIBLE);
+            linearNostros.setVisibility(View.GONE);
+            linearContacto.setVisibility(View.GONE);
         }
     };
     View.OnClickListener onClickCuenta = new View.OnClickListener() {
@@ -81,6 +101,9 @@ public class Golazzos_Fragment extends GeneralFragment {
             image1.setVisibility(View.INVISIBLE);
             image2.setVisibility(View.INVISIBLE);
             image3.setVisibility(View.VISIBLE);
+            linearTerminios.setVisibility(View.GONE);
+            linearNostros.setVisibility(View.GONE);
+            linearContacto.setVisibility(View.VISIBLE);
         }
     };
     View.OnClickListener onClickNotificaciones = new View.OnClickListener() {
@@ -89,6 +112,9 @@ public class Golazzos_Fragment extends GeneralFragment {
             image1.setVisibility(View.INVISIBLE);
             image2.setVisibility(View.VISIBLE);
             image3.setVisibility(View.INVISIBLE);
+            linearTerminios.setVisibility(View.GONE);
+            linearNostros.setVisibility(View.VISIBLE);
+            linearContacto.setVisibility(View.GONE);
         }
     };
 }

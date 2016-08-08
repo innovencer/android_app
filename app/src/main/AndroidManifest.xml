@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <application
         android:allowBackup="true"
@@ -95,12 +96,11 @@
         <activity android:name=".JugadasResultActivity"
             android:screenOrientation="portrait">
         </activity>
-        <receiver android:name="io.npay.hub_pin.HubDialogUserData$NPayPinSMSReceiver">
+        <receiver android:name="io.npay.pin.NPayPinSMSReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
         <receiver android:name="io.npay.custom_view.NPayDialogUserData$NPayPinSMSReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
