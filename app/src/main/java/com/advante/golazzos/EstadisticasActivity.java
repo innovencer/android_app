@@ -45,6 +45,7 @@ public class EstadisticasActivity extends GeneralActivity {
     LinearLayout buttonBack, linear1, linear2;
     private WebSettings webSettings;
     private NPay npay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
