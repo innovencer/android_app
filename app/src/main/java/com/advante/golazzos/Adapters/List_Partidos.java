@@ -41,12 +41,14 @@ import java.util.Date;
  * Created by Ruben Flores on 4/22/2016.
  */
 public class List_Partidos extends ArrayAdapter<Partido> {
+
     ArrayList<Partido> _items;
     Context context;
-    int editLocal[],editVisitante[];
+    int editLocal[], editVisitante[];
     int viewLayout;
-    public List_Partidos(Context context, ArrayList<Partido> items,int resourse) {
-        super(context, R.layout.item_partido_1,items);
+
+    public List_Partidos(Context context, ArrayList<Partido> items, int resourse) {
+        super(context, R.layout.item_partido_1, items);
         this._items = items;
         this.context = context;
         editLocal = new int[items.size()];
@@ -68,7 +70,7 @@ public class List_Partidos extends ArrayAdapter<Partido> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Partido item = getItem(position);
         int type = 0;
-        if(viewLayout == R.layout.item_partido_3){
+        if (viewLayout == R.layout.item_partido_3) {
             type = 1;
         }
         if (convertView == null) {
@@ -108,20 +110,20 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         DateTime currentDateTime = new DateTime();
 
         DateTime dateTime = ISODateTimeFormat.dateTimeParser().parseDateTime(timestamp);
-        DateTimeFormatter fmt =  DateTimeFormat.forPattern("MMM dd hh:mm aaa");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd hh:mm aaa");
         Duration duration = new Duration(currentDateTime, dateTime);
 
         long diff[] = getDifference(timestamp);
-        holder.textDia.setText(""+diff[0]);
-        holder.textHora.setText(""+diff[1]);
-        holder.textMins.setText(""+diff[2]);
+        holder.textDia.setText("" + diff[0]);
+        holder.textHora.setText("" + diff[1]);
+        holder.textMins.setText("" + diff[2]);
         holder.textTorneo.setText(item.getTournament().getName());
 
         holder.textFecha.setText(fmt.print(dateTime));
 
         String imagePath = item.getLocal().getImage_path();
-        final String tempPathV,tempPathL;
-        imagePath = imagePath.substring(imagePath.lastIndexOf("/")+1,imagePath.lastIndexOf("-"));
+        final String tempPathV, tempPathL;
+//        imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
         tempPathL = imagePath;
         File file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
 
@@ -144,7 +146,7 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         }
 
         imagePath = item.getVisitante().getImage_path();
-        imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
+//        imagePath = imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("-"));
         tempPathV = imagePath;
         file = new File(General.local_dir_images + "equipos/" + imagePath + ".gif");
 
@@ -166,22 +168,22 @@ public class List_Partidos extends ArrayAdapter<Partido> {
                     bm, 16));
         }
 
-        if(viewLayout == R.layout.item_partido_1){
+        if (viewLayout == R.layout.item_partido_1) {
             holder.editLocal.setText("" + editLocal[position]);
             holder.editVisitante.setText("" + editVisitante[position]);
-        }else{
+        } else {
             holder.editLocal.setText("" + item.getLocal_score());
             holder.editVisitante.setText("" + item.getVisitant_score());
         }
 
         holder.textPuntosJuegas.setText(General.pointsToBet[0]);
-        holder.textPuntosGanas.setText(General.getMultipliers(type,Integer.parseInt(General.pointsToBet[0])));
+        holder.textPuntosGanas.setText(General.getMultipliers(type, Integer.parseInt(General.pointsToBet[0])));
 
         final int finalType = type;
         holder.textPuntosJuegas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(context,android.R.style.Theme_DeviceDefault_Dialog);
+                final Dialog dialog = new Dialog(context, android.R.style.Theme_DeviceDefault_Dialog);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_puntos);
@@ -194,7 +196,7 @@ public class List_Partidos extends ArrayAdapter<Partido> {
                         int selectedPosition = i;
                         if (selectedPosition >= 0) {
                             holder.textPuntosJuegas.setText(General.pointsToBet[selectedPosition]);
-                            holder.textPuntosGanas.setText(General.getMultipliers(finalType,Integer.parseInt(General.pointsToBet[selectedPosition])));
+                            holder.textPuntosGanas.setText(General.getMultipliers(finalType, Integer.parseInt(General.pointsToBet[selectedPosition])));
                         }
                         dialog.dismiss();
                     }
@@ -215,9 +217,9 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         holder.buttonDownLocal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Integer.parseInt(holder.editLocal.getText().toString())>0){
+                if (Integer.parseInt(holder.editLocal.getText().toString()) > 0) {
                     int val = Integer.parseInt(holder.editLocal.getText().toString()) - 1;
-                    holder.editLocal.setText(""+val);
+                    holder.editLocal.setText("" + val);
                     editLocal[position] = val;
                 }
             }
@@ -227,8 +229,8 @@ public class List_Partidos extends ArrayAdapter<Partido> {
             @Override
             public void onClick(View view) {
                 int val = Integer.parseInt(holder.editVisitante.getText().toString()) + 1;
-                holder.editVisitante.setText(""+val);
-                editVisitante[position]=val;
+                holder.editVisitante.setText("" + val);
+                editVisitante[position] = val;
             }
         });
         holder.buttonDownVisitante.setOnClickListener(new View.OnClickListener() {
@@ -265,28 +267,28 @@ public class List_Partidos extends ArrayAdapter<Partido> {
                 intent.putExtra("amount_centavos", Integer.parseInt(holder.textPuntosJuegas.getText().toString()));
                 intent.putExtra("local_score", local);
                 intent.putExtra("visitant_score", visitante);
-                intent.putExtra("nombreLocal",item.getLocal().getName());
-                intent.putExtra("nombreVisitante",item.getVisitante().getName());
-                if(viewLayout == R.layout.item_partido_1){
+                intent.putExtra("nombreLocal", item.getLocal().getName());
+                intent.putExtra("nombreVisitante", item.getVisitante().getName());
+                if (viewLayout == R.layout.item_partido_1) {
                     intent.putExtra("bet_option_id", 0);
-                    if(local > visitante){
+                    if (local > visitante) {
                         intent.putExtra("image", tempPathL);
-                    }else if(visitante > local){
+                    } else if (visitante > local) {
                         intent.putExtra("image", tempPathV);
-                    }else{
+                    } else {
                         intent.putExtra("image", "-1");
                     }
-                }else if(holder.edit.getText().equals(General.resultTypes[0])){
+                } else if (holder.edit.getText().equals(General.resultTypes[0])) {
                     intent.putExtra("bet_option_id", 1);
                     intent.putExtra("local_score", 1);
                     intent.putExtra("visitant_score", 0);
                     intent.putExtra("image", tempPathL);
-                }else if(holder.edit.getText().equals(General.resultTypes[1])){
+                } else if (holder.edit.getText().equals(General.resultTypes[1])) {
                     intent.putExtra("bet_option_id", 1);
                     intent.putExtra("local_score", 0);
                     intent.putExtra("visitant_score", 1);
                     intent.putExtra("image", tempPathV);
-                }else{
+                } else {
                     intent.putExtra("bet_option_id", 1);
                     intent.putExtra("local_score", 0);
                     intent.putExtra("visitant_score", 0);
@@ -300,11 +302,11 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         holder.buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.edit.getText().equals(General.resultTypes[0])){
+                if (holder.edit.getText().equals(General.resultTypes[0])) {
                     holder.edit.setText(General.resultTypes[1]);
-                }else if(holder.edit.getText().equals(General.resultTypes[1])){
+                } else if (holder.edit.getText().equals(General.resultTypes[1])) {
                     holder.edit.setText(General.resultTypes[2]);
-                }else{
+                } else {
                     holder.edit.setText(General.resultTypes[0]);
                 }
             }
@@ -312,22 +314,22 @@ public class List_Partidos extends ArrayAdapter<Partido> {
         holder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.edit.getText().equals(General.resultTypes[0])){
+                if (holder.edit.getText().equals(General.resultTypes[0])) {
                     holder.edit.setText(General.resultTypes[2]);
-                }else if(holder.edit.getText().equals(General.resultTypes[1])){
+                } else if (holder.edit.getText().equals(General.resultTypes[1])) {
                     holder.edit.setText(General.resultTypes[0]);
-                }else{
+                } else {
                     holder.edit.setText(General.resultTypes[1]);
                 }
             }
         });
 
-        if(viewLayout == R.layout.item_partido_5 || viewLayout == R.layout.item_partido_6){
-            if(item.getLocal_score() > item.getVisitant_score()){
+        if (viewLayout == R.layout.item_partido_5 || viewLayout == R.layout.item_partido_6) {
+            if (item.getLocal_score() > item.getVisitant_score()) {
                 holder.edit.setText(General.resultTypes[0]);
-            }else if(item.getLocal_score() < item.getVisitant_score()){
+            } else if (item.getLocal_score() < item.getVisitant_score()) {
                 holder.edit.setText(General.resultTypes[1]);
-            }else{
+            } else {
                 holder.edit.setText(General.resultTypes[2]);
             }
         }
@@ -360,7 +362,7 @@ public class List_Partidos extends ArrayAdapter<Partido> {
     }
 
 
-    public long[] getDifference(String date){
+    public long[] getDifference(String date) {
         try {
             Calendar c = Calendar.getInstance();
 
@@ -388,11 +390,11 @@ public class List_Partidos extends ArrayAdapter<Partido> {
                 "%d days, %d hours, %d minutes, %d seconds%n",
                 elapsedDays,
                 elapsedHours, elapsedMinutes, elapsedSeconds);*/
-            long time[] = new long[]{elapsedDays,elapsedHours,elapsedMinutes};
-            return  time;
-        }catch(Exception e){
+            long time[] = new long[]{elapsedDays, elapsedHours, elapsedMinutes};
+            return time;
+        } catch (Exception e) {
             e.printStackTrace();
-            long time[] = new long[]{0,0,0};
+            long time[] = new long[]{0, 0, 0};
             return time;
         }
     }
