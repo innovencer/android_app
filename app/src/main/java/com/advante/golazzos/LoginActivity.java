@@ -56,6 +56,7 @@ public class LoginActivity extends GeneralActivity {
     private CallbackManager callbackManager;
     JsonObjectRequest jsArrayRequest;
     boolean stayFBConnected = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,16 +66,16 @@ public class LoginActivity extends GeneralActivity {
         initFacebookButton();
     }
 
-    private void initUI(){
+    private void initUI() {
 
         userEditText = (EditText) findViewById(R.id.textEmail);
         passwordEditText = (EditText) findViewById(R.id.textPassword);
         backButton = (RelativeLayout) findViewById(R.id.backButton);
 
-        if(isFacebookLoggedIn()){
-            if(stayFBConnected) {
+        if (isFacebookLoggedIn()) {
+            if (stayFBConnected) {
                 loginFB(AccessToken.getCurrentAccessToken().getToken());
-            }else{
+            } else {
                 LoginManager.getInstance().logOut();
             }
         }
@@ -96,12 +97,12 @@ public class LoginActivity extends GeneralActivity {
         });
     }
 
-    public boolean isFacebookLoggedIn(){
+    public boolean isFacebookLoggedIn() {
         return AccessToken.getCurrentAccessToken() != null;
     }
 
-    private void initFacebookButton(){
-        loginButton = (LoginButton)findViewById(R.id.login_button);
+    private void initFacebookButton() {
+        loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile, email, user_friends"));
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -143,13 +144,13 @@ public class LoginActivity extends GeneralActivity {
         });
     }
 
-    private void loginFB(String token){
+    private void loginFB(String token) {
         JSONObject post = new JSONObject();
         JSONObject parametros = new JSONObject();
         try {
             parametros.put("from", "facebook");
             parametros.put("value", token);
-            post.put("token",parametros);
+            post.put("token", parametros);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -179,7 +180,7 @@ public class LoginActivity extends GeneralActivity {
         });
     }
 
-    private void loginCredential(String email, String password){
+    private void loginCredential(String email, String password) {
         JSONObject post = new JSONObject();
         JSONObject parametros = new JSONObject();
         try {
@@ -217,16 +218,16 @@ public class LoginActivity extends GeneralActivity {
                         //get status code here
                         String statusCode = String.valueOf(error.networkResponse.statusCode);
                         //get response body and parse with appropriate encoding
-                        if(statusCode != null && statusCode.equals("422")){
-                            if(error.networkResponse.data!=null) {
+                        if (statusCode != null && statusCode.equals("422")) {
+                            if (error.networkResponse.data != null) {
                                 try {
-                                    body = new String(error.networkResponse.data,"UTF-8");
+                                    body = new String(error.networkResponse.data, "UTF-8");
                                     showShortToast("Correo o Clave incorrectas");
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        }else{
+                        } else {
                             showShortToast("Error en la comunicacion, por favor intente mas tarde.");
                         }
                         dialog.dismiss();
@@ -250,7 +251,7 @@ public class LoginActivity extends GeneralActivity {
     IGetUser_Listener iGetUser_listener = new IGetUser_Listener() {
         @Override
         public void onComplete(Boolean complete, User user) {
-            if(complete) {
+            if (complete) {
                 if (user.getWizzard().equals("complete")) {
                     showLog("principal");
                     Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
@@ -266,80 +267,80 @@ public class LoginActivity extends GeneralActivity {
         }
     };
 
- public void recordarPass(View v){
-     final Dialog dialog1 = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
-     dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-     dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-     dialog1.setContentView(R.layout.dialog_password_1);
-     final EditText email = (EditText) dialog1.findViewById(R.id.editEmail);
-     LinearLayout btnAceptar = (LinearLayout) dialog1.findViewById(R.id.btnAceptar);
-     LinearLayout btnCancelar = (LinearLayout) dialog1.findViewById(R.id.btnCancelar);
+    public void recordarPass(View v) {
+        final Dialog dialog1 = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog);
+        dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setContentView(R.layout.dialog_password_1);
+        final EditText email = (EditText) dialog1.findViewById(R.id.editEmail);
+        LinearLayout btnAceptar = (LinearLayout) dialog1.findViewById(R.id.btnAceptar);
+        LinearLayout btnCancelar = (LinearLayout) dialog1.findViewById(R.id.btnCancelar);
 
-     btnCancelar.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-             dialog1.dismiss();
-         }
-     });
-     btnAceptar.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-             if(email.getText().toString().length()>0){
-                 dialog.show();
-                 JSONObject password = new JSONObject();
-                 JSONObject email_json = new JSONObject();
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (email.getText().toString().length() > 0) {
+                    dialog.show();
+                    JSONObject password = new JSONObject();
+                    JSONObject email_json = new JSONObject();
 
-                 try {
-                     email_json.put("email", email.getText().toString());
-                     password.put("password", email_json);
+                    try {
+                        email_json.put("email", email.getText().toString());
+                        password.put("password", email_json);
 
-                 } catch (JSONException e) {
-                     e.printStackTrace();
-                 }
-                 showLog(password.toString());
-                 jsArrayRequest = new JsonObjectRequest(
-                         Request.Method.POST,
-                         General.endpoint_password,
-                         password,
-                         new Response.Listener<JSONObject>() {
-                             @Override
-                             public void onResponse(JSONObject response) {
-                                 dialog1.dismiss();
-                                 dialog.dismiss();
-                                 setPassowrd();
-                             }
-                         },
-                         new Response.ErrorListener() {
-                             @Override
-                             public void onErrorResponse(VolleyError error) {
-                                 // Manejo de errores
-                                 dialog1.dismiss();
-                                 dialog.dismiss();
-                                 Toast.makeText(LoginActivity.this,"Error al conectar al servicio",Toast.LENGTH_SHORT).show();
-                             }
-                         }){
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    showLog(password.toString());
+                    jsArrayRequest = new JsonObjectRequest(
+                            Request.Method.POST,
+                            General.endpoint_password,
+                            password,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    dialog1.dismiss();
+                                    dialog.dismiss();
+                                    setPassowrd();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    // Manejo de errores
+                                    dialog1.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(LoginActivity.this, "Error al conectar al servicio", Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
 
-                     @Override
-                     public Map<String, String> getHeaders() throws AuthFailureError {
-                         Map<String, String>  params = new HashMap<String, String>();
-                         params.put("Authorization", "Token "+ gnr.getToken());
-                         params.put("Content-Type", "application/json");
-                         return params;
-                     }
-                 };
-                 jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                         7000,
-                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                 VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(jsArrayRequest);
-             }
-         }
-     });
-     dialog1.show();
- }
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", "Token " + gnr.getToken());
+                            params.put("Content-Type", "application/json");
+                            return params;
+                        }
+                    };
+                    jsArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                            7000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(jsArrayRequest);
+                }
+            }
+        });
+        dialog1.show();
+    }
 
-    private void setPassowrd(){
-        final Dialog dialog1 = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+    private void setPassowrd() {
+        final Dialog dialog1 = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog);
         dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setContentView(R.layout.dialog_password_2);
@@ -358,7 +359,7 @@ public class LoginActivity extends GeneralActivity {
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(password1.getText().toString().length()>0){
+                if (password1.getText().toString().length() > 0) {
                     dialog.show();
                     JSONObject password = new JSONObject();
                     JSONObject data = new JSONObject();
@@ -388,14 +389,14 @@ public class LoginActivity extends GeneralActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     dialog.dismiss();
-                                    Toast.makeText(LoginActivity.this,"Token incorrecto.",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Token incorrecto.", Toast.LENGTH_SHORT).show();
                                 }
-                            }){
+                            }) {
 
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String>  params = new HashMap<String, String>();
-                            params.put("Authorization", "Token "+ gnr.getToken());
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", "Token " + gnr.getToken());
                             params.put("Content-Type", "application/json");
                             return params;
                         }
